@@ -3,10 +3,10 @@
     "noImplicitAdditionalProperties": "throw-on-extras",
     "controllerPathGlobs": ["src/controllers/*Controller.ts"],
     "spec": {
-      "outputDirectory": "build",
+      "outputDirectory": "tsoa",
       "specVersion": 3
     },
     "routes": {
-      "routesDir": "build"
+      "routesDir": "tsoa"
     }
   }
