@@ -1,0 +1,166 @@
+{
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"Wid": {
+				"description": "ID of user or group\n\"xxxxxxxxxx@c.us\" for contacts\n\"xxxxxxxxxx@g.us\" for groups",
+				"properties": {
+					"server": {
+						"type": "string",
+						"description": "\"c.us\" for contacts\n\"g.us\" for groups"
+					},
+					"user": {
+						"type": "string",
+						"description": "number of contact or group"
+					},
+					"_serialized": {
+						"type": "string",
+						"description": "user@server"
+					}
+				},
+				"required": [
+					"server",
+					"user",
+					"_serialized"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ProfileInterface": {
+				"properties": {
+					"name": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Contact": {
+				"properties": {
+					"wa_id": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{
+								"$ref": "#/components/schemas/Wid"
+							}
+						]
+					},
+					"profile": {
+						"$ref": "#/components/schemas/ProfileInterface"
+					}
+				},
+				"required": [
+					"wa_id",
+					"profile"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ContactCreationParams": {
+				"properties": {
+					"wa_id": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{
+								"$ref": "#/components/schemas/Wid"
+							}
+						]
+					},
+					"name": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"wa_id",
+					"name"
+				],
+				"type": "object",
+				"additionalProperties": false
+			}
+		},
+		"securitySchemes": {}
+	},
+	"info": {
+		"title": "",
+		"version": "2.0.0",
+		"contact": {}
+	},
+	"openapi": "3.0.0",
+	"paths": {
+		"/whatsapp_contact_profile/{PHONE_NUMBER_ID}": {
+			"get": {
+				"operationId": "GetUser",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Contact"
+								}
+							}
+						}
+					}
+				},
+				"description": "Retrieves the details of an existing contact.\r\nSupply the unique user ID from either and receive corresponding user details.",
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "PHONE_NUMBER_ID",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "fields",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/whatsapp_contact_profile": {
+			"post": {
+				"operationId": "CreateUser",
+				"responses": {
+					"201": {
+						"description": "Created"
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ContactCreationParams"
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/"
+		}
+	]
+}
