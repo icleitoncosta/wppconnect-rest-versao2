@@ -8,11 +8,13 @@ import {
     Post,
     Route,
     SuccessResponse,
+    Response,
     Tags,
     Request,
     Security
   } from "tsoa";
 import { RequestEx } from "../models/Request";
+import { Error } from "../models/Error";
 
 @Route("/")
 export class MessagesController extends Controller {
@@ -24,6 +26,7 @@ export class MessagesController extends Controller {
   @Get("{PHONE_NUMBER_ID}/messages/{MESSAGE_ID}")
   @Tags("Messages")
   @Security("apiKey")
+  @Response<Error>(400, "Incorrect request")
   public async getMessage(
     @Path() MESSAGE_ID: string,
     @Request() req: RequestEx
@@ -37,6 +40,7 @@ export class MessagesController extends Controller {
   @Post("{PHONE_NUMBER_ID}/messages")
   @Tags("Messages")
   @Security("apiKey")
+  @Response<Error>(400, "Incorrect request")
   @SuccessResponse("200", "Created") 
   public async sendMessage(
     @Path() PHONE_NUMBER_ID: string,

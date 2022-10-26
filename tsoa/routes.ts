@@ -266,6 +266,14 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Error": {
+        "dataType": "refObject",
+        "properties": {
+            "error": {"dataType":"nestedObjectLiteral","nestedProperties":{"fbtrace_id":{"dataType":"undefined","required":true},"error_subcode":{"dataType":"double","required":true},"error_data":{"dataType":"nestedObjectLiteral","nestedProperties":{"details":{"dataType":"any","required":true},"messaging_product":{"dataType":"enum","enums":["whatsapp"],"required":true}},"required":true},"code":{"dataType":"double","required":true},"type":{"dataType":"string","required":true},"message":{"dataType":"string","required":true}},"required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ReturnSendedMessage": {
         "dataType": "refObject",
         "properties": {
