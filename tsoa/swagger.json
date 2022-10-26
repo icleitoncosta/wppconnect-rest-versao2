@@ -193,7 +193,7 @@
 				"properties": {
 					"message_id": {
 						"type": "string",
-						"description": "The WhatsApp Message ID (wamid) of the message on which the reaction should appear. The reaction will not be sent if:\r\nThe message is a reaction message\r\nThe message has been deleted\r\nIf the ID is of a message that has been deleted, the message will not be delivered."
+						"description": "The WhatsApp Message ID (wamid) of the message on which the reaction should appear. The reaction will not be sent if:\nThe message is a reaction message\nThe message has been deleted\nIf the ID is of a message that has been deleted, the message will not be delivered."
 					},
 					"emoji": {
 						"type": "string",
@@ -211,11 +211,11 @@
 				"properties": {
 					"id": {
 						"type": "string",
-						"description": "ID of File sended for the server.\r\nRequired when type is audio, document, image, sticker, or video and you are not using a link."
+						"description": "ID of File sended for the server.\nRequired when type is audio, document, image, sticker, or video and you are not using a link."
 					},
 					"link": {
 						"type": "string",
-						"description": "Send LINK HTTPS or <base64>\r\nRequired when type is audio, document, image, sticker, or video and you are not using an uploaded media ID.\r\nThe protocol and URL of the media to be sent. Use only with HTTP/HTTPS URLs.\r\nDo not use this field when message type is set to text."
+						"description": "Send LINK HTTPS or <base64>\nRequired when type is audio, document, image, sticker, or video and you are not using an uploaded media ID.\nThe protocol and URL of the media to be sent. Use only with HTTP/HTTPS URLs.\nDo not use this field when message type is set to text."
 					},
 					"caption": {
 						"type": "string",
@@ -223,7 +223,7 @@
 					},
 					"filename": {
 						"type": "string",
-						"description": "Describes the filename for the specific document. Use only with document media.\r\nThe extension of the filename will specify what format the document is displayed as in WhatsApp."
+						"description": "Describes the filename for the specific document. Use only with document media.\nThe extension of the filename will specify what format the document is displayed as in WhatsApp."
 					}
 				},
 				"type": "object",
@@ -467,7 +467,7 @@
 			"Sections": {
 				"properties": {
 					"product_items": {
-						"description": "Not implemented yeat\r\nArray of product objects. There is a minimum of 1 product per section and a maximum of 30 products across all sections."
+						"description": "Not implemented yeat\nArray of product objects. There is a minimum of 1 product per section and a maximum of 30 products across all sections."
 					},
 					"rows": {
 						"$ref": "#/components/schemas/SectionsRows",
@@ -475,7 +475,7 @@
 					},
 					"title": {
 						"type": "string",
-						"description": "Required if the message has more than one section.\r\nTitle of the section."
+						"description": "Required if the message has more than one section.\nTitle of the section."
 					}
 				},
 				"type": "object",
@@ -485,7 +485,7 @@
 				"properties": {
 					"button": {
 						"type": "string",
-						"description": "Required for List Messages.\r\nButton content. It cannot be an empty string and must be unique within the message. Emojis are supported, markdown is not."
+						"description": "Required for List Messages.\nButton content. It cannot be an empty string and must be unique within the message. Emojis are supported, markdown is not."
 					},
 					"buttons": {
 						"items": {
@@ -559,7 +559,7 @@
 							"template",
 							"hsm"
 						],
-						"description": "Required for message templates.\r\nThe type of message being sent."
+						"description": "Required for message templates.\nThe type of message being sent."
 					},
 					"to": {
 						"type": "string",
@@ -585,10 +585,10 @@
 						"nullable": false
 					},
 					"template": {
-						"description": "Required for template messages.\r\nContains all model information."
+						"description": "Required for template messages.\nContains all model information."
 					},
 					"hsm": {
-						"description": "Required for message templates.\r\nThe contained element for the message content. Indicates that the message is highly structured. The contained parameters provide the structure."
+						"description": "Required for message templates.\nThe contained element for the message content. Indicates that the message is highly structured. The contained parameters provide the structure."
 					},
 					"text": {
 						"$ref": "#/components/schemas/TextMessageObject"
@@ -794,7 +794,7 @@
 						}
 					}
 				},
-				"description": "Update QR Code\r\nUse this call after use the /start",
+				"description": "Update QR Code\nUse this call after use the /start",
 				"tags": [
 					"Authentication"
 				],
@@ -1087,7 +1087,11 @@
 				"tags": [
 					"Messages"
 				],
-				"security": [],
+				"security": [
+					{
+						"apiKey": []
+					}
+				],
 				"parameters": [
 					{
 						"in": "path",
@@ -1119,7 +1123,11 @@
 				"tags": [
 					"Messages"
 				],
-				"security": [],
+				"security": [
+					{
+						"apiKey": []
+					}
+				],
 				"parameters": [
 					{
 						"description": "ID of your user \"xxxxxxxxxx@c.us\"",

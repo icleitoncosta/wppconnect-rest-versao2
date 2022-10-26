@@ -9,7 +9,10 @@ import {
     Route,
     SuccessResponse,
     Tags,
+    Request,
+    Security
   } from "tsoa";
+import { RequestEx } from "../models/Request";
 
 @Route("/")
 export class MessagesController extends Controller {
@@ -20,10 +23,12 @@ export class MessagesController extends Controller {
   */
   @Get("{PHONE_NUMBER_ID}/messages/{MESSAGE_ID}")
   @Tags("Messages")
+  @Security("apiKey")
   public async getMessage(
-    @Path() MESSAGE_ID: string
+    @Path() MESSAGE_ID: string,
+    @Request() req: RequestEx
   ): Promise<Message> {
-    return new MessagesService().get(MESSAGE_ID);
+    return new MessagesService().get(req, MESSAGE_ID);
   }
   /**
    * Use the /PHONE_NUMBER_ID/messages endpoint to send text, media, contacts, location, and interactive messages, as well as message templates to your customers.
@@ -31,13 +36,15 @@ export class MessagesController extends Controller {
   */
   @Post("{PHONE_NUMBER_ID}/messages")
   @Tags("Messages")
+  @Security("apiKey")
   @SuccessResponse("200", "Created") 
   public async sendMessage(
     @Path() PHONE_NUMBER_ID: string,
-    @Body() payload: Message
+    @Body() payload: Message,
+    @Request() req: RequestEx
   ): Promise<ReturnSendedMessage> {
     console.log(PHONE_NUMBER_ID);
     this.setStatus(200);
-    return new MessagesService().create(payload);
+    return new MessagesService().create(req, payload);
   }
 }

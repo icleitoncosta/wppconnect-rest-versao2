@@ -10,6 +10,9 @@ import { ContactsController } from './../src/controllers/contactsController';
 import { MediasController } from './../src/controllers/mediasController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { MessagesController } from './../src/controllers/messagesController';
+import { expressAuthentication } from './../src/authentication';
+// @ts-ignore - no great way to install types from subpackage
+const promiseAny = require('promise.any');
 import type { RequestHandler } from 'express';
 import * as express from 'express';
 const multer = require('multer');
@@ -291,6 +294,7 @@ export function RegisterRoutes(app: express.Router) {
             const args = {
                     PHONE_NUMBER_ID: {"in":"path","name":"PHONE_NUMBER_ID","required":true,"dataType":"string"},
                     SECRET_KEY: {"in":"path","name":"SECRET_KEY","required":true,"dataType":"string"},
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -316,6 +320,7 @@ export function RegisterRoutes(app: express.Router) {
             function AuthController_startSession(request: any, response: any, next: any) {
             const args = {
                     PHONE_NUMBER_ID: {"in":"path","name":"PHONE_NUMBER_ID","required":true,"dataType":"string"},
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -341,6 +346,7 @@ export function RegisterRoutes(app: express.Router) {
             function AuthController_getQrCode(request: any, response: any, next: any) {
             const args = {
                     PHONE_NUMBER_ID: {"in":"path","name":"PHONE_NUMBER_ID","required":true,"dataType":"string"},
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -367,6 +373,7 @@ export function RegisterRoutes(app: express.Router) {
             const args = {
                     PHONE_NUMBER_ID: {"in":"path","name":"PHONE_NUMBER_ID","required":true,"dataType":"string"},
                     fields: {"in":"query","name":"fields","required":true,"dataType":"array","array":{"dataType":"refAlias","ref":"FieldsContact"}},
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -393,6 +400,7 @@ export function RegisterRoutes(app: express.Router) {
             const args = {
                     PHONE_NUMBER_ID: {"in":"path","name":"PHONE_NUMBER_ID","required":true,"dataType":"string"},
                     fields: {"in":"query","name":"fields","required":true,"dataType":"array","array":{"dataType":"refAlias","ref":"FieldsBusinessContact"}},
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -419,6 +427,7 @@ export function RegisterRoutes(app: express.Router) {
             const args = {
                     PHONE_NUMBER_ID: {"in":"path","name":"PHONE_NUMBER_ID","required":true,"dataType":"string"},
                     payload: {"in":"body","name":"payload","required":true,"ref":"Partial_BusinessProfileInterface_"},
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -444,6 +453,7 @@ export function RegisterRoutes(app: express.Router) {
             function MediasController_getMedia(request: any, response: any, next: any) {
             const args = {
                     MEDIA_ID: {"in":"path","name":"MEDIA_ID","required":true,"dataType":"string"},
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -471,6 +481,7 @@ export function RegisterRoutes(app: express.Router) {
             const args = {
                     payload: {"in":"formData","name":"payload","required":true,"dataType":"string"},
                     file: {"in":"formData","name":"file","required":true,"dataType":"file"},
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -496,6 +507,7 @@ export function RegisterRoutes(app: express.Router) {
             function MediasController_deleteMedia(request: any, response: any, next: any) {
             const args = {
                     MEDIA_ID: {"in":"path","name":"MEDIA_ID","required":true,"dataType":"string"},
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -515,12 +527,14 @@ export function RegisterRoutes(app: express.Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/:PHONE_NUMBER_ID/messages/:MESSAGE_ID',
+            authenticateMiddleware([{"apiKey":[]}]),
             ...(fetchMiddlewares<RequestHandler>(MessagesController)),
             ...(fetchMiddlewares<RequestHandler>(MessagesController.prototype.getMessage)),
 
             function MessagesController_getMessage(request: any, response: any, next: any) {
             const args = {
                     MESSAGE_ID: {"in":"path","name":"MESSAGE_ID","required":true,"dataType":"string"},
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -540,6 +554,7 @@ export function RegisterRoutes(app: express.Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.post('/:PHONE_NUMBER_ID/messages',
+            authenticateMiddleware([{"apiKey":[]}]),
             ...(fetchMiddlewares<RequestHandler>(MessagesController)),
             ...(fetchMiddlewares<RequestHandler>(MessagesController.prototype.sendMessage)),
 
@@ -547,6 +562,7 @@ export function RegisterRoutes(app: express.Router) {
             const args = {
                     PHONE_NUMBER_ID: {"in":"path","name":"PHONE_NUMBER_ID","required":true,"dataType":"string"},
                     payload: {"in":"body","name":"payload","required":true,"ref":"Message"},
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -568,6 +584,65 @@ export function RegisterRoutes(app: express.Router) {
 
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
+
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+    function authenticateMiddleware(security: TsoaRoute.Security[] = []) {
+        return async function runAuthenticationMiddleware(request: any, _response: any, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            // keep track of failed auth attempts so we can hand back the most
+            // recent one.  This behavior was previously existing so preserving it
+            // here
+            const failedAttempts: any[] = [];
+            const pushAndRethrow = (error: any) => {
+                failedAttempts.push(error);
+                throw error;
+            };
+
+            const secMethodOrPromises: Promise<any>[] = [];
+            for (const secMethod of security) {
+                if (Object.keys(secMethod).length > 1) {
+                    const secMethodAndPromises: Promise<any>[] = [];
+
+                    for (const name in secMethod) {
+                        secMethodAndPromises.push(
+                            expressAuthentication(request, name, secMethod[name])
+                                .catch(pushAndRethrow)
+                        );
+                    }
+
+                    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+                    secMethodOrPromises.push(Promise.all(secMethodAndPromises)
+                        .then(users => { return users[0]; }));
+                } else {
+                    for (const name in secMethod) {
+                        secMethodOrPromises.push(
+                            expressAuthentication(request, name, secMethod[name])
+                                .catch(pushAndRethrow)
+                        );
+                    }
+                }
+            }
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            try {
+                request['user'] = await promiseAny(secMethodOrPromises);
+                next();
+            }
+            catch(err) {
+                // Show most recent error as response
+                const error = failedAttempts.pop();
+                error.status = error.status || 401;
+                next(error);
+            }
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        }
+    }
 
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 

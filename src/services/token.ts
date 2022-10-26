@@ -1,14 +1,16 @@
 import config from "../config";
 
 import bcrypt from "bcrypt";
+import { RequestEx } from "../models/Request";
 
 export class TokenService {
     public checkToken(token: string) {
         console.log(token);
 
     }
-    public async create(PHONE_NUMBER_ID: string, SECRET_KEY: string): Promise<{status: string; token: string | null; data: any; }> {
+    public async create(req: RequestEx, PHONE_NUMBER_ID: string, SECRET_KEY: string): Promise<{status: string; token: string | null; data: any; }> {
         try {
+            console.log(req);
             if (SECRET_KEY !== config.secretKey) {
                 console.log('Token generation attempt without SECRET_KEY.')
                 return {

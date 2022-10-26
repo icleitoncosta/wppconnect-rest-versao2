@@ -1,8 +1,8 @@
-// eslint-disable-next-line no-undef, header/header
+// eslint-disable-next-line no-undef
 module.exports = {
 	root: true,
 	parser: '@typescript-eslint/parser',
-	plugins: ['@typescript-eslint', 'header'],
+	plugins: ['@typescript-eslint'],
 	extends: [
 	  'eslint:recommended',
 	  'plugin:@typescript-eslint/eslint-recommended',
@@ -28,6 +28,7 @@ module.exports = {
 	  'no-useless-escape': 'off',
 	  'prefer-const': 'off',
 	},
+	indent: ["error", 2],
 	overrides: [
 	  {
 		files: ['src/lib/**/*.js'],
@@ -48,10 +49,6 @@ module.exports = {
 		  axios: true,
 		  Debug: true,
 		  Store: true,
-		  WAPI: true,
-		  WPP: true,
-		  webpackJsonp: true,
-		  WWebJS: true,
 		},
 		rules: {
 		  // @todo more restrictive

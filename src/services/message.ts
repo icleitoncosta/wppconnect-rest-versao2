@@ -1,14 +1,17 @@
 import { Message, ReturnSendedMessage } from 'src/models/Messages';
+import { RequestEx } from '../models/Request';
 
 export class MessagesService {
-    public get(id: string): Message {
+    public get(req: RequestEx, id: string): Message {
+        console.log(req);
         return {
             messaging_product: "whatsapp",
             type: "text",
             to: id,
         }
     }
-    public create(payload: Message): ReturnSendedMessage {
+    public create(req: RequestEx, payload: Message): ReturnSendedMessage {
+        console.log(req);
         return {
             messaging_product: "whatsapp",
             contacts: {

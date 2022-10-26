@@ -1,3 +1,4 @@
+import { RequestEx } from "../models/Request";
 import {
     Body,
     Controller,
@@ -8,6 +9,7 @@ import {
     Route,
     SuccessResponse,
     Tags,
+    Request
   } from "tsoa";
 import { Contact, BusinessProfileInterface, FieldsBusinessContact, FieldsContact } from "../models/Contact";
 import { ContactService } from "../services/contact";
@@ -23,9 +25,10 @@ export class ContactsController extends Controller {
   @Tags("Contacts")
   public async getContact(
     @Path() PHONE_NUMBER_ID: string,
-    @Query() fields: FieldsContact[]
+    @Query() fields: FieldsContact[],
+    @Request() req: RequestEx
   ): Promise<Contact> {
-    return new ContactService().get(PHONE_NUMBER_ID, fields);
+    return new ContactService().get(req, PHONE_NUMBER_ID, fields);
   }
 
   /**
@@ -36,9 +39,10 @@ export class ContactsController extends Controller {
   @Tags("Contacts")
   public async getBusinessContact(
     @Path() PHONE_NUMBER_ID: string,
-    @Query() fields: FieldsBusinessContact[]
+    @Query() fields: FieldsBusinessContact[],
+    @Request() req: RequestEx
   ): Promise<{ data: BusinessProfileInterface[]} > {
-    return new ContactService().getBusiness(PHONE_NUMBER_ID, fields);
+    return new ContactService().getBusiness(req, PHONE_NUMBER_ID, fields);
   }
   /**
    * To update your profile, make a POST. In your request, you can include the parameters listed below.
@@ -49,11 +53,12 @@ export class ContactsController extends Controller {
   @SuccessResponse("200", "Created") 
   public async updateBusinessProfile(
     @Path() PHONE_NUMBER_ID: string,
-    @Body() payload: Partial<BusinessProfileInterface>
+    @Body() payload: Partial<BusinessProfileInterface>,
+    @Request() req: RequestEx
   ): Promise<void> {
     console.log(PHONE_NUMBER_ID);
     this.setStatus(200);
-    new ContactService().updateBusinessProfile(payload);
+    new ContactService().updateBusinessProfile(req, payload);
     return;
   }
 }
