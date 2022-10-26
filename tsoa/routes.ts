@@ -5,9 +5,13 @@ import { Controller, ValidationService, FieldErrors, ValidateError, TsoaRoute, H
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { ContactsController } from './../src/controllers/contactsController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { MediasController } from './../src/controllers/mediasController';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { MessagesController } from './../src/controllers/messagesController';
 import type { RequestHandler } from 'express';
 import * as express from 'express';
+const multer = require('multer');
+const upload = multer();
 
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
@@ -58,6 +62,19 @@ const models: TsoaRoute.Models = {
     "Partial_BusinessProfileInterface_": {
         "dataType": "refAlias",
         "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"name":{"dataType":"string"},"about":{"dataType":"string"},"adress":{"dataType":"string"},"description":{"dataType":"string"},"email":{"dataType":"string"},"messaging_product":{"dataType":"enum","enums":["whatsapp"]},"profile_picture_url":{"dataType":"string"},"websites":{"dataType":"array","array":{"dataType":"string"}},"vertical":{"dataType":"string"}},"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ReturnMedia": {
+        "dataType": "refObject",
+        "properties": {
+            "messaging_product": {"dataType":"enum","enums":["whatsapp"],"required":true},
+            "url": {"dataType":"string","required":true},
+            "mime_type": {"dataType":"string","required":true},
+            "sha256": {"dataType":"string","required":true},
+            "file_size": {"dataType":"double","required":true},
+            "id": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "TextMessageObject": {
@@ -337,6 +354,83 @@ export function RegisterRoutes(app: express.Router) {
 
               const promise = controller.updateBusinessProfile.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/:MEDIA_ID',
+            ...(fetchMiddlewares<RequestHandler>(MediasController)),
+            ...(fetchMiddlewares<RequestHandler>(MediasController.prototype.getMedia)),
+
+            function MediasController_getMedia(request: any, response: any, next: any) {
+            const args = {
+                    MEDIA_ID: {"in":"path","name":"MEDIA_ID","required":true,"dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new MediasController();
+
+
+              const promise = controller.getMedia.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/:PHONE_NUMBER_ID/media',
+            upload.single('file'),
+            ...(fetchMiddlewares<RequestHandler>(MediasController)),
+            ...(fetchMiddlewares<RequestHandler>(MediasController.prototype.createMedia)),
+
+            function MediasController_createMedia(request: any, response: any, next: any) {
+            const args = {
+                    payload: {"in":"formData","name":"payload","required":true,"dataType":"string"},
+                    file: {"in":"formData","name":"file","required":true,"dataType":"file"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new MediasController();
+
+
+              const promise = controller.createMedia.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/:MEDIA_ID',
+            ...(fetchMiddlewares<RequestHandler>(MediasController)),
+            ...(fetchMiddlewares<RequestHandler>(MediasController.prototype.deleteMedia)),
+
+            function MediasController_deleteMedia(request: any, response: any, next: any) {
+            const args = {
+                    MEDIA_ID: {"in":"path","name":"MEDIA_ID","required":true,"dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new MediasController();
+
+
+              const promise = controller.deleteMedia.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
             } catch (err) {
                 return next(err);
             }

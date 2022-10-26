@@ -136,6 +136,43 @@
 				"type": "object",
 				"description": "Make all properties in T optional"
 			},
+			"ReturnMedia": {
+				"properties": {
+					"messaging_product": {
+						"type": "string",
+						"enum": [
+							"whatsapp"
+						],
+						"nullable": false
+					},
+					"url": {
+						"type": "string"
+					},
+					"mime_type": {
+						"type": "string"
+					},
+					"sha256": {
+						"type": "string"
+					},
+					"file_size": {
+						"type": "number",
+						"format": "double"
+					},
+					"id": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"messaging_product",
+					"url",
+					"mime_type",
+					"sha256",
+					"file_size",
+					"id"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"TextMessageObject": {
 				"properties": {
 					"body": {
@@ -766,6 +803,130 @@
 						"application/json": {
 							"schema": {
 								"$ref": "#/components/schemas/Partial_BusinessProfileInterface_"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/{MEDIA_ID}": {
+			"get": {
+				"operationId": "GetMedia",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ReturnMedia"
+								}
+							}
+						}
+					}
+				},
+				"description": "Retrieves the details of an existing media sended for server.",
+				"tags": [
+					"Media"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "MEDIA_ID",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"delete": {
+				"operationId": "DeleteMedia",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"sucess": {
+											"type": "boolean"
+										}
+									},
+									"required": [
+										"sucess"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"description": "To delete media, make a DELETE call to the ID of the media you want to delete.",
+				"tags": [
+					"Media"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "MEDIA_ID",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/{PHONE_NUMBER_ID}/media": {
+			"post": {
+				"operationId": "CreateMedia",
+				"responses": {
+					"200": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"id": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"id"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"description": "To upload media, make a POST call to /PHONE_NUMBER_ID/media and include the parameters listed below. All media files sent through this endpoint are encrypted and persist for 30 days, unless they are deleted earlier.",
+				"tags": [
+					"Media"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"multipart/form-data": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"payload": {
+										"type": "string"
+									},
+									"file": {
+										"type": "string",
+										"format": "binary"
+									}
+								},
+								"required": [
+									"payload",
+									"file"
+								]
 							}
 						}
 					}
