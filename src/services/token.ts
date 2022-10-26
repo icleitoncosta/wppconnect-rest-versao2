@@ -1,4 +1,5 @@
 import config from "../config";
+
 import bcrypt from "bcrypt";
 
 export class TokenService {
