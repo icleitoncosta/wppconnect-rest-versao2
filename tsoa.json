@@ -4,7 +4,24 @@
     "controllerPathGlobs": ["src/controllers/*Controller.ts"],
     "spec": {
       "outputDirectory": "tsoa",
-      "specVersion": 3
+      "specVersion": 3,  
+      "info": {
+        "title": "WPPConnect API REST",
+        "description": ""
+      },
+      "securityDefinitions": {
+          "Bearer": {
+              "type": "apiKey",
+              "name": "Authorization",
+              "in": "header"
+          }
+      },
+      "tags":  [
+        {
+          "name": "Contacts",
+          "description": "Within the business profile request, you can specify what you want to know from business, groups and contacts. "
+        }
+      ]
     },
     "routes": {
       "routesDir": "tsoa"

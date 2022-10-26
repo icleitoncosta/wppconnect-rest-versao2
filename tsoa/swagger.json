@@ -6,30 +6,6 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
-			"Wid": {
-				"description": "ID of user or group\n\"xxxxxxxxxx@c.us\" for contacts\n\"xxxxxxxxxx@g.us\" for groups",
-				"properties": {
-					"server": {
-						"type": "string",
-						"description": "\"c.us\" for contacts\n\"g.us\" for groups"
-					},
-					"user": {
-						"type": "string",
-						"description": "number of contact or group"
-					},
-					"_serialized": {
-						"type": "string",
-						"description": "user@server"
-					}
-				},
-				"required": [
-					"server",
-					"user",
-					"_serialized"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
 			"ProfileInterface": {
 				"properties": {
 					"name": {
@@ -45,14 +21,8 @@
 			"Contact": {
 				"properties": {
 					"wa_id": {
-						"anyOf": [
-							{
-								"type": "string"
-							},
-							{
-								"$ref": "#/components/schemas/Wid"
-							}
-						]
+						"type": "string",
+						"description": "ID of user or group \"xxxxxxxxxx@c.us\" for contacts, \"xxxxxxxxxx@g.us\" for groups"
 					},
 					"profile": {
 						"$ref": "#/components/schemas/ProfileInterface"
@@ -65,31 +35,602 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"ContactCreationParams": {
+			"FieldsContact": {
+				"type": "string",
+				"enum": [
+					"name"
+				],
+				"nullable": false
+			},
+			"BusinessProfileInterface": {
 				"properties": {
-					"wa_id": {
-						"anyOf": [
-							{
-								"type": "string"
-							},
-							{
-								"$ref": "#/components/schemas/Wid"
-							}
-						]
-					},
 					"name": {
+						"type": "string"
+					},
+					"about": {
+						"type": "string"
+					},
+					"adress": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"messaging_product": {
+						"type": "string",
+						"enum": [
+							"whatsapp"
+						],
+						"nullable": false
+					},
+					"profile_picture_url": {
+						"type": "string"
+					},
+					"websites": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"vertical": {
 						"type": "string"
 					}
 				},
 				"required": [
-					"wa_id",
-					"name"
+					"profile_picture_url"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"FieldsBusinessContact": {
+				"type": "string",
+				"enum": [
+					"about",
+					"address",
+					"description",
+					"email",
+					"profile_picture_url",
+					"websites"
+				]
+			},
+			"Partial_BusinessProfileInterface_": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"about": {
+						"type": "string"
+					},
+					"adress": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"messaging_product": {
+						"type": "string",
+						"enum": [
+							"whatsapp"
+						],
+						"nullable": false
+					},
+					"profile_picture_url": {
+						"type": "string"
+					},
+					"websites": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"vertical": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"description": "Make all properties in T optional"
+			},
+			"TextMessageObject": {
+				"properties": {
+					"body": {
+						"type": "string"
+					},
+					"preview_url": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"body",
+					"preview_url"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ReactMessageObject": {
+				"properties": {
+					"message_id": {
+						"type": "string",
+						"description": "The WhatsApp Message ID (wamid) of the message on which the reaction should appear. The reaction will not be sent if:\r\nThe message is a reaction message\r\nThe message has been deleted\r\nIf the ID is of a message that has been deleted, the message will not be delivered."
+					},
+					"emoji": {
+						"type": "string",
+						"description": "Emoji to appear on the message."
+					}
+				},
+				"required": [
+					"message_id",
+					"emoji"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"MediaObject": {
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "ID of File sended for the server.\r\nRequired when type is audio, document, image, sticker, or video and you are not using a link."
+					},
+					"link": {
+						"type": "string",
+						"description": "Send LINK HTTPS or <base64>\r\nRequired when type is audio, document, image, sticker, or video and you are not using an uploaded media ID.\r\nThe protocol and URL of the media to be sent. Use only with HTTP/HTTPS URLs.\r\nDo not use this field when message type is set to text."
+					},
+					"caption": {
+						"type": "string",
+						"description": "Describes the specified image or video media."
+					},
+					"filename": {
+						"type": "string",
+						"description": "Describes the filename for the specific document. Use only with document media.\r\nThe extension of the filename will specify what format the document is displayed as in WhatsApp."
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"LocationMessageObject": {
+				"properties": {
+					"longitude": {
+						"type": "number",
+						"format": "double",
+						"description": "Longitude of the location."
+					},
+					"latitude": {
+						"type": "number",
+						"format": "double",
+						"description": "Latitude of the location."
+					},
+					"name": {
+						"type": "string",
+						"description": "Name of the location."
+					},
+					"address": {
+						"type": "string",
+						"description": "Address of the location. Only displayed if name is present."
+					}
+				},
+				"required": [
+					"longitude",
+					"latitude"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"AdressesContact": {
+				"properties": {
+					"street": {
+						"type": "string"
+					},
+					"city": {
+						"type": "string"
+					},
+					"state": {
+						"type": "string"
+					},
+					"zip": {
+						"type": "string"
+					},
+					"country": {
+						"type": "string"
+					},
+					"country_code": {
+						"type": "string"
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"HOME",
+							"WORK"
+						]
+					}
+				},
+				"required": [
+					"street"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"NameContact": {
+				"properties": {
+					"formatted_name": {
+						"type": "string"
+					},
+					"first_name": {
+						"type": "string"
+					},
+					"last_name": {
+						"type": "string"
+					},
+					"middle_name": {
+						"type": "string"
+					},
+					"suffix": {
+						"type": "string"
+					},
+					"prefix": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"formatted_name"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"OrgContact": {
+				"properties": {
+					"company": {
+						"type": "string"
+					},
+					"department": {
+						"type": "string"
+					},
+					"title": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"PhonesContact": {
+				"properties": {
+					"phone": {
+						"type": "string",
+						"description": "Automatically populated with the `wa_id` value as a formatted phone number."
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"CELL",
+							"MAIN",
+							"IPHONE",
+							"HOME",
+							"WORK"
+						]
+					},
+					"wa_id": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"UrlsContact": {
+				"properties": {
+					"url": {
+						"type": "string",
+						"description": "Not implemented yeat on WAJS"
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"HOME",
+							"WORK"
+						]
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ContactObject": {
+				"properties": {
+					"addresses": {
+						"items": {
+							"$ref": "#/components/schemas/AdressesContact"
+						},
+						"type": "array",
+						"description": "Not implemented yeat on WAJS"
+					},
+					"birthday": {
+						"type": "string",
+						"format": "date-time",
+						"description": "Not implemented yeat on WAJS"
+					},
+					"emails": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array",
+						"description": "Not implemented yeat on WAJS"
+					},
+					"name": {
+						"$ref": "#/components/schemas/NameContact"
+					},
+					"org": {
+						"$ref": "#/components/schemas/OrgContact",
+						"description": "Not implemented yeat on WAJS"
+					},
+					"phones": {
+						"$ref": "#/components/schemas/PhonesContact"
+					},
+					"urls": {
+						"items": {
+							"$ref": "#/components/schemas/UrlsContact"
+						},
+						"type": "array",
+						"description": "Not implemented yeat on WAJS"
+					}
+				},
+				"required": [
+					"name",
+					"phones"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Buttons": {
+				"properties": {
+					"type": {
+						"type": "string",
+						"enum": [
+							"reply"
+						],
+						"nullable": false,
+						"description": "Only supported type is reply (for Reply Button)"
+					},
+					"title": {
+						"type": "string",
+						"description": "Button title. It cannot be an empty string and must be unique within the message. Emojis are supported, markdown is not. Maximum length: 20 characters."
+					},
+					"id": {
+						"type": "string",
+						"description": "Unique identifier for your button. This ID is returned in the webhook when the button is clicked by the user. Maximum length: 256 characters."
+					}
+				},
+				"required": [
+					"type",
+					"title",
+					"id"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"SectionsRows": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"title": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"title"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Sections": {
+				"properties": {
+					"product_items": {
+						"description": "Not implemented yeat\r\nArray of product objects. There is a minimum of 1 product per section and a maximum of 30 products across all sections."
+					},
+					"rows": {
+						"$ref": "#/components/schemas/SectionsRows",
+						"description": "Contains a list of rows. You can have a total of 10 rows across your sections."
+					},
+					"title": {
+						"type": "string",
+						"description": "Required if the message has more than one section.\r\nTitle of the section."
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ActionObject": {
+				"properties": {
+					"button": {
+						"type": "string",
+						"description": "Required for List Messages.\r\nButton content. It cannot be an empty string and must be unique within the message. Emojis are supported, markdown is not."
+					},
+					"buttons": {
+						"items": {
+							"$ref": "#/components/schemas/Buttons"
+						},
+						"type": "array"
+					},
+					"catalog_id": {
+						"type": "string",
+						"description": "Unique identifier of the Facebook catalog linked to your WhatsApp Business Account."
+					},
+					"product_retailer_id": {
+						"type": "string",
+						"description": "Unique identifier of the product in a catalog."
+					},
+					"sections": {
+						"$ref": "#/components/schemas/Sections"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"InteractiveObject": {
+				"properties": {
+					"action": {
+						"$ref": "#/components/schemas/ActionObject"
+					},
+					"body": {
+						"type": "string"
+					},
+					"footer": {
+						"type": "string"
+					},
+					"header": {
+						"type": "string"
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"button",
+							"list",
+							"product",
+							"product_list"
+						]
+					}
+				},
+				"required": [
+					"action",
+					"type"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Message": {
+				"properties": {
+					"messaging_product": {
+						"type": "string",
+						"enum": [
+							"whatsapp"
+						],
+						"nullable": false,
+						"description": "Send Messages, audio, etc"
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"text",
+							"image",
+							"audio",
+							"document",
+							"template",
+							"hsm"
+						],
+						"description": "Required for message templates.\r\nThe type of message being sent."
+					},
+					"to": {
+						"type": "string",
+						"description": "ID of user or group \"xxxxxxxxxx@c.us\" for contacts, \"xxxxxxxxxx@g.us\" for groups"
+					},
+					"context": {
+						"properties": {
+							"message_id": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"message_id"
+						],
+						"type": "object",
+						"description": "Reply for a message"
+					},
+					"recipient_type": {
+						"type": "string",
+						"enum": [
+							"individual"
+						],
+						"nullable": false
+					},
+					"template": {
+						"description": "Required for template messages.\r\nContains all model information."
+					},
+					"hsm": {
+						"description": "Required for message templates.\r\nThe contained element for the message content. Indicates that the message is highly structured. The contained parameters provide the structure."
+					},
+					"text": {
+						"$ref": "#/components/schemas/TextMessageObject"
+					},
+					"reaction": {
+						"$ref": "#/components/schemas/ReactMessageObject"
+					},
+					"image": {
+						"$ref": "#/components/schemas/MediaObject"
+					},
+					"location": {
+						"$ref": "#/components/schemas/LocationMessageObject"
+					},
+					"contacts": {
+						"$ref": "#/components/schemas/ContactObject"
+					},
+					"interactive": {
+						"$ref": "#/components/schemas/InteractiveObject"
+					}
+				},
+				"required": [
+					"messaging_product",
+					"to"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ReturnSendedMessage": {
+				"properties": {
+					"messaging_product": {
+						"type": "string",
+						"enum": [
+							"whatsapp"
+						],
+						"nullable": false
+					},
+					"contacts": {
+						"properties": {
+							"wa_id": {
+								"type": "string"
+							},
+							"input": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"wa_id",
+							"input"
+						],
+						"type": "object"
+					},
+					"messages": {
+						"properties": {
+							"id": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"id"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"messaging_product",
+					"contacts",
+					"messages"
 				],
 				"type": "object",
 				"additionalProperties": false
 			}
 		},
-		"securitySchemes": {}
+		"securitySchemes": {
+			"Bearer": {
+				"type": "apiKey",
+				"name": "Authorization",
+				"in": "header"
+			}
+		}
 	},
 	"info": {
 		"title": "",
@@ -98,9 +639,9 @@
 	},
 	"openapi": "3.0.0",
 	"paths": {
-		"/whatsapp_contact_profile/{PHONE_NUMBER_ID}": {
+		"/{PHONE_NUMBER_ID}/whatsapp_contact_profile": {
 			"get": {
-				"operationId": "GetUser",
+				"operationId": "GetContact",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -113,10 +654,14 @@
 						}
 					}
 				},
-				"description": "Retrieves the details of an existing contact.\r\nSupply the unique user ID from either and receive corresponding user details.",
+				"description": "Retrieves the details of an existing contact.",
+				"tags": [
+					"Contacts"
+				],
 				"security": [],
 				"parameters": [
 					{
+						"description": "ID of user or group \"xxxxxxxxxx@c.us\" for contacts, \"xxxxxxxxxx@g.us\" for groups",
 						"in": "path",
 						"name": "PHONE_NUMBER_ID",
 						"required": true,
@@ -129,28 +674,173 @@
 						"name": "fields",
 						"required": true,
 						"schema": {
+							"type": "array",
+							"items": {
+								"$ref": "#/components/schemas/FieldsContact"
+							}
+						}
+					}
+				]
+			}
+		},
+		"/{PHONE_NUMBER_ID}/whatsapp_business_profile": {
+			"get": {
+				"operationId": "GetBusinessContact",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"data": {
+											"items": {
+												"$ref": "#/components/schemas/BusinessProfileInterface"
+											},
+											"type": "array"
+										}
+									},
+									"required": [
+										"data"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"description": "Within the business profile request, you can specify what you want to know from your business.",
+				"tags": [
+					"Contacts"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "ID of user \"xxxxxxxxxx@c.us\"",
+						"in": "path",
+						"name": "PHONE_NUMBER_ID",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "fields",
+						"required": true,
+						"schema": {
+							"type": "array",
+							"items": {
+								"$ref": "#/components/schemas/FieldsBusinessContact"
+							}
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "UpdateBusinessProfile",
+				"responses": {
+					"200": {
+						"description": "Created"
+					}
+				},
+				"description": "To update your profile, make a POST. In your request, you can include the parameters listed below.",
+				"tags": [
+					"Profile"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "ID of your user \"xxxxxxxxxx@c.us\"",
+						"in": "path",
+						"name": "PHONE_NUMBER_ID",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Partial_BusinessProfileInterface_"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/{PHONE_NUMBER_ID}/messages/{MESSAGE_ID}": {
+			"get": {
+				"operationId": "GetMessage",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Message"
+								}
+							}
+						}
+					}
+				},
+				"description": "Retrieves the details of an existing message.",
+				"tags": [
+					"Messages"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "MESSAGE_ID",
+						"required": true,
+						"schema": {
 							"type": "string"
 						}
 					}
 				]
 			}
 		},
-		"/whatsapp_contact_profile": {
+		"/{PHONE_NUMBER_ID}/messages": {
 			"post": {
-				"operationId": "CreateUser",
+				"operationId": "SendMessage",
 				"responses": {
-					"201": {
-						"description": "Created"
+					"200": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ReturnSendedMessage"
+								}
+							}
+						}
 					}
 				},
+				"description": "Use the /PHONE_NUMBER_ID/messages endpoint to send text, media, contacts, location, and interactive messages, as well as message templates to your customers.",
+				"tags": [
+					"Messages"
+				],
 				"security": [],
-				"parameters": [],
+				"parameters": [
+					{
+						"description": "ID of your user \"xxxxxxxxxx@c.us\"",
+						"in": "path",
+						"name": "PHONE_NUMBER_ID",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
 				"requestBody": {
 					"required": true,
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/ContactCreationParams"
+								"$ref": "#/components/schemas/Message"
 							}
 						}
 					}
@@ -161,6 +851,12 @@
 	"servers": [
 		{
 			"url": "/"
+		}
+	],
+	"tags": [
+		{
+			"name": "Contacts",
+			"description": "Within the business profile request, you can specify what you want to know from business, groups and contacts. "
 		}
 	]
 }

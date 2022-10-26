@@ -7,31 +7,53 @@ import {
     Query,
     Route,
     SuccessResponse,
+    Tags,
   } from "tsoa";
-import { Contact, ContactCreationParams } from "../models/Contact";
+import { Contact, BusinessProfileInterface, FieldsBusinessContact, FieldsContact } from "../models/Contact";
 import { ContactService } from "../services/contact";
 
-@Route("whatsapp_contact_profile")
+@Route("/")
 export class ContactsController extends Controller {
   /**
    * Retrieves the details of an existing contact.
-   * Supply the unique user ID from either and receive corresponding user details.
+   * @param PHONE_NUMBER_ID ID of user or group "xxxxxxxxxx@c.us" for contacts, "xxxxxxxxxx@g.us" for groups
+   * @fields You can specify what you want to know from your business. You have the following options: name
   */
-  @Get("{PHONE_NUMBER_ID}")
-  public async getUser(
+  @Get("{PHONE_NUMBER_ID}/whatsapp_contact_profile")
+  @Tags("Contacts")
+  public async getContact(
     @Path() PHONE_NUMBER_ID: string,
-    @Query() fields: string
+    @Query() fields: FieldsContact[]
   ): Promise<Contact> {
     return new ContactService().get(PHONE_NUMBER_ID, fields);
   }
 
-  @SuccessResponse("201", "Created") 
-  @Post()
-  public async createUser(
-    @Body() requestBody: ContactCreationParams
+  /**
+   * Within the business profile request, you can specify what you want to know from your business.
+   * @param PHONE_NUMBER_ID ID of user "xxxxxxxxxx@c.us"
+  */
+  @Get("{PHONE_NUMBER_ID}/whatsapp_business_profile")
+  @Tags("Contacts")
+  public async getBusinessContact(
+    @Path() PHONE_NUMBER_ID: string,
+    @Query() fields: FieldsBusinessContact[]
+  ): Promise<{ data: BusinessProfileInterface[]} > {
+    return new ContactService().getBusiness(PHONE_NUMBER_ID, fields);
+  }
+  /**
+   * To update your profile, make a POST. In your request, you can include the parameters listed below.
+   * @param PHONE_NUMBER_ID ID of your user "xxxxxxxxxx@c.us"
+  */
+  @Post("{PHONE_NUMBER_ID}/whatsapp_business_profile")
+  @Tags("Profile")
+  @SuccessResponse("200", "Created") 
+  public async updateBusinessProfile(
+    @Path() PHONE_NUMBER_ID: string,
+    @Body() payload: Partial<BusinessProfileInterface>
   ): Promise<void> {
-    this.setStatus(201);
-    new ContactService().create(requestBody);
+    console.log(PHONE_NUMBER_ID);
+    this.setStatus(200);
+    new ContactService().updateBusinessProfile(payload);
     return;
   }
 }

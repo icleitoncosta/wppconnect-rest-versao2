@@ -4,22 +4,14 @@
 import { Controller, ValidationService, FieldErrors, ValidateError, TsoaRoute, HttpStatusCodeLiteral, TsoaResponse, fetchMiddlewares } from '@tsoa/runtime';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { ContactsController } from './../src/controllers/contactsController';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { MessagesController } from './../src/controllers/messagesController';
 import type { RequestHandler } from 'express';
 import * as express from 'express';
 
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
 const models: TsoaRoute.Models = {
-    "Wid": {
-        "dataType": "refObject",
-        "properties": {
-            "server": {"dataType":"string","required":true},
-            "user": {"dataType":"string","required":true},
-            "_serialized": {"dataType":"string","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ProfileInterface": {
         "dataType": "refObject",
         "properties": {
@@ -31,17 +23,233 @@ const models: TsoaRoute.Models = {
     "Contact": {
         "dataType": "refObject",
         "properties": {
-            "wa_id": {"dataType":"union","subSchemas":[{"dataType":"string"},{"ref":"Wid"}],"required":true},
+            "wa_id": {"dataType":"string","required":true},
             "profile": {"ref":"ProfileInterface","required":true},
         },
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ContactCreationParams": {
+    "FieldsContact": {
+        "dataType": "refAlias",
+        "type": {"dataType":"enum","enums":["name"],"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "BusinessProfileInterface": {
         "dataType": "refObject",
         "properties": {
-            "wa_id": {"dataType":"union","subSchemas":[{"dataType":"string"},{"ref":"Wid"}],"required":true},
-            "name": {"dataType":"string","required":true},
+            "name": {"dataType":"string"},
+            "about": {"dataType":"string"},
+            "adress": {"dataType":"string"},
+            "description": {"dataType":"string"},
+            "email": {"dataType":"string"},
+            "messaging_product": {"dataType":"enum","enums":["whatsapp"]},
+            "profile_picture_url": {"dataType":"string","required":true},
+            "websites": {"dataType":"array","array":{"dataType":"string"}},
+            "vertical": {"dataType":"string"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "FieldsBusinessContact": {
+        "dataType": "refAlias",
+        "type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["about"]},{"dataType":"enum","enums":["address"]},{"dataType":"enum","enums":["description"]},{"dataType":"enum","enums":["email"]},{"dataType":"enum","enums":["profile_picture_url"]},{"dataType":"enum","enums":["websites"]}],"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Partial_BusinessProfileInterface_": {
+        "dataType": "refAlias",
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"name":{"dataType":"string"},"about":{"dataType":"string"},"adress":{"dataType":"string"},"description":{"dataType":"string"},"email":{"dataType":"string"},"messaging_product":{"dataType":"enum","enums":["whatsapp"]},"profile_picture_url":{"dataType":"string"},"websites":{"dataType":"array","array":{"dataType":"string"}},"vertical":{"dataType":"string"}},"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "TextMessageObject": {
+        "dataType": "refObject",
+        "properties": {
+            "body": {"dataType":"string","required":true},
+            "preview_url": {"dataType":"boolean","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ReactMessageObject": {
+        "dataType": "refObject",
+        "properties": {
+            "message_id": {"dataType":"string","required":true},
+            "emoji": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "MediaObject": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"string"},
+            "link": {"dataType":"string"},
+            "caption": {"dataType":"string"},
+            "filename": {"dataType":"string"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "LocationMessageObject": {
+        "dataType": "refObject",
+        "properties": {
+            "longitude": {"dataType":"double","required":true},
+            "latitude": {"dataType":"double","required":true},
+            "name": {"dataType":"string"},
+            "address": {"dataType":"string"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "AdressesContact": {
+        "dataType": "refObject",
+        "properties": {
+            "street": {"dataType":"string","required":true},
+            "city": {"dataType":"string"},
+            "state": {"dataType":"string"},
+            "zip": {"dataType":"string"},
+            "country": {"dataType":"string"},
+            "country_code": {"dataType":"string"},
+            "type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["HOME"]},{"dataType":"enum","enums":["WORK"]}]},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "NameContact": {
+        "dataType": "refObject",
+        "properties": {
+            "formatted_name": {"dataType":"string","required":true},
+            "first_name": {"dataType":"string"},
+            "last_name": {"dataType":"string"},
+            "middle_name": {"dataType":"string"},
+            "suffix": {"dataType":"string"},
+            "prefix": {"dataType":"string"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "OrgContact": {
+        "dataType": "refObject",
+        "properties": {
+            "company": {"dataType":"string"},
+            "department": {"dataType":"string"},
+            "title": {"dataType":"string"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "PhonesContact": {
+        "dataType": "refObject",
+        "properties": {
+            "phone": {"dataType":"string"},
+            "type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["CELL"]},{"dataType":"enum","enums":["MAIN"]},{"dataType":"enum","enums":["IPHONE"]},{"dataType":"enum","enums":["HOME"]},{"dataType":"enum","enums":["WORK"]}]},
+            "wa_id": {"dataType":"string"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "UrlsContact": {
+        "dataType": "refObject",
+        "properties": {
+            "url": {"dataType":"string"},
+            "type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["HOME"]},{"dataType":"enum","enums":["WORK"]}]},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ContactObject": {
+        "dataType": "refObject",
+        "properties": {
+            "addresses": {"dataType":"array","array":{"dataType":"refObject","ref":"AdressesContact"}},
+            "birthday": {"dataType":"datetime"},
+            "emails": {"dataType":"array","array":{"dataType":"string"}},
+            "name": {"ref":"NameContact","required":true},
+            "org": {"ref":"OrgContact"},
+            "phones": {"ref":"PhonesContact","required":true},
+            "urls": {"dataType":"array","array":{"dataType":"refObject","ref":"UrlsContact"}},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Buttons": {
+        "dataType": "refObject",
+        "properties": {
+            "type": {"dataType":"enum","enums":["reply"],"required":true},
+            "title": {"dataType":"string","required":true},
+            "id": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "SectionsRows": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"string"},
+            "title": {"dataType":"string","required":true},
+            "description": {"dataType":"string"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Sections": {
+        "dataType": "refObject",
+        "properties": {
+            "product_items": {"dataType":"any"},
+            "rows": {"ref":"SectionsRows"},
+            "title": {"dataType":"string"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ActionObject": {
+        "dataType": "refObject",
+        "properties": {
+            "button": {"dataType":"string"},
+            "buttons": {"dataType":"array","array":{"dataType":"refObject","ref":"Buttons"}},
+            "catalog_id": {"dataType":"string"},
+            "product_retailer_id": {"dataType":"string"},
+            "sections": {"ref":"Sections"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "InteractiveObject": {
+        "dataType": "refObject",
+        "properties": {
+            "action": {"ref":"ActionObject","required":true},
+            "body": {"dataType":"string"},
+            "footer": {"dataType":"string"},
+            "header": {"dataType":"string"},
+            "type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["button"]},{"dataType":"enum","enums":["list"]},{"dataType":"enum","enums":["product"]},{"dataType":"enum","enums":["product_list"]}],"required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Message": {
+        "dataType": "refObject",
+        "properties": {
+            "messaging_product": {"dataType":"enum","enums":["whatsapp"],"required":true},
+            "type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["text"]},{"dataType":"enum","enums":["image"]},{"dataType":"enum","enums":["audio"]},{"dataType":"enum","enums":["document"]},{"dataType":"enum","enums":["template"]},{"dataType":"enum","enums":["hsm"]}]},
+            "to": {"dataType":"string","required":true},
+            "context": {"dataType":"nestedObjectLiteral","nestedProperties":{"message_id":{"dataType":"string","required":true}}},
+            "recipient_type": {"dataType":"enum","enums":["individual"]},
+            "template": {"dataType":"any"},
+            "hsm": {"dataType":"any"},
+            "text": {"ref":"TextMessageObject"},
+            "reaction": {"ref":"ReactMessageObject"},
+            "image": {"ref":"MediaObject"},
+            "location": {"ref":"LocationMessageObject"},
+            "contacts": {"ref":"ContactObject"},
+            "interactive": {"ref":"InteractiveObject"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ReturnSendedMessage": {
+        "dataType": "refObject",
+        "properties": {
+            "messaging_product": {"dataType":"enum","enums":["whatsapp"],"required":true},
+            "contacts": {"dataType":"nestedObjectLiteral","nestedProperties":{"wa_id":{"dataType":"string","required":true},"input":{"dataType":"string","required":true}},"required":true},
+            "messages": {"dataType":"nestedObjectLiteral","nestedProperties":{"id":{"dataType":"string","required":true}},"required":true},
         },
         "additionalProperties": false,
     },
@@ -56,14 +264,14 @@ export function RegisterRoutes(app: express.Router) {
     //  NOTE: If you do not see routes for all of your controllers in this file, then you might not have informed tsoa of where to look
     //      Please look into the "controllerPathGlobs" config option described in the readme: https://github.com/lukeautry/tsoa
     // ###########################################################################################################
-        app.get('/whatsapp_contact_profile/:PHONE_NUMBER_ID',
+        app.get('/:PHONE_NUMBER_ID/whatsapp_contact_profile',
             ...(fetchMiddlewares<RequestHandler>(ContactsController)),
-            ...(fetchMiddlewares<RequestHandler>(ContactsController.prototype.getUser)),
+            ...(fetchMiddlewares<RequestHandler>(ContactsController.prototype.getContact)),
 
-            function ContactsController_getUser(request: any, response: any, next: any) {
+            function ContactsController_getContact(request: any, response: any, next: any) {
             const args = {
                     PHONE_NUMBER_ID: {"in":"path","name":"PHONE_NUMBER_ID","required":true,"dataType":"string"},
-                    fields: {"in":"query","name":"fields","required":true,"dataType":"string"},
+                    fields: {"in":"query","name":"fields","required":true,"dataType":"array","array":{"dataType":"refAlias","ref":"FieldsContact"}},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -75,20 +283,21 @@ export function RegisterRoutes(app: express.Router) {
                 const controller = new ContactsController();
 
 
-              const promise = controller.getUser.apply(controller, validatedArgs as any);
+              const promise = controller.getContact.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, undefined, next);
             } catch (err) {
                 return next(err);
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/whatsapp_contact_profile',
+        app.get('/:PHONE_NUMBER_ID/whatsapp_business_profile',
             ...(fetchMiddlewares<RequestHandler>(ContactsController)),
-            ...(fetchMiddlewares<RequestHandler>(ContactsController.prototype.createUser)),
+            ...(fetchMiddlewares<RequestHandler>(ContactsController.prototype.getBusinessContact)),
 
-            function ContactsController_createUser(request: any, response: any, next: any) {
+            function ContactsController_getBusinessContact(request: any, response: any, next: any) {
             const args = {
-                    requestBody: {"in":"body","name":"requestBody","required":true,"ref":"ContactCreationParams"},
+                    PHONE_NUMBER_ID: {"in":"path","name":"PHONE_NUMBER_ID","required":true,"dataType":"string"},
+                    fields: {"in":"query","name":"fields","required":true,"dataType":"array","array":{"dataType":"refAlias","ref":"FieldsBusinessContact"}},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -100,8 +309,85 @@ export function RegisterRoutes(app: express.Router) {
                 const controller = new ContactsController();
 
 
-              const promise = controller.createUser.apply(controller, validatedArgs as any);
-              promiseHandler(controller, promise, response, 201, next);
+              const promise = controller.getBusinessContact.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/:PHONE_NUMBER_ID/whatsapp_business_profile',
+            ...(fetchMiddlewares<RequestHandler>(ContactsController)),
+            ...(fetchMiddlewares<RequestHandler>(ContactsController.prototype.updateBusinessProfile)),
+
+            function ContactsController_updateBusinessProfile(request: any, response: any, next: any) {
+            const args = {
+                    PHONE_NUMBER_ID: {"in":"path","name":"PHONE_NUMBER_ID","required":true,"dataType":"string"},
+                    payload: {"in":"body","name":"payload","required":true,"ref":"Partial_BusinessProfileInterface_"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new ContactsController();
+
+
+              const promise = controller.updateBusinessProfile.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/:PHONE_NUMBER_ID/messages/:MESSAGE_ID',
+            ...(fetchMiddlewares<RequestHandler>(MessagesController)),
+            ...(fetchMiddlewares<RequestHandler>(MessagesController.prototype.getMessage)),
+
+            function MessagesController_getMessage(request: any, response: any, next: any) {
+            const args = {
+                    MESSAGE_ID: {"in":"path","name":"MESSAGE_ID","required":true,"dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new MessagesController();
+
+
+              const promise = controller.getMessage.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/:PHONE_NUMBER_ID/messages',
+            ...(fetchMiddlewares<RequestHandler>(MessagesController)),
+            ...(fetchMiddlewares<RequestHandler>(MessagesController.prototype.sendMessage)),
+
+            function MessagesController_sendMessage(request: any, response: any, next: any) {
+            const args = {
+                    PHONE_NUMBER_ID: {"in":"path","name":"PHONE_NUMBER_ID","required":true,"dataType":"string"},
+                    payload: {"in":"body","name":"payload","required":true,"ref":"Message"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new MessagesController();
+
+
+              const promise = controller.sendMessage.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
             } catch (err) {
                 return next(err);
             }
