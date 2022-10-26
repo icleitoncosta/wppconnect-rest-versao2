@@ -5,9 +5,12 @@ import {
 	Path,
 	Route,
 	Tags,
-    Request
+    Request,
+    NoSecurity,
+    Security
 } from "tsoa";
 import { RequestEx } from "../models/Request";
+import { Error } from "../models/Error";
 
   
 @Route("/")
@@ -17,19 +20,20 @@ export class AuthController extends Controller {
      */
     @Get("{PHONE_NUMBER_ID}/{SECRET_KEY}/request_code")
     @Tags("Authentication")
+    @NoSecurity()
 	public async generateToken(
         @Path() PHONE_NUMBER_ID: string,
         @Path() SECRET_KEY: string,
-        @Request() req: RequestEx
-	): Promise<{status: string; token: string | null; data: any; }> {
+	): Promise<{status: string; token: string | null; data: any; } | Error> {
 		this.setStatus(200);
-		return new TokenService().create(req, PHONE_NUMBER_ID, SECRET_KEY);
+		return new TokenService().create(PHONE_NUMBER_ID, SECRET_KEY);
 	}
     /**
      * Start the session (qrCode is send via webhook)
      */
     @Get("{PHONE_NUMBER_ID}/start")
     @Tags("Authentication")
+    @Security("apiKey")
     public async startSession(
         @Path() PHONE_NUMBER_ID: string,
         @Request() req: RequestEx
@@ -45,6 +49,7 @@ export class AuthController extends Controller {
      */
     @Get("{PHONE_NUMBER_ID}/qr_code")
     @Tags("Authentication")
+    @Security("apiKey")
     public async getQrCode(
         @Path() PHONE_NUMBER_ID: string,
         @Request() req: RequestEx

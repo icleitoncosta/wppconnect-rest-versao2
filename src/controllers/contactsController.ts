@@ -9,7 +9,8 @@ import {
     Route,
     SuccessResponse,
     Tags,
-    Request
+    Request,
+    Security
   } from "tsoa";
 import { Contact, BusinessProfileInterface, FieldsBusinessContact, FieldsContact } from "../models/Contact";
 import { ContactService } from "../services/contact";
@@ -23,6 +24,7 @@ export class ContactsController extends Controller {
   */
   @Get("{PHONE_NUMBER_ID}/whatsapp_contact_profile")
   @Tags("Contacts")
+  @Security("apiKey")
   public async getContact(
     @Path() PHONE_NUMBER_ID: string,
     @Query() fields: FieldsContact[],
@@ -37,6 +39,7 @@ export class ContactsController extends Controller {
   */
   @Get("{PHONE_NUMBER_ID}/whatsapp_business_profile")
   @Tags("Contacts")
+  @Security("apiKey")
   public async getBusinessContact(
     @Path() PHONE_NUMBER_ID: string,
     @Query() fields: FieldsBusinessContact[],
@@ -50,6 +53,7 @@ export class ContactsController extends Controller {
   */
   @Post("{PHONE_NUMBER_ID}/whatsapp_business_profile")
   @Tags("Profile")
+  @Security("apiKey")
   @SuccessResponse("200", "Created") 
   public async updateBusinessProfile(
     @Path() PHONE_NUMBER_ID: string,

@@ -1,6 +1,8 @@
+import { Whatsapp } from "@wppconnect-team/wppconnect";
 import bcrypt from "bcrypt";
 import config from "./config";
 import { RequestEx } from "./models/Request";
+import { ServerError } from "./services/server-error";
 import { clientsArray } from "./utils/session";
 
 export async function expressAuthentication(
@@ -11,38 +13,44 @@ export async function expressAuthentication(
     console.log(securityName); //fix it
     console.log(scopes); //fix it
     const secret  = config.secretKey;
-    const { PHONE_NUMBER_ID } = request.params as any;
     let tokenDecrypt = '';
-    let sessionDecrypt = '';
 
-    const { authorization: token } = request.headers;
-    
-    if (!PHONE_NUMBER_ID) return Promise.reject();
+    const { authorization: token } = request.headers; 
 
     try {
-        sessionDecrypt = PHONE_NUMBER_ID.split(':')[0];
-        tokenDecrypt = PHONE_NUMBER_ID.split(':')[1].replace(/_/g, '/').replace(/-/g, '+');
-        
-    } catch (error: any) {
-        try {        
-            if (token && token !== '' && token.split(' ').length > 0) {
-            const token_value = token.split(' ')[1];
+        if (token && token !== '' && (token as string).split(' ').length > 0) {
+            const token_value = (token as string).split(' ')[1];
             if (token_value) tokenDecrypt = token_value.replace(/_/g, '/').replace(/-/g, '+');
-            else return Promise.reject({ message: 'Token is not present. Check your header and try again' });
-          } else {
-            return Promise.reject({ message: 'Token is not present. Check your header and try again' });
-          }
-        } catch (error) {
-            Promise.reject(error);
+        } else {
+            return Promise.reject(new ServerError(
+                "Token in not present", 
+                "invalid_request", 
+                3, 
+                "Token is not present. Check your header and try again",
+                132000
+                ));
         }
-    }   
 
-    try {
-        const result = await bcrypt.compare(sessionDecrypt + secret, tokenDecrypt);
-        request.session = PHONE_NUMBER_ID.split(':')[0];
-        request.token = tokenDecrypt;
-        request.client = clientsArray[PHONE_NUMBER_ID];
-        return Promise.resolve(result);
+        for (const session of clientsArray) {
+            if (session.token === token) {
+                try {
+                    await bcrypt.compare(session.session + secret, tokenDecrypt);
+                    request.session = session.session;
+                    request.token = tokenDecrypt;
+                    request.client = session as Whatsapp;
+                } catch (err: any) {
+                    
+                return Promise.reject(new ServerError(
+                    "Validation Failed", 
+                    "invalid_request", 
+                    3, 
+                    "Token is incorrect. Check your header and try again",
+                    132000
+                    ));
+                }
+            }
+        }
+        return Promise.resolve();
         
     } catch (error) {
         return Promise.reject(error);

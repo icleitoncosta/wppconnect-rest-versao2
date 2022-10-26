@@ -6,6 +6,61 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
+			"Error": {
+				"properties": {
+					"error": {
+						"properties": {
+							"fbtrace_id": {},
+							"error_subcode": {
+								"type": "number",
+								"format": "double"
+							},
+							"error_data": {
+								"properties": {
+									"details": {},
+									"messaging_product": {
+										"type": "string",
+										"enum": [
+											"whatsapp"
+										],
+										"nullable": false
+									}
+								},
+								"required": [
+									"details",
+									"messaging_product"
+								],
+								"type": "object"
+							},
+							"code": {
+								"type": "number",
+								"format": "double",
+								"description": "We recommend that you build your app's error handling around error codes rather than subcodes or HTTP response status codes."
+							},
+							"type": {
+								"type": "string"
+							},
+							"message": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"error_subcode",
+							"error_data",
+							"code",
+							"type",
+							"message"
+						],
+						"type": "object",
+						"description": "Error Codes\r\n0 - AuthException - Unable to authenticate the app user.\r\n3 - Api Method - Indicates an issue involving resources or permissions.\r\n10 - Permission denied - Permission has not been granted or has been removed.\r\n190 - Expired token\r\nAPI Permissions - Permission has not been granted or has been removed.\r\n\r\nLimitation errors\r\n4 - API Limit - The app has reached its API call rate limit.\r\n80007 - WhatsApp Business account has reached the volume limit.\r\n\r\nIntegrity errors\r\n368 | 131031 - The WhatsApp Business account associated with the app has been restricted or disabled for violating a platform policy.\r\n\r\nOther errors\r\n1 - Invalid request or possible server error.\r\n2 - Temporary due to inactivity or being overloaded.\r\n100 - The request included one or more incompatible or misspelled parameters.\r\n131000 - Falha ao enviar a mensagem devido a um erro desconhecido.\r\n131005 - Permission has not been granted or has been removed.\r\n131008 - A required parameter is missing from the order.\r\n131009 - One or more parameter values are not supported, the recipient's phone number is not valid for WhatsApp, or the sender's phone number has not been added to the WhatsApp Business Platform.\r\n131016 - A service is temporarily unavailable.\r\n131021 - The recipient's and sender's phone number is the same.\r\n131026 - The recipient uses a version of WhatsApp that is not compatible with the message content.\r\n131051 - Message type is not supported.\r\n131052 | 131053 - The type of media sent by WhatsApp user is not supported.\r\n132000 - The number of variable parameter values included in the request does not match the number of variable parameters defined in the template.\r\n133004 - The server is temporarily unavailable.\r\n133010 - The phone number is not registered and connected.\r\n135000 - Failed to send message due to an unknown error with your request parameters."
+					}
+				},
+				"required": [
+					"error"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"ProfileInterface": {
 				"properties": {
 					"name": {
@@ -616,61 +671,6 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"Error": {
-				"properties": {
-					"error": {
-						"properties": {
-							"fbtrace_id": {},
-							"error_subcode": {
-								"type": "number",
-								"format": "double"
-							},
-							"error_data": {
-								"properties": {
-									"details": {},
-									"messaging_product": {
-										"type": "string",
-										"enum": [
-											"whatsapp"
-										],
-										"nullable": false
-									}
-								},
-								"required": [
-									"details",
-									"messaging_product"
-								],
-								"type": "object"
-							},
-							"code": {
-								"type": "number",
-								"format": "double",
-								"description": "We recommend that you build your app's error handling around error codes rather than subcodes or HTTP response status codes."
-							},
-							"type": {
-								"type": "string"
-							},
-							"message": {
-								"type": "string"
-							}
-						},
-						"required": [
-							"error_subcode",
-							"error_data",
-							"code",
-							"type",
-							"message"
-						],
-						"type": "object",
-						"description": "Error Codes\r\n0 - AuthException - Unable to authenticate the app user.\r\n3 - Api Method - Indicates an issue involving resources or permissions.\r\n10 - Permission denied - Permission has not been granted or has been removed.\r\n190 - Expired token\r\nAPI Permissions - Permission has not been granted or has been removed.\r\n\r\nLimitation errors\r\n4 - API Limit - The app has reached its API call rate limit.\r\n80007 - WhatsApp Business account has reached the volume limit.\r\n\r\nIntegrity errors\r\n368 | 131031 - The WhatsApp Business account associated with the app has been restricted or disabled for violating a platform policy.\r\n\r\nOther errors\r\n1 - Invalid request or possible server error.\r\n2 - Temporary due to inactivity or being overloaded.\r\n100 - The request included one or more incompatible or misspelled parameters.\r\n131000 - Falha ao enviar a mensagem devido a um erro desconhecido.\r\n131005 - Permission has not been granted or has been removed.\r\n131008 - A required parameter is missing from the order.\r\n131009 - One or more parameter values are not supported, the recipient's phone number is not valid for WhatsApp, or the sender's phone number has not been added to the WhatsApp Business Platform.\r\n131016 - A service is temporarily unavailable.\r\n131021 - The recipient's and sender's phone number is the same.\r\n131026 - The recipient uses a version of WhatsApp that is not compatible with the message content.\r\n131051 - Message type is not supported.\r\n131052 | 131053 - The type of media sent by WhatsApp user is not supported.\r\n132000 - The number of variable parameter values included in the request does not match the number of variable parameters defined in the template.\r\n133004 - The server is temporarily unavailable.\r\n133010 - The phone number is not registered and connected.\r\n135000 - Failed to send message due to an unknown error with your request parameters."
-					}
-				},
-				"required": [
-					"error"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
 			"ReturnSendedMessage": {
 				"properties": {
 					"messaging_product": {
@@ -717,7 +717,7 @@
 			}
 		},
 		"securitySchemes": {
-			"Bearer": {
+			"apiKey": {
 				"type": "apiKey",
 				"name": "Authorization",
 				"in": "header"
@@ -725,8 +725,9 @@
 		}
 	},
 	"info": {
-		"title": "",
+		"title": "WPP Connect Server",
 		"version": "2.0.0",
+		"description": "REST API similar to WhatsApp Cloud API to connect with WhatsApp and send messages",
 		"contact": {}
 	},
 	"openapi": "3.0.0",
@@ -740,22 +741,29 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"properties": {
-										"data": {},
-										"token": {
-											"type": "string",
-											"nullable": true
+									"anyOf": [
+										{
+											"properties": {
+												"data": {},
+												"token": {
+													"type": "string",
+													"nullable": true
+												},
+												"status": {
+													"type": "string"
+												}
+											},
+											"required": [
+												"data",
+												"token",
+												"status"
+											],
+											"type": "object"
 										},
-										"status": {
-											"type": "string"
+										{
+											"$ref": "#/components/schemas/Error"
 										}
-									},
-									"required": [
-										"data",
-										"token",
-										"status"
-									],
-									"type": "object"
+									]
 								}
 							}
 						}
@@ -813,7 +821,11 @@
 				"tags": [
 					"Authentication"
 				],
-				"security": [],
+				"security": [
+					{
+						"apiKey": []
+					}
+				],
 				"parameters": [
 					{
 						"in": "path",
@@ -853,7 +865,11 @@
 				"tags": [
 					"Authentication"
 				],
-				"security": [],
+				"security": [
+					{
+						"apiKey": []
+					}
+				],
 				"parameters": [
 					{
 						"in": "path",
@@ -885,7 +901,11 @@
 				"tags": [
 					"Contacts"
 				],
-				"security": [],
+				"security": [
+					{
+						"apiKey": []
+					}
+				],
 				"parameters": [
 					{
 						"description": "ID of user or group \"xxxxxxxxxx@c.us\" for contacts, \"xxxxxxxxxx@g.us\" for groups",
@@ -940,7 +960,11 @@
 				"tags": [
 					"Contacts"
 				],
-				"security": [],
+				"security": [
+					{
+						"apiKey": []
+					}
+				],
 				"parameters": [
 					{
 						"description": "ID of user \"xxxxxxxxxx@c.us\"",
@@ -975,7 +999,11 @@
 				"tags": [
 					"Profile"
 				],
-				"security": [],
+				"security": [
+					{
+						"apiKey": []
+					}
+				],
 				"parameters": [
 					{
 						"description": "ID of your user \"xxxxxxxxxx@c.us\"",
@@ -1018,7 +1046,11 @@
 				"tags": [
 					"Media"
 				],
-				"security": [],
+				"security": [
+					{
+						"apiKey": []
+					}
+				],
 				"parameters": [
 					{
 						"in": "path",
@@ -1056,7 +1088,11 @@
 				"tags": [
 					"Media"
 				],
-				"security": [],
+				"security": [
+					{
+						"apiKey": []
+					}
+				],
 				"parameters": [
 					{
 						"in": "path",
@@ -1096,7 +1132,11 @@
 				"tags": [
 					"Media"
 				],
-				"security": [],
+				"security": [
+					{
+						"apiKey": []
+					}
+				],
 				"parameters": [],
 				"requestBody": {
 					"required": true,

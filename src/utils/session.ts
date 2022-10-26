@@ -1,4 +1,6 @@
 import { EventEmitter } from 'events';
+import { ClientWhatsApp } from '../models/Request';
+
 export const chromiumArgs = [
   '--disable-web-security',
   '--no-sandbox',
@@ -22,6 +24,6 @@ export const chromiumArgs = [
   '--ignore-ssl-errors',
   '--ignore-certificate-errors-spki-list',
 ];
-export let clientsArray = [];
+export let clientsArray: Partial<ClientWhatsApp>[] = [];
 export let sessions = [];
 export const eventEmitter = new EventEmitter();

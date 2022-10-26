@@ -5,12 +5,10 @@
     "spec": {
       "outputDirectory": "tsoa",
       "specVersion": 3,  
-      "info": {
-        "title": "WPPConnect API REST",
-        "description": ""
-      },
+      "name": "WPP Connect Server",
+      "description": "REST API similar to WhatsApp Cloud API to connect with WhatsApp and send messages",
       "securityDefinitions": {
-          "Bearer": {
+          "apiKey": {
               "type": "apiKey",
               "name": "Authorization",
               "in": "header"

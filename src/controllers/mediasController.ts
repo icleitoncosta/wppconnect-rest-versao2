@@ -9,7 +9,8 @@ import {
     SuccessResponse,
     Tags,
     UploadedFile,
-    Request
+    Request,
+    Security
   } from "tsoa";
 import { MediaService } from "../services/media";
 import { Media, ReturnMedia } from "../models/Media";
@@ -23,6 +24,7 @@ export class MediasController extends Controller {
   */
   @Get("{MEDIA_ID}")
   @Tags("Media")
+  @Security("apiKey")
   public async getMedia(
     @Path() MEDIA_ID: string,
     @Request() req: RequestEx
@@ -35,6 +37,7 @@ export class MediasController extends Controller {
   */
   @Post("{PHONE_NUMBER_ID}/media")
   @Tags("Media")
+  @Security("apiKey")
   @SuccessResponse("200", "Created") 
   public async createMedia(
     @FormField() payload: Media,
@@ -50,6 +53,7 @@ export class MediasController extends Controller {
   */
   @Delete("{MEDIA_ID}")
   @Tags("Media")
+  @Security("apiKey")
   public async deleteMedia(
     @Path() MEDIA_ID: string,
     @Request() req: RequestEx
