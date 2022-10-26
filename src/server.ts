@@ -1,7 +1,12 @@
-import { app } from "./app";
+import { app, logger } from "./app";
+import config from "./config";
+import { version } from '../package.json';
 
-const port = process.env.PORT || 3000;
+const port = config.port || 21465;
 
-app.listen(port, () =>
-  console.log(`WPPConnect is running at http://localhost:${port}`)
+app.listen(port, () => {
+    logger.info(`Server is running on port: ${port}`);
+    logger.info(`\x1b[31m Visit ${config.host}:${port}/docs for Swagger docs`);
+    logger.info(`WPPConnect-Server version: ${version}`);
+  }
 );

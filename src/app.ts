@@ -2,8 +2,12 @@ import express, { json, urlencoded,  Response as ExResponse, Request as ExReques
 import { RegisterRoutes } from "../tsoa/routes";
 import swaggerUi from "swagger-ui-express";
 import { ValidateError } from "tsoa";
+import { createLogger } from "./utils/logger";
+import config from "./config";
+import { RequestEx } from "./models/Request";
 
 export const app = express();
+export const logger = createLogger(config.log);
 
 // Use body parser to read sent json payloads
 app.use(
@@ -11,6 +15,11 @@ app.use(
     extended: true,
   })
 );
+
+app.use((req: RequestEx, _res: Express.Response, next: NextFunction) => {
+  req.logger = logger;
+  next();
+})
 app.use(json());
 
 app.use("/docs", swaggerUi.serve, async (_req: ExRequest, res: ExResponse) => {

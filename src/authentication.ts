@@ -7,11 +7,9 @@ import { clientsArray } from "./utils/session";
 
 export async function expressAuthentication(
   request: RequestEx,
-  securityName: string,
-  scopes?: string[]
+  _securityName: string,
+  _scopes?: string[]
 ): Promise<any> {
-    console.log(securityName); //fix it
-    console.log(scopes); //fix it
     const secret  = config.secretKey;
     let tokenDecrypt = '';
 

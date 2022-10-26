@@ -24,9 +24,10 @@ export class AuthController extends Controller {
 	public async generateToken(
         @Path() PHONE_NUMBER_ID: string,
         @Path() SECRET_KEY: string,
+        @Request() req: RequestEx
 	): Promise<{status: string; token: string | null; data: any; } | Error> {
 		this.setStatus(200);
-		return new TokenService().create(PHONE_NUMBER_ID, SECRET_KEY);
+		return new TokenService().create(req, PHONE_NUMBER_ID, SECRET_KEY);
 	}
     /**
      * Start the session (qrCode is send via webhook)

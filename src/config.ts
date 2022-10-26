@@ -15,6 +15,12 @@ const config = {
       "presence": true, // Contacts online and offile
       "participants_changed_group": true, // Group member changes
       "reactions": true // Receive reactions that contacts give in messages
-    }
+    },
+
+  // Logs
+  "log": {
+    "level": "error",
+    "logger": ["console", "file"]
+  },
 }
 export default config;

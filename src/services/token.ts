@@ -1,7 +1,7 @@
 import config from "../config";
 
 import bcrypt from "bcrypt";
-import { ClientWhatsApp } from "../models/Request";
+import { ClientWhatsApp, RequestEx } from "../models/Request";
 import { Error } from "../models/Error";
 import { clientsArray } from "../utils/session";
 interface ReturnToken {
@@ -10,10 +10,10 @@ interface ReturnToken {
     data: any; 
 }
 export class TokenService {
-    public async create(PHONE_NUMBER_ID: string, SECRET_KEY: string): Promise<Error | ReturnToken> {
+    public async create(req: RequestEx, PHONE_NUMBER_ID: string, SECRET_KEY: string): Promise<Error | ReturnToken> {
         try {
             if (SECRET_KEY !== config.secretKey) {
-                console.log('Token generation attempt without SECRET_KEY.');
+                req.logger("warn", "Token generation attempt without SECRET_KEY.");
                 return {
                     error: {
                     message: "Validation Failed",
