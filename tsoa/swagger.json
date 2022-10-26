@@ -676,6 +676,141 @@
 	},
 	"openapi": "3.0.0",
 	"paths": {
+		"/{PHONE_NUMBER_ID}/{SECRET_KEY}/request_code": {
+			"get": {
+				"operationId": "GenerateToken",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"data": {},
+										"token": {
+											"type": "string",
+											"nullable": true
+										},
+										"status": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"data",
+										"token",
+										"status"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"description": "Generate token for acess qr-code",
+				"tags": [
+					"Authentication"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "PHONE_NUMBER_ID",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "SECRET_KEY",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/{PHONE_NUMBER_ID}/start": {
+			"get": {
+				"operationId": "StartSession",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"sucess": {
+											"type": "boolean"
+										}
+									},
+									"required": [
+										"sucess"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"description": "Start the session (qrCode is send via webhook)",
+				"tags": [
+					"Authentication"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "PHONE_NUMBER_ID",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/{PHONE_NUMBER_ID}/qr_code": {
+			"get": {
+				"operationId": "GetQrCode",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"qrCode": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"qrCode"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"description": "Update QR Code\r\nUse this call after use the /start",
+				"tags": [
+					"Authentication"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "PHONE_NUMBER_ID",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
 		"/{PHONE_NUMBER_ID}/whatsapp_contact_profile": {
 			"get": {
 				"operationId": "GetContact",
