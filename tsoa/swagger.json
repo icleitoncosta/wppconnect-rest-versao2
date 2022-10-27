@@ -1289,11 +1289,23 @@
 	"tags": [
 		{
 			"name": "Auth",
-			"description": "Auth Methods for connect com WPPConnect-Server. This is NOT similar to WhatsApp Cloud API."
+			"description": "Auth Methods for connect com WPPConnect-Server. This routes are NOT similar to WhatsApp Cloud API."
 		},
 		{
 			"name": "Contacts",
 			"description": "Within the business profile request, you can specify what you want to know from business, groups and contacts. "
+		},
+		{
+			"name": "Profile",
+			"description": "Methods for update your profile"
+		},
+		{
+			"name": "Messages",
+			"description": "Methods for get and send messages to contacts"
+		},
+		{
+			"name": "Media",
+			"description": "Methods for get and upload media to server"
 		}
 	]
 }
