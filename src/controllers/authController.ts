@@ -11,6 +11,7 @@ import {
 } from "tsoa";
 import { RequestEx } from "../models/Request";
 import { Error } from "../models/Error";
+import { SessionService } from "../services/session";
 
   
 @Route("/")
@@ -19,7 +20,7 @@ export class AuthController extends Controller {
      * Generate token for acess qr-code
      */
     @Get("{PHONE_NUMBER_ID}/{SECRET_KEY}/request_code")
-    @Tags("Authentication")
+    @Tags("Auth")
     @NoSecurity()
 	public async generateToken(
         @Path() PHONE_NUMBER_ID: string,
@@ -33,23 +34,25 @@ export class AuthController extends Controller {
      * Start the session (qrCode is send via webhook)
      */
     @Get("{PHONE_NUMBER_ID}/start")
-    @Tags("Authentication")
+    @Tags("Auth")
     @Security("apiKey")
     public async startSession(
         @Path() PHONE_NUMBER_ID: string,
         @Request() req: RequestEx
-    ): Promise<{sucess: boolean}> { 
-        console.log(req, PHONE_NUMBER_ID); // for fix
-        return {
-            sucess: true
-    	};
+    ): Promise<{
+        status: string,
+        qrcode: string | null,
+        urlcode: string | null,
+        version: string
+    }> { 
+        return new SessionService(PHONE_NUMBER_ID).create(req);
     }
     /**
      * Update QR Code
      * Use this call after use the /start 
      */
     @Get("{PHONE_NUMBER_ID}/qr_code")
-    @Tags("Authentication")
+    @Tags("Auth")
     @Security("apiKey")
     public async getQrCode(
         @Path() PHONE_NUMBER_ID: string,

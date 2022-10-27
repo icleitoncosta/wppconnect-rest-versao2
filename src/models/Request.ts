@@ -10,4 +10,8 @@ export interface RequestEx extends Express.Request {
 
 export interface ClientWhatsApp extends Whatsapp {
     token?: string;
+    urlcode?: string;
+    qrcode?: string | null;
+    status?: string;
+    config?: any;
 }

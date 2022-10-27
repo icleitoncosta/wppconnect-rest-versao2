@@ -16,6 +16,10 @@
       },
       "tags":  [
         {
+          "name": "Auth",
+          "description": "Auth Methods for connect com WPPConnect-Server. This is NOT similar to WhatsApp Cloud API."
+        },
+        {
           "name": "Contacts",
           "description": "Within the business profile request, you can specify what you want to know from business, groups and contacts. "
         }

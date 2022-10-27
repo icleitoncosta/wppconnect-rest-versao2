@@ -771,7 +771,7 @@
 				},
 				"description": "Generate token for acess qr-code",
 				"tags": [
-					"Authentication"
+					"Auth"
 				],
 				"security": [],
 				"parameters": [
@@ -804,12 +804,26 @@
 							"application/json": {
 								"schema": {
 									"properties": {
-										"sucess": {
-											"type": "boolean"
+										"version": {
+											"type": "string"
+										},
+										"urlcode": {
+											"type": "string",
+											"nullable": true
+										},
+										"qrcode": {
+											"type": "string",
+											"nullable": true
+										},
+										"status": {
+											"type": "string"
 										}
 									},
 									"required": [
-										"sucess"
+										"version",
+										"urlcode",
+										"qrcode",
+										"status"
 									],
 									"type": "object"
 								}
@@ -819,7 +833,7 @@
 				},
 				"description": "Start the session (qrCode is send via webhook)",
 				"tags": [
-					"Authentication"
+					"Auth"
 				],
 				"security": [
 					{
@@ -863,7 +877,7 @@
 				},
 				"description": "Update QR Code\nUse this call after use the /start",
 				"tags": [
-					"Authentication"
+					"Auth"
 				],
 				"security": [
 					{
@@ -1273,6 +1287,10 @@
 		}
 	],
 	"tags": [
+		{
+			"name": "Auth",
+			"description": "Auth Methods for connect com WPPConnect-Server. This is NOT similar to WhatsApp Cloud API."
+		},
 		{
 			"name": "Contacts",
 			"description": "Within the business profile request, you can specify what you want to know from business, groups and contacts. "

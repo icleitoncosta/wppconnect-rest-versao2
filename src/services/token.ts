@@ -36,7 +36,6 @@ export class TokenService {
             };
 
             clientsArray.push(session);
-            console.log(clientsArray);
             
             return {
                 status: "sucess",

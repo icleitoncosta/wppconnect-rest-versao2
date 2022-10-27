@@ -2,6 +2,7 @@
 tsoa
 build
 log
+userDataDir
 
 # Logs
 logs
