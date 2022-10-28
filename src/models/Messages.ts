@@ -1,16 +1,17 @@
 export enum MessageType {
-    'text',
-    'image', 
-    'audio',
-    'document',
-    'template',
-    'hsm',
-    "sticker",
-    "order",
-    "video",
-    "contacts",
-    "unknown",
-    "system"
+    TEXT = 'text',
+    IMAGE = 'image', 
+    AUDIO = 'audio',
+    DOCUMENT = 'document',
+    TEMPLATE = 'template',
+    HSM = 'hsm',
+    STICKER = "sticker",
+    ORDER = "order",
+    VIDEO = "video",
+    CONTACTS = "contacts",
+    UNKNOWN = "unknown",
+    SYSTEM = "system",
+    INTERACTIVE = "interactive"
 }
 
 export interface Message {
@@ -48,11 +49,13 @@ export interface Message {
     text?: TextMessageObject;
     reaction?: ReactMessageObject;
     image?: MediaObject;
+    video?: MediaObject;
     audio?: MediaObject;
     document?: MediaObject;
     location?: LocationMessageObject;
     contacts?: ContactObject[];
     interactive?: InteractiveObject;
+    sticker?: MediaObject;
 }
 
 export interface ReturnSendedMessage {
@@ -195,9 +198,9 @@ export interface MediaObject {
 
 interface InteractiveObject {
     action: ActionObject;
-    body?: string;
-    footer?: string;
-    header?: string;
+    body?: { text: string; };
+    footer?: { text: string; };
+    header?: { type: "text"; text: string; };
     type: "button" | "list" | "product" | "product_list";
 }
 interface ActionObject {
@@ -218,19 +221,22 @@ interface ActionObject {
      sections?: Sections;
 }
 
-interface Buttons {
+export interface Buttons {
     /**
      * Only supported type is reply (for Reply Button)
      */
     type: "reply";
-    /**
-     * Button title. It cannot be an empty string and must be unique within the message. Emojis are supported, markdown is not. Maximum length: 20 characters.
-     */
-    title: string;
-    /**
-     * Unique identifier for your button. This ID is returned in the webhook when the button is clicked by the user. Maximum length: 256 characters.
-     */
-    id: string;
+    reply: {
+        
+        /**
+         * Button title. It cannot be an empty string and must be unique within the message. Emojis are supported, markdown is not. Maximum length: 20 characters.
+         */
+        title: string;
+        /**
+         * Unique identifier for your button. This ID is returned in the webhook when the button is clicked by the user. Maximum length: 256 characters.
+         */
+        id: string;
+    }
 }
 interface Sections {
     /**

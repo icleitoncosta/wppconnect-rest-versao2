@@ -230,20 +230,21 @@
 			},
 			"MessageType": {
 				"enum": [
-					0,
-					1,
-					2,
-					3,
-					4,
-					5,
-					6,
-					7,
-					8,
-					9,
-					10,
-					11
+					"text",
+					"image",
+					"audio",
+					"document",
+					"template",
+					"hsm",
+					"sticker",
+					"order",
+					"video",
+					"contacts",
+					"unknown",
+					"system",
+					"interactive"
 				],
-				"type": "number"
+				"type": "string"
 			},
 			"TextMessageObject": {
 				"properties": {
@@ -509,19 +510,27 @@
 						"nullable": false,
 						"description": "Only supported type is reply (for Reply Button)"
 					},
-					"title": {
-						"type": "string",
-						"description": "Button title. It cannot be an empty string and must be unique within the message. Emojis are supported, markdown is not. Maximum length: 20 characters."
-					},
-					"id": {
-						"type": "string",
-						"description": "Unique identifier for your button. This ID is returned in the webhook when the button is clicked by the user. Maximum length: 256 characters."
+					"reply": {
+						"properties": {
+							"id": {
+								"type": "string",
+								"description": "Unique identifier for your button. This ID is returned in the webhook when the button is clicked by the user. Maximum length: 256 characters."
+							},
+							"title": {
+								"type": "string",
+								"description": "Button title. It cannot be an empty string and must be unique within the message. Emojis are supported, markdown is not. Maximum length: 20 characters."
+							}
+						},
+						"required": [
+							"id",
+							"title"
+						],
+						"type": "object"
 					}
 				},
 				"required": [
 					"type",
-					"title",
-					"id"
+					"reply"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -594,13 +603,45 @@
 						"$ref": "#/components/schemas/ActionObject"
 					},
 					"body": {
-						"type": "string"
+						"properties": {
+							"text": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"text"
+						],
+						"type": "object"
 					},
 					"footer": {
-						"type": "string"
+						"properties": {
+							"text": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"text"
+						],
+						"type": "object"
 					},
 					"header": {
-						"type": "string"
+						"properties": {
+							"text": {
+								"type": "string"
+							},
+							"type": {
+								"type": "string",
+								"enum": [
+									"text"
+								],
+								"nullable": false
+							}
+						},
+						"required": [
+							"text",
+							"type"
+						],
+						"type": "object"
 					},
 					"type": {
 						"type": "string",
@@ -678,6 +719,9 @@
 					"image": {
 						"$ref": "#/components/schemas/MediaObject"
 					},
+					"video": {
+						"$ref": "#/components/schemas/MediaObject"
+					},
 					"audio": {
 						"$ref": "#/components/schemas/MediaObject"
 					},
@@ -695,6 +739,9 @@
 					},
 					"interactive": {
 						"$ref": "#/components/schemas/InteractiveObject"
+					},
+					"sticker": {
+						"$ref": "#/components/schemas/MediaObject"
 					}
 				},
 				"required": [
@@ -1341,7 +1388,14 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ReturnSendedMessage"
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/ReturnSendedMessage"
+										},
+										{
+											"$ref": "#/components/schemas/Error"
+										}
+									]
 								}
 							}
 						}

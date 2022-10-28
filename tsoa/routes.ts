@@ -92,7 +92,7 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "MessageType": {
         "dataType": "refEnum",
-        "enums": [0,1,2,3,4,5,6,7,8,9,10,11],
+        "enums": ["text","image","audio","document","template","hsm","sticker","order","video","contacts","unknown","system","interactive"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "TextMessageObject": {
@@ -211,8 +211,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "type": {"dataType":"enum","enums":["reply"],"required":true},
-            "title": {"dataType":"string","required":true},
-            "id": {"dataType":"string","required":true},
+            "reply": {"dataType":"nestedObjectLiteral","nestedProperties":{"id":{"dataType":"string","required":true},"title":{"dataType":"string","required":true}},"required":true},
         },
         "additionalProperties": false,
     },
@@ -253,9 +252,9 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "action": {"ref":"ActionObject","required":true},
-            "body": {"dataType":"string"},
-            "footer": {"dataType":"string"},
-            "header": {"dataType":"string"},
+            "body": {"dataType":"nestedObjectLiteral","nestedProperties":{"text":{"dataType":"string","required":true}}},
+            "footer": {"dataType":"nestedObjectLiteral","nestedProperties":{"text":{"dataType":"string","required":true}}},
+            "header": {"dataType":"nestedObjectLiteral","nestedProperties":{"text":{"dataType":"string","required":true},"type":{"dataType":"enum","enums":["text"],"required":true}}},
             "type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["button"]},{"dataType":"enum","enums":["list"]},{"dataType":"enum","enums":["product"]},{"dataType":"enum","enums":["product_list"]}],"required":true},
         },
         "additionalProperties": false,
@@ -276,11 +275,13 @@ const models: TsoaRoute.Models = {
             "text": {"ref":"TextMessageObject"},
             "reaction": {"ref":"ReactMessageObject"},
             "image": {"ref":"MediaObject"},
+            "video": {"ref":"MediaObject"},
             "audio": {"ref":"MediaObject"},
             "document": {"ref":"MediaObject"},
             "location": {"ref":"LocationMessageObject"},
             "contacts": {"dataType":"array","array":{"dataType":"refObject","ref":"ContactObject"}},
             "interactive": {"ref":"InteractiveObject"},
+            "sticker": {"ref":"MediaObject"},
         },
         "additionalProperties": false,
     },

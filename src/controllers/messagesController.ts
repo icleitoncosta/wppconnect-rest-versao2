@@ -47,7 +47,7 @@ export class MessagesController extends Controller {
     @Path() PHONE_NUMBER_ID: string,
     @Body() payload: Message,
     @Request() req: RequestEx
-  ): Promise<ReturnSendedMessage> {
+  ): Promise<ReturnSendedMessage | Error> {
     console.log(PHONE_NUMBER_ID);
     this.setStatus(200);
     return new MessagesService().create(req, payload);

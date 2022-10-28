@@ -1,5 +1,7 @@
-import { Message, ReturnSendedMessage, MessageType } from '../models/Messages';
+import { Message, ReturnSendedMessage, MessageType, Buttons } from '../models/Messages';
+import { Message as MessageWPP } from '@wppconnect-team/wppconnect';
 import { ClientWhatsApp, RequestEx } from '../models/Request';
+import { Error } from '../models/Error';
 import { ServerError } from './server-error';
 
 export class MessagesService {
@@ -131,16 +133,110 @@ export class MessagesService {
                 131009);
         }
     }
-    public create(req: RequestEx, payload: Message): ReturnSendedMessage {
-        console.log(req);
+    public async create(req: RequestEx, payload: Message): Promise<ReturnSendedMessage | Error> {
+        try {
+            let message;
+            let options;
+            if(payload.context?.message_id) {
+                options = {
+                    quotedMsg: payload.context?.message_id
+                }
+            }
+            if(payload.type === "text") {
+                message = await req.client?.sendText(payload.to, payload.text?.body as string, options);
+                return Promise.resolve(this.returnMessageSucess(payload.to, message?.id as string));
+            }else if(payload.type === "image") {
+                message = await req.client?.sendImage(payload.to, payload.image?.link as string, undefined, payload.image?.caption, (payload.context?.message_id ? payload.context?.message_id : undefined));
+                return Promise.resolve(this.returnMessageSucess(payload.to, message?.id as string));
+            }else if(payload.type === "audio") {
+                message = await req.client?.sendPtt(payload.to, payload.audio?.link as string, undefined, undefined, (payload.context?.message_id ? payload.context?.message_id : undefined)) as MessageWPP;
+                return Promise.resolve(this.returnMessageSucess(payload.to, message?.id));
+            }else if(payload.type === "document" || payload.type === "video") {
+                message = await req.client?.sendFile(payload.to, payload.document?.link as string, options) as MessageWPP;
+                return Promise.resolve(this.returnMessageSucess(payload.to, message?.id));
+            }else if(payload.type === "sticker") {
+                message = await req.client?.sendImageAsSticker(payload.to, payload.sticker?.link as string) as unknown as MessageWPP;
+                return Promise.resolve(this.returnMessageSucess(payload.to, message?.id));
+            }else if(payload.type === "interactive") {
+                if(payload.interactive?.type === "button") {
+                    let buttons = [];
+                    for(const btn of payload?.interactive?.action?.buttons as Buttons[]) {
+                        buttons.push({
+                            id: btn.reply.id,
+                            text: btn.reply.title
+                        });
+                    }
+                    message = await req.client?.sendText(payload.to, payload.interactive?.body?.text as string, {
+                        useTemplateButtons: false,
+                        buttons: buttons
+                    })
+                    return Promise.resolve(this.returnMessageSucess(payload.to, message?.id as string));
+                }else {
+                    if(payload.interactive?.type !== "list") {
+                        return {
+                            error: {
+                                message: "Error on send message",
+                                type: "error_delivery_message",
+                                code: 1,
+                                error_data: {
+                                    messaging_product: "whatsapp",
+                                    details: "Error in your request, parameters not found.",
+                                },
+                                error_subcode: 135000,
+                                fbtrace_id: undefined,
+                            }
+                        }
+                    }
+                    message = await req.client?.sendListMessage(payload.to, {
+                        buttonText: payload.interactive.action.button as string,
+                        description: payload.interactive.body?.text as string,
+                        sections: payload.interactive.action.sections as any,
+                        footer: payload.interactive.footer?.text,
+                        title: payload.interactive.header?.text
+                    }) as unknown as MessageWPP;
+                    return Promise.resolve(this.returnMessageSucess(payload.to, message?.id));
+                }
+            }
+            else {
+                return {
+                    error: {
+                        message: "Error on send message",
+                        type: "error_delivery_message",
+                        code: 1,
+                        error_data: {
+                            messaging_product: "whatsapp",
+                            details: "Error in your request, parameters not found.",
+                        },
+                        error_subcode: 135000,
+                        fbtrace_id: undefined,
+                    }
+                }
+            }
+        } catch (error: any) {
+            return {
+                error: {
+                    message: "Error on send message",
+                    type: "error_delivery_message",
+                    code: 1,
+                    error_data: {
+                        messaging_product: "whatsapp",
+                        details: error,
+                    },
+                    error_subcode: 131000,
+                    fbtrace_id: undefined,
+                }
+            }
+        }
+    }
+    private returnMessageSucess(to: string, msgId: string): ReturnSendedMessage{
         return {
             messaging_product: "whatsapp",
             contacts: {
-                input: payload.to,
-                wa_id: payload.to,
+                input: to,
+                wa_id: to,
             },
             messages: {
-                id: "string",
+                id: msgId as string,
             }
         }
     }
