@@ -1,5 +1,5 @@
 import * as wppconnect from '@wppconnect-team/wppconnect';
-import { ClientWhatsApp } from 'src/models/Request';
+import { ClientWhatsApp } from '../models/Request';
 
 export default class FileTokenStore {
     declare client: ClientWhatsApp;

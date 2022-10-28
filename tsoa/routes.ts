@@ -92,7 +92,7 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "MessageType": {
         "dataType": "refEnum",
-        "enums": [0,1,2,3,4,5],
+        "enums": [0,1,2,3,4,5,6,7,8,9,10,11],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "TextMessageObject": {
@@ -276,6 +276,8 @@ const models: TsoaRoute.Models = {
             "text": {"ref":"TextMessageObject"},
             "reaction": {"ref":"ReactMessageObject"},
             "image": {"ref":"MediaObject"},
+            "audio": {"ref":"MediaObject"},
+            "document": {"ref":"MediaObject"},
             "location": {"ref":"LocationMessageObject"},
             "contacts": {"dataType":"array","array":{"dataType":"refObject","ref":"ContactObject"}},
             "interactive": {"ref":"InteractiveObject"},

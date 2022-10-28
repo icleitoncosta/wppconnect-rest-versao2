@@ -1,9 +1,16 @@
 export enum MessageType {
     'text',
-    'image', 'audio',
+    'image', 
+    'audio',
     'document',
     'template',
-    'hsm'
+    'hsm',
+    "sticker",
+    "order",
+    "video",
+    "contacts",
+    "unknown",
+    "system"
 }
 
 export interface Message {
@@ -41,6 +48,8 @@ export interface Message {
     text?: TextMessageObject;
     reaction?: ReactMessageObject;
     image?: MediaObject;
+    audio?: MediaObject;
+    document?: MediaObject;
     location?: LocationMessageObject;
     contacts?: ContactObject[];
     interactive?: InteractiveObject;

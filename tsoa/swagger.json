@@ -235,7 +235,13 @@
 					2,
 					3,
 					4,
-					5
+					5,
+					6,
+					7,
+					8,
+					9,
+					10,
+					11
 				],
 				"type": "number"
 			},
@@ -670,6 +676,12 @@
 						"$ref": "#/components/schemas/ReactMessageObject"
 					},
 					"image": {
+						"$ref": "#/components/schemas/MediaObject"
+					},
+					"audio": {
+						"$ref": "#/components/schemas/MediaObject"
+					},
+					"document": {
 						"$ref": "#/components/schemas/MediaObject"
 					},
 					"location": {

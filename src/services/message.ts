@@ -51,6 +51,24 @@ export class MessagesService {
                     }
                 }
     
+                if(message.type === "audio" || message.type === "ptt" ) {
+                    // Check fix return for location
+                    resolve.audio = {
+                        mime_type: message.mimetype,
+                        sha256: message.mediaKey,
+                        id: message.id
+                    }
+                }
+    
+                if(message.type === "document") {
+                    // Check fix return for location
+                    resolve.document = {
+                        mime_type: message.mimetype,
+                        sha256: message.mediaKey,
+                        id: message.id
+                    }
+                }
+    
                 if(message.type === "location") {
                     // Check fix return for location
                     resolve.location = {
@@ -77,8 +95,7 @@ export class MessagesService {
                             }
                         ]
                 }
-    
-                
+
                 if(message.type === "template_button_reply" || message.type === "buttons_response" || message.type === "list_response") {
                     let type: "button" | "list" | "product" | "product_list" = "button";
                     if(message.type === "list_response") type = "list";
@@ -86,12 +103,12 @@ export class MessagesService {
                     // Fix interactive buttons
                     resolve.interactive = {
                         action: {
-                            button: message.body,
+                            button: message.button,
                             //buttons: null,
                         },
                         body: message.body,
-                        footer: message.content,
-                        header: message.content,
+                        footer: message.footer,
+                        header: message.header,
                         type: type,
                     }
                 }
