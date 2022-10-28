@@ -147,11 +147,21 @@ export class MessagesService {
                 message = await req.client?.sendText(payload.to, payload.text.body as string, options);
                 return Promise.resolve(this.returnMessageSucess(payload.to, message?.id as string));
             }else if(payload.type === "image") {
-                message = await req.client?.sendImage(payload.to, payload.image?.link as string, undefined, payload.image?.caption, (payload.context?.message_id ? payload.context?.message_id : undefined));
-                return Promise.resolve(this.returnMessageSucess(payload.to, message?.id as string));
+                if(payload.image.link?.includes("base64")) {
+                    message = await req.client?.sendImageFromBase64(payload.to, payload.image?.link as string, "image.jpg", payload.image?.caption, (payload.context?.message_id ? payload.context?.message_id : undefined));
+                    return Promise.resolve(this.returnMessageSucess(payload.to, message?.id as string));
+                } else {
+                    message = await req.client?.sendImage(payload.to, payload.image?.link as string, undefined, payload.image?.caption, (payload.context?.message_id ? payload.context?.message_id : undefined));
+                    return Promise.resolve(this.returnMessageSucess(payload.to, message?.id as string));
+                }
             }else if(payload.type === "audio") {
-                message = await req.client?.sendPtt(payload.to, payload.audio.link as string, undefined, undefined, (payload.context?.message_id ? payload.context?.message_id : undefined)) as MessageWPP;
-                return Promise.resolve(this.returnMessageSucess(payload.to, message?.id));
+                if(payload.audio.link?.includes("base64")) {
+                    message = await req.client?.sendPttFromBase64(payload.to, payload.audio.link as string, "audio.mp3", undefined, (payload.context?.message_id ? payload.context?.message_id : undefined));
+                    return Promise.resolve(this.returnMessageSucess(payload.to, message?.id as string));
+                } else {
+                    message = await req.client?.sendPtt(payload.to, payload.audio.link as string, undefined, undefined, (payload.context?.message_id ? payload.context?.message_id : undefined)) as MessageWPP;
+                    return Promise.resolve(this.returnMessageSucess(payload.to, message?.id));
+                }
             }else if(payload.type === "document") {
                 message = await req.client?.sendFile(payload.to, payload.document.link as string, options) as MessageWPP;
                 return Promise.resolve(this.returnMessageSucess(payload.to, message?.id));
