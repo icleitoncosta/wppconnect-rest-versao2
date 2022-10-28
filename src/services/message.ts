@@ -3,7 +3,7 @@ import { Message as MessageWPP } from '@wppconnect-team/wppconnect';
 import { ClientWhatsApp, RequestEx } from '../models/Request';
 import { Error } from '../models/Error';
 import { ServerError } from './server-error';
-import { SendAudio, SendContact, SendDocument, SendImage, SendInteractive, SendLocation, SendReaction, SendSticker, SendText, SendVideo } from '../models/SendMessage';
+import { SendAudio, SendContact, SendDocument, SendImage, SendInteractive, SendLocation, SendPoll, SendReaction, SendSticker, SendText, SendVideo } from '../models/SendMessage';
 
 export class MessagesService {
     public async get(req: RequestEx, id: string): Promise<ServerError | Message> {
@@ -134,11 +134,11 @@ export class MessagesService {
                 131009);
         }
     }
-    public async create(req: RequestEx, payload: SendText | SendImage | SendAudio | SendDocument | SendSticker | SendVideo | SendContact | SendLocation | SendReaction | SendInteractive): Promise<ReturnSendedMessage | Error> {
+    public async create(req: RequestEx, payload: SendText | SendImage | SendAudio | SendDocument | SendSticker | SendVideo | SendContact | SendLocation | SendReaction | SendInteractive | SendPoll): Promise<ReturnSendedMessage | Error> {
         try {
             let message;
             let options;
-            if(payload.type !== "reaction" && payload.type !== "interactive" && payload.context?.message_id) {
+            if(payload.type !== "reaction" && payload.type !== "interactive" && payload.type !== "poll" && payload.context?.message_id) {
                 options = {
                     quotedMsg: payload.context.message_id
                 }
@@ -161,6 +161,26 @@ export class MessagesService {
             }else if(payload.type === "sticker") {
                 message = await req.client?.sendImageAsSticker(payload.to, payload.sticker?.link as string) as unknown as MessageWPP;
                 return Promise.resolve(this.returnMessageSucess(payload.to, message?.id));
+            }else if(payload.type === "poll") {
+                if(!payload.to.includes("@g.us") || payload.recipient_type === 'individual') {
+                    return {
+                        error: {
+                            message: "Error on send message",
+                            type: "error_delivery_message",
+                            code: 1,
+                            error_data: {
+                                messaging_product: "whatsapp",
+                                details: "Poll messages can only be sent to groups.",
+                            },
+                            error_subcode: 135000,
+                            fbtrace_id: undefined,
+                        }
+                    }
+                }
+                //Await wppconnect release a version for implement sendPollMessage
+
+                //message = await req.client?.sendPollMessage(payload.to, payload.poll.title, payload.poll.options, { selectableCount: payload.poll.selectableCount} ) as unknown as MessageWPP;
+                return Promise.resolve(this.returnMessageSucess(payload.to, "Please, implement release on WPPConnect"));
             }else if(payload.type === "reaction") {
                 message = await req.client?.sendReactionToMessage(payload.reaction.message_id, payload.reaction.emoji) as unknown as MessageWPP;
                 return Promise.resolve(this.returnMessageSucess(payload.to, message?.id));

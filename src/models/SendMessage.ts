@@ -1,4 +1,4 @@
-import { ContactObject, InteractiveObject, LocationMessageObject, MediaObject, ReactMessageObject, TextMessageObject } from "./Messages";
+import { ContactObject, InteractiveObject, LocationMessageObject, MediaObject, PollMessageObject, ReactMessageObject, TextMessageObject } from "./Messages";
 
 export interface DefaultSendMsg {
     /**
@@ -111,6 +111,10 @@ export interface SendLocation extends DefaultSendMsg {
 export interface SendReaction extends DefaultSendMsg {
     type: "reaction";
      reaction: ReactMessageObject;
+}
+export interface SendPoll extends DefaultSendMsg {
+    type: "poll";
+    poll: PollMessageObject;
 }
 
 export interface SendInteractive extends DefaultSendMsg {

@@ -267,3 +267,17 @@ interface SectionsRows {
     description?: string;
 }
 
+export interface PollMessageObject {
+    /**
+     * @example "What is the best city for the beach?"
+     */
+    title: string;
+    /**
+     * @example ['Arraial do Cabo', 'Porto de Galinhas', 'Ilha Grande']
+     */
+    options: string[];
+    /**
+     * @example 1
+     */
+     selectableCount?: number;
+}
