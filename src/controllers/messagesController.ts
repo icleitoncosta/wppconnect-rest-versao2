@@ -87,7 +87,7 @@ export class MessagesController extends Controller {
       message_id: "message_id_to_reply"
     },
     document: {
-      link: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
+      link: "https://www.africau.edu/images/default/sample.pdf"
     }
   })
   @Example<SendSticker>({
@@ -135,21 +135,6 @@ export class MessagesController extends Controller {
         ]
       }
     ]
-  })
-  @Example<SendLocation>({
-    messaging_product: "whatsapp",
-    recipient_type: "individual",
-    type: "location",
-    to: "number@c.us",
-    context: {
-      message_id: "message_id_to_reply"
-    },
-    location: {
-      latitude: -15.721387,
-      longitude: -48.0774438,
-      name: "Brasilia - BR",
-      address: "Capital dos Três Poderes - DF"
-    }
   })
   @Example<SendLocation>({
     messaging_product: "whatsapp",

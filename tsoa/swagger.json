@@ -1957,7 +1957,7 @@
 												"message_id": "message_id_to_reply"
 											},
 											"document": {
-												"link": "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
+												"link": "https://www.africau.edu/images/default/sample.pdf"
 											}
 										}
 									},
@@ -2032,21 +2032,6 @@
 										"value": {
 											"messaging_product": "whatsapp",
 											"recipient_type": "individual",
-											"type": "location",
-											"to": "number@c.us",
-											"context": {
-												"message_id": "message_id_to_reply"
-											},
-											"location": {
-												"name": "Brasilia - BR",
-												"address": "Capital dos Três Poderes - DF"
-											}
-										}
-									},
-									"Example 10": {
-										"value": {
-											"messaging_product": "whatsapp",
-											"recipient_type": "individual",
 											"type": "reaction",
 											"to": "number@c.us",
 											"reaction": {
@@ -2055,7 +2040,7 @@
 											}
 										}
 									},
-									"Example 11": {
+									"Example 10": {
 										"value": {
 											"messaging_product": "whatsapp",
 											"recipient_type": "individual",
@@ -2087,7 +2072,7 @@
 											}
 										}
 									},
-									"Example 12": {
+									"Example 11": {
 										"value": {
 											"messaging_product": "whatsapp",
 											"recipient_type": "individual",

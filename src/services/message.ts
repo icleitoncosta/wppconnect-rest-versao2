@@ -161,6 +161,9 @@ export class MessagesService {
             }else if(payload.type === "sticker") {
                 message = await req.client?.sendImageAsSticker(payload.to, payload.sticker?.link as string) as unknown as MessageWPP;
                 return Promise.resolve(this.returnMessageSucess(payload.to, message?.id));
+            }else if(payload.type === "reaction") {
+                message = await req.client?.sendReactionToMessage(payload.reaction.message_id, payload.reaction.emoji) as unknown as MessageWPP;
+                return Promise.resolve(this.returnMessageSucess(payload.to, message?.id));
             }else if(payload.type === "interactive") {
                 if(payload.interactive?.type === "button") {
                     let buttons = [];
