@@ -24,7 +24,7 @@ export class AuthController extends Controller {
     @NoSecurity()
 	public async generateToken(
         @Path() PHONE_NUMBER_ID: string,
-        @Path() SECRET_KEY: string,
+        @Path("SECRET_KEY") SECRET_KEY: "THISISMYSECURETOKEN",
         @Request() req: RequestEx
 	): Promise<{status: string; token: string | null; data: any; } | Error> {
 		this.setStatus(200);

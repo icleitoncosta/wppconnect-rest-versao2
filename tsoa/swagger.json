@@ -240,6 +240,7 @@
 					"order",
 					"video",
 					"contacts",
+					"location",
 					"unknown",
 					"system",
 					"interactive"
@@ -249,10 +250,12 @@
 			"TextMessageObject": {
 				"properties": {
 					"body": {
-						"type": "string"
+						"type": "string",
+						"example": "Welcome to Brazil!"
 					},
 					"preview_url": {
-						"type": "boolean"
+						"type": "boolean",
+						"example": true
 					}
 				},
 				"required": [
@@ -559,7 +562,10 @@
 						"description": "Not implemented yeat\nArray of product objects. There is a minimum of 1 product per section and a maximum of 30 products across all sections."
 					},
 					"rows": {
-						"$ref": "#/components/schemas/SectionsRows",
+						"items": {
+							"$ref": "#/components/schemas/SectionsRows"
+						},
+						"type": "array",
 						"description": "Contains a list of rows. You can have a total of 10 rows across your sections."
 					},
 					"title": {
@@ -591,7 +597,10 @@
 						"description": "Unique identifier of the product in a catalog."
 					},
 					"sections": {
-						"$ref": "#/components/schemas/Sections"
+						"items": {
+							"$ref": "#/components/schemas/Sections"
+						},
+						"type": "array"
 					}
 				},
 				"type": "object",
@@ -863,6 +872,500 @@
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"SendText": {
+				"properties": {
+					"messaging_product": {
+						"type": "string",
+						"enum": [
+							"whatsapp"
+						],
+						"nullable": false,
+						"description": "Send Messages, audio, etc"
+					},
+					"recipient_type": {
+						"type": "string",
+						"enum": [
+							"individual",
+							"group"
+						]
+					},
+					"to": {
+						"type": "string",
+						"description": "ID of user or group \"xxxxxxxxxx@c.us\" for contacts, \"xxxxxxxxxx@g.us\" for groups",
+						"example": "text"
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"text"
+						],
+						"nullable": false,
+						"description": "Reply for a message"
+					},
+					"context": {
+						"properties": {
+							"message_id": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"message_id"
+						],
+						"type": "object"
+					},
+					"text": {
+						"$ref": "#/components/schemas/TextMessageObject"
+					}
+				},
+				"required": [
+					"messaging_product",
+					"recipient_type",
+					"to",
+					"type",
+					"text"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"SendImage": {
+				"properties": {
+					"messaging_product": {
+						"type": "string",
+						"enum": [
+							"whatsapp"
+						],
+						"nullable": false,
+						"description": "Send Messages, audio, etc"
+					},
+					"recipient_type": {
+						"type": "string",
+						"enum": [
+							"individual",
+							"group"
+						]
+					},
+					"to": {
+						"type": "string",
+						"description": "ID of user or group \"xxxxxxxxxx@c.us\" for contacts, \"xxxxxxxxxx@g.us\" for groups",
+						"example": "5521988556587@c.us"
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"image"
+						],
+						"nullable": false,
+						"description": "Reply for a message"
+					},
+					"context": {
+						"properties": {
+							"message_id": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"message_id"
+						],
+						"type": "object"
+					},
+					"image": {
+						"$ref": "#/components/schemas/MediaObject"
+					}
+				},
+				"required": [
+					"messaging_product",
+					"recipient_type",
+					"to",
+					"type",
+					"image"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ReplyMsgId": {
+				"properties": {
+					"message_id": {
+						"type": "string",
+						"example": "messsage_id_to_reply"
+					}
+				},
+				"required": [
+					"message_id"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"SendAudio": {
+				"properties": {
+					"messaging_product": {
+						"type": "string",
+						"enum": [
+							"whatsapp"
+						],
+						"nullable": false,
+						"description": "Send Messages, audio, etc"
+					},
+					"recipient_type": {
+						"type": "string",
+						"enum": [
+							"individual",
+							"group"
+						]
+					},
+					"to": {
+						"type": "string",
+						"description": "ID of user or group \"xxxxxxxxxx@c.us\" for contacts, \"xxxxxxxxxx@g.us\" for groups",
+						"example": "text"
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"audio"
+						],
+						"nullable": false,
+						"description": "Reply for a message"
+					},
+					"context": {
+						"$ref": "#/components/schemas/ReplyMsgId"
+					},
+					"audio": {
+						"$ref": "#/components/schemas/MediaObject"
+					}
+				},
+				"required": [
+					"messaging_product",
+					"recipient_type",
+					"to",
+					"type",
+					"audio"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"SendDocument": {
+				"properties": {
+					"messaging_product": {
+						"type": "string",
+						"enum": [
+							"whatsapp"
+						],
+						"nullable": false,
+						"description": "Send Messages, audio, etc"
+					},
+					"recipient_type": {
+						"type": "string",
+						"enum": [
+							"individual",
+							"group"
+						]
+					},
+					"to": {
+						"type": "string",
+						"description": "ID of user or group \"xxxxxxxxxx@c.us\" for contacts, \"xxxxxxxxxx@g.us\" for groups",
+						"example": "text"
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"document"
+						],
+						"nullable": false
+					},
+					"context": {
+						"$ref": "#/components/schemas/ReplyMsgId",
+						"description": "Reply for a message"
+					},
+					"document": {
+						"$ref": "#/components/schemas/MediaObject"
+					}
+				},
+				"required": [
+					"messaging_product",
+					"recipient_type",
+					"to",
+					"type",
+					"document"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"SendSticker": {
+				"properties": {
+					"messaging_product": {
+						"type": "string",
+						"enum": [
+							"whatsapp"
+						],
+						"nullable": false,
+						"description": "Send Messages, audio, etc"
+					},
+					"recipient_type": {
+						"type": "string",
+						"enum": [
+							"individual",
+							"group"
+						]
+					},
+					"to": {
+						"type": "string",
+						"description": "ID of user or group \"xxxxxxxxxx@c.us\" for contacts, \"xxxxxxxxxx@g.us\" for groups",
+						"example": "text"
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"sticker"
+						],
+						"nullable": false
+					},
+					"context": {
+						"$ref": "#/components/schemas/ReplyMsgId",
+						"description": "Reply for a message"
+					},
+					"sticker": {
+						"$ref": "#/components/schemas/MediaObject"
+					}
+				},
+				"required": [
+					"messaging_product",
+					"recipient_type",
+					"to",
+					"type",
+					"sticker"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"SendVideo": {
+				"properties": {
+					"messaging_product": {
+						"type": "string",
+						"enum": [
+							"whatsapp"
+						],
+						"nullable": false,
+						"description": "Send Messages, audio, etc"
+					},
+					"recipient_type": {
+						"type": "string",
+						"enum": [
+							"individual",
+							"group"
+						]
+					},
+					"to": {
+						"type": "string",
+						"description": "ID of user or group \"xxxxxxxxxx@c.us\" for contacts, \"xxxxxxxxxx@g.us\" for groups",
+						"example": "text"
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"video"
+						],
+						"nullable": false
+					},
+					"context": {
+						"$ref": "#/components/schemas/ReplyMsgId",
+						"description": "Reply for a message"
+					},
+					"video": {
+						"$ref": "#/components/schemas/MediaObject"
+					}
+				},
+				"required": [
+					"messaging_product",
+					"recipient_type",
+					"to",
+					"type",
+					"video"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"SendContact": {
+				"properties": {
+					"messaging_product": {
+						"type": "string",
+						"enum": [
+							"whatsapp"
+						],
+						"nullable": false,
+						"description": "Send Messages, audio, etc"
+					},
+					"recipient_type": {
+						"type": "string",
+						"enum": [
+							"individual",
+							"group"
+						]
+					},
+					"to": {
+						"type": "string",
+						"description": "ID of user or group \"xxxxxxxxxx@c.us\" for contacts, \"xxxxxxxxxx@g.us\" for groups",
+						"example": "5521988556587@c.us"
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"contacts"
+						],
+						"nullable": false
+					},
+					"context": {
+						"$ref": "#/components/schemas/ReplyMsgId",
+						"description": "Reply for a message"
+					},
+					"contacts": {
+						"items": {
+							"$ref": "#/components/schemas/ContactObject"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"messaging_product",
+					"recipient_type",
+					"to",
+					"type",
+					"contacts"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"SendLocation": {
+				"properties": {
+					"messaging_product": {
+						"type": "string",
+						"enum": [
+							"whatsapp"
+						],
+						"nullable": false,
+						"description": "Send Messages, audio, etc"
+					},
+					"recipient_type": {
+						"type": "string",
+						"enum": [
+							"individual",
+							"group"
+						]
+					},
+					"to": {
+						"type": "string",
+						"description": "ID of user or group \"xxxxxxxxxx@c.us\" for contacts, \"xxxxxxxxxx@g.us\" for groups",
+						"example": "5521988556587@c.us"
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"location"
+						],
+						"nullable": false
+					},
+					"context": {
+						"$ref": "#/components/schemas/ReplyMsgId",
+						"description": "Reply for a message"
+					},
+					"location": {
+						"$ref": "#/components/schemas/LocationMessageObject"
+					}
+				},
+				"required": [
+					"messaging_product",
+					"recipient_type",
+					"to",
+					"type",
+					"location"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"SendReaction": {
+				"properties": {
+					"messaging_product": {
+						"type": "string",
+						"enum": [
+							"whatsapp"
+						],
+						"nullable": false,
+						"description": "Send Messages, audio, etc"
+					},
+					"recipient_type": {
+						"type": "string",
+						"enum": [
+							"individual",
+							"group"
+						]
+					},
+					"to": {
+						"type": "string",
+						"description": "ID of user or group \"xxxxxxxxxx@c.us\" for contacts, \"xxxxxxxxxx@g.us\" for groups",
+						"example": "text"
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"reaction"
+						],
+						"nullable": false
+					},
+					"reaction": {
+						"$ref": "#/components/schemas/ReactMessageObject"
+					}
+				},
+				"required": [
+					"messaging_product",
+					"recipient_type",
+					"to",
+					"type",
+					"reaction"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"SendInteractive": {
+				"properties": {
+					"messaging_product": {
+						"type": "string",
+						"enum": [
+							"whatsapp"
+						],
+						"nullable": false,
+						"description": "Send Messages, audio, etc"
+					},
+					"recipient_type": {
+						"type": "string",
+						"enum": [
+							"individual",
+							"group"
+						]
+					},
+					"to": {
+						"type": "string",
+						"description": "ID of user or group \"xxxxxxxxxx@c.us\" for contacts, \"xxxxxxxxxx@g.us\" for groups",
+						"example": "text"
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"interactive"
+						],
+						"nullable": false
+					},
+					"interactive": {
+						"$ref": "#/components/schemas/InteractiveObject"
+					}
+				},
+				"required": [
+					"messaging_product",
+					"recipient_type",
+					"to",
+					"type",
+					"interactive"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {
@@ -937,7 +1440,10 @@
 						"name": "SECRET_KEY",
 						"required": true,
 						"schema": {
-							"type": "string"
+							"type": "string",
+							"enum": [
+								"THISISMYSECURETOKEN"
+							]
 						}
 					}
 				]
@@ -1396,6 +1902,247 @@
 											"$ref": "#/components/schemas/Error"
 										}
 									]
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"messaging_product": "whatsapp",
+											"recipient_type": "individual",
+											"type": "text",
+											"to": "number@c.us",
+											"context": {
+												"message_id": "message_id_to_reply"
+											},
+											"text": {
+												"body": "Hello, welcome to Brazil!"
+											}
+										}
+									},
+									"Example 2": {
+										"value": {
+											"messaging_product": "whatsapp",
+											"recipient_type": "individual",
+											"type": "image",
+											"to": "number@c.us",
+											"context": {
+												"message_id": "message_id_to_reply"
+											},
+											"image": {
+												"caption": "Hello, welcome to Brazil!",
+												"link": "https://pbs.twimg.com/media/EJu-T-eWkAA8rcd?format=jpg&name=4096x4096"
+											}
+										}
+									},
+									"Example 3": {
+										"value": {
+											"messaging_product": "whatsapp",
+											"recipient_type": "individual",
+											"type": "audio",
+											"to": "number@c.us",
+											"context": {
+												"message_id": "message_id_to_reply"
+											},
+											"audio": {
+												"link": "https://file-examples.com/storage/feb1825f1e635ae95f6f16d/2017/11/file_example_MP3_700KB.mp3"
+											}
+										}
+									},
+									"Example 4": {
+										"value": {
+											"messaging_product": "whatsapp",
+											"recipient_type": "individual",
+											"type": "document",
+											"to": "number@c.us",
+											"context": {
+												"message_id": "message_id_to_reply"
+											},
+											"document": {
+												"link": "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
+											}
+										}
+									},
+									"Example 5": {
+										"value": {
+											"messaging_product": "whatsapp",
+											"recipient_type": "individual",
+											"type": "sticker",
+											"to": "number@c.us",
+											"context": {
+												"message_id": "message_id_to_reply"
+											},
+											"sticker": {
+												"link": "https://pbs.twimg.com/media/EJu-T-eWkAA8rcd?format=jpg&name=4096x4096"
+											}
+										}
+									},
+									"Example 6": {
+										"value": {
+											"messaging_product": "whatsapp",
+											"recipient_type": "individual",
+											"type": "video",
+											"to": "number@c.us",
+											"context": {
+												"message_id": "message_id_to_reply"
+											},
+											"video": {
+												"caption": "The earth is flat haha",
+												"link": "https://edisciplinas.usp.br/pluginfile.php/5196097/mod_resource/content/1/Teste.mp4"
+											}
+										}
+									},
+									"Example 7": {
+										"value": {
+											"messaging_product": "whatsapp",
+											"recipient_type": "individual",
+											"type": "contacts",
+											"to": "number@c.us",
+											"context": {
+												"message_id": "message_id_to_reply"
+											},
+											"contacts": [
+												{
+													"name": {
+														"formatted_name": "Rafael Barroso"
+													},
+													"phones": [
+														{
+															"phone": "5521988556655"
+														}
+													]
+												}
+											]
+										}
+									},
+									"Example 8": {
+										"value": {
+											"messaging_product": "whatsapp",
+											"recipient_type": "individual",
+											"type": "location",
+											"to": "number@c.us",
+											"context": {
+												"message_id": "message_id_to_reply"
+											},
+											"location": {
+												"name": "Brasilia - BR",
+												"address": "Capital dos Três Poderes - DF"
+											}
+										}
+									},
+									"Example 9": {
+										"value": {
+											"messaging_product": "whatsapp",
+											"recipient_type": "individual",
+											"type": "location",
+											"to": "number@c.us",
+											"context": {
+												"message_id": "message_id_to_reply"
+											},
+											"location": {
+												"name": "Brasilia - BR",
+												"address": "Capital dos Três Poderes - DF"
+											}
+										}
+									},
+									"Example 10": {
+										"value": {
+											"messaging_product": "whatsapp",
+											"recipient_type": "individual",
+											"type": "reaction",
+											"to": "number@c.us",
+											"reaction": {
+												"message_id": "message_id_to_reaction",
+												"emoji": "🇧🇷"
+											}
+										}
+									},
+									"Example 11": {
+										"value": {
+											"messaging_product": "whatsapp",
+											"recipient_type": "individual",
+											"type": "interactive",
+											"to": "number@c.us",
+											"interactive": {
+												"type": "button",
+												"body": {
+													"text": "Button Text"
+												},
+												"action": {
+													"buttons": [
+														{
+															"type": "reply",
+															"reply": {
+																"id": "1",
+																"title": "Button 1"
+															}
+														},
+														{
+															"type": "reply",
+															"reply": {
+																"id": "unique id 2",
+																"title": "Button 2"
+															}
+														}
+													]
+												}
+											}
+										}
+									},
+									"Example 12": {
+										"value": {
+											"messaging_product": "whatsapp",
+											"recipient_type": "individual",
+											"type": "interactive",
+											"to": "number@c.us",
+											"interactive": {
+												"type": "list",
+												"header": {
+													"type": "text",
+													"text": "<HEADER_TEXT>"
+												},
+												"body": {
+													"text": "<BODY_TEXT>"
+												},
+												"footer": {
+													"text": "<FOOTER_TEXT>"
+												},
+												"action": {
+													"button": "<BUTTON_TEXT>",
+													"sections": [
+														{
+															"title": "<LIST_SECTION_1_TITLE>",
+															"rows": [
+																{
+																	"id": "<LIST_SECTION_1_ROW_1_ID>",
+																	"title": "<SECTION_1_ROW_1_TITLE>",
+																	"description": "<SECTION_1_ROW_1_DESC>"
+																},
+																{
+																	"id": "<LIST_SECTION_1_ROW_2_ID>",
+																	"title": "<SECTION_1_ROW_2_TITLE>",
+																	"description": "<SECTION_1_ROW_2_DESC>"
+																}
+															]
+														},
+														{
+															"title": "<LIST_SECTION_2_TITLE>",
+															"rows": [
+																{
+																	"id": "<LIST_SECTION_2_ROW_1_ID>",
+																	"title": "<SECTION_2_ROW_1_TITLE>",
+																	"description": "<SECTION_2_ROW_1_DESC>"
+																},
+																{
+																	"id": "<LIST_SECTION_2_ROW_2_ID>",
+																	"title": "<SECTION_2_ROW_2_TITLE>",
+																	"description": "<SECTION_2_ROW_2_DESC>"
+																}
+															]
+														}
+													]
+												}
+											}
+										}
+									}
 								}
 							}
 						}
@@ -1436,7 +2183,38 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/Message"
+								"anyOf": [
+									{
+										"$ref": "#/components/schemas/SendText"
+									},
+									{
+										"$ref": "#/components/schemas/SendImage"
+									},
+									{
+										"$ref": "#/components/schemas/SendAudio"
+									},
+									{
+										"$ref": "#/components/schemas/SendDocument"
+									},
+									{
+										"$ref": "#/components/schemas/SendSticker"
+									},
+									{
+										"$ref": "#/components/schemas/SendVideo"
+									},
+									{
+										"$ref": "#/components/schemas/SendContact"
+									},
+									{
+										"$ref": "#/components/schemas/SendLocation"
+									},
+									{
+										"$ref": "#/components/schemas/SendReaction"
+									},
+									{
+										"$ref": "#/components/schemas/SendInteractive"
+									}
+								]
 							}
 						}
 					}

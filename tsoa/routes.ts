@@ -92,7 +92,7 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "MessageType": {
         "dataType": "refEnum",
-        "enums": ["text","image","audio","document","template","hsm","sticker","order","video","contacts","unknown","system","interactive"],
+        "enums": ["text","image","audio","document","template","hsm","sticker","order","video","contacts","location","unknown","system","interactive"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "TextMessageObject": {
@@ -230,7 +230,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "product_items": {"dataType":"any"},
-            "rows": {"ref":"SectionsRows"},
+            "rows": {"dataType":"array","array":{"dataType":"refObject","ref":"SectionsRows"}},
             "title": {"dataType":"string"},
         },
         "additionalProperties": false,
@@ -243,7 +243,7 @@ const models: TsoaRoute.Models = {
             "buttons": {"dataType":"array","array":{"dataType":"refObject","ref":"Buttons"}},
             "catalog_id": {"dataType":"string"},
             "product_retailer_id": {"dataType":"string"},
-            "sections": {"ref":"Sections"},
+            "sections": {"dataType":"array","array":{"dataType":"refObject","ref":"Sections"}},
         },
         "additionalProperties": false,
     },
@@ -308,6 +308,142 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "SendText": {
+        "dataType": "refObject",
+        "properties": {
+            "messaging_product": {"dataType":"enum","enums":["whatsapp"],"required":true},
+            "recipient_type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["individual"]},{"dataType":"enum","enums":["group"]}],"required":true},
+            "to": {"dataType":"string","required":true},
+            "type": {"dataType":"enum","enums":["text"],"required":true},
+            "context": {"dataType":"nestedObjectLiteral","nestedProperties":{"message_id":{"dataType":"string","required":true}}},
+            "text": {"ref":"TextMessageObject","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "SendImage": {
+        "dataType": "refObject",
+        "properties": {
+            "messaging_product": {"dataType":"enum","enums":["whatsapp"],"required":true},
+            "recipient_type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["individual"]},{"dataType":"enum","enums":["group"]}],"required":true},
+            "to": {"dataType":"string","required":true},
+            "type": {"dataType":"enum","enums":["image"],"required":true},
+            "context": {"dataType":"nestedObjectLiteral","nestedProperties":{"message_id":{"dataType":"string","required":true}}},
+            "image": {"ref":"MediaObject","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ReplyMsgId": {
+        "dataType": "refObject",
+        "properties": {
+            "message_id": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "SendAudio": {
+        "dataType": "refObject",
+        "properties": {
+            "messaging_product": {"dataType":"enum","enums":["whatsapp"],"required":true},
+            "recipient_type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["individual"]},{"dataType":"enum","enums":["group"]}],"required":true},
+            "to": {"dataType":"string","required":true},
+            "type": {"dataType":"enum","enums":["audio"],"required":true},
+            "context": {"ref":"ReplyMsgId"},
+            "audio": {"ref":"MediaObject","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "SendDocument": {
+        "dataType": "refObject",
+        "properties": {
+            "messaging_product": {"dataType":"enum","enums":["whatsapp"],"required":true},
+            "recipient_type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["individual"]},{"dataType":"enum","enums":["group"]}],"required":true},
+            "to": {"dataType":"string","required":true},
+            "type": {"dataType":"enum","enums":["document"],"required":true},
+            "context": {"ref":"ReplyMsgId"},
+            "document": {"ref":"MediaObject","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "SendSticker": {
+        "dataType": "refObject",
+        "properties": {
+            "messaging_product": {"dataType":"enum","enums":["whatsapp"],"required":true},
+            "recipient_type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["individual"]},{"dataType":"enum","enums":["group"]}],"required":true},
+            "to": {"dataType":"string","required":true},
+            "type": {"dataType":"enum","enums":["sticker"],"required":true},
+            "context": {"ref":"ReplyMsgId"},
+            "sticker": {"ref":"MediaObject","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "SendVideo": {
+        "dataType": "refObject",
+        "properties": {
+            "messaging_product": {"dataType":"enum","enums":["whatsapp"],"required":true},
+            "recipient_type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["individual"]},{"dataType":"enum","enums":["group"]}],"required":true},
+            "to": {"dataType":"string","required":true},
+            "type": {"dataType":"enum","enums":["video"],"required":true},
+            "context": {"ref":"ReplyMsgId"},
+            "video": {"ref":"MediaObject","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "SendContact": {
+        "dataType": "refObject",
+        "properties": {
+            "messaging_product": {"dataType":"enum","enums":["whatsapp"],"required":true},
+            "recipient_type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["individual"]},{"dataType":"enum","enums":["group"]}],"required":true},
+            "to": {"dataType":"string","required":true},
+            "type": {"dataType":"enum","enums":["contacts"],"required":true},
+            "context": {"ref":"ReplyMsgId"},
+            "contacts": {"dataType":"array","array":{"dataType":"refObject","ref":"ContactObject"},"required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "SendLocation": {
+        "dataType": "refObject",
+        "properties": {
+            "messaging_product": {"dataType":"enum","enums":["whatsapp"],"required":true},
+            "recipient_type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["individual"]},{"dataType":"enum","enums":["group"]}],"required":true},
+            "to": {"dataType":"string","required":true},
+            "type": {"dataType":"enum","enums":["location"],"required":true},
+            "context": {"ref":"ReplyMsgId"},
+            "location": {"ref":"LocationMessageObject","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "SendReaction": {
+        "dataType": "refObject",
+        "properties": {
+            "messaging_product": {"dataType":"enum","enums":["whatsapp"],"required":true},
+            "recipient_type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["individual"]},{"dataType":"enum","enums":["group"]}],"required":true},
+            "to": {"dataType":"string","required":true},
+            "type": {"dataType":"enum","enums":["reaction"],"required":true},
+            "reaction": {"ref":"ReactMessageObject","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "SendInteractive": {
+        "dataType": "refObject",
+        "properties": {
+            "messaging_product": {"dataType":"enum","enums":["whatsapp"],"required":true},
+            "recipient_type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["individual"]},{"dataType":"enum","enums":["group"]}],"required":true},
+            "to": {"dataType":"string","required":true},
+            "type": {"dataType":"enum","enums":["interactive"],"required":true},
+            "interactive": {"ref":"InteractiveObject","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 };
 const validationService = new ValidationService(models);
 
@@ -325,7 +461,7 @@ export function RegisterRoutes(app: express.Router) {
             function AuthController_generateToken(request: any, response: any, next: any) {
             const args = {
                     PHONE_NUMBER_ID: {"in":"path","name":"PHONE_NUMBER_ID","required":true,"dataType":"string"},
-                    SECRET_KEY: {"in":"path","name":"SECRET_KEY","required":true,"dataType":"string"},
+                    SECRET_KEY: {"in":"path","name":"SECRET_KEY","required":true,"dataType":"enum","enums":["THISISMYSECURETOKEN"]},
                     req: {"in":"request","name":"req","required":true,"dataType":"object"},
             };
 
@@ -601,7 +737,7 @@ export function RegisterRoutes(app: express.Router) {
             function MessagesController_sendMessage(request: any, response: any, next: any) {
             const args = {
                     PHONE_NUMBER_ID: {"in":"path","name":"PHONE_NUMBER_ID","required":true,"dataType":"string"},
-                    payload: {"in":"body","name":"payload","required":true,"ref":"Message"},
+                    payload: {"in":"body","name":"payload","required":true,"dataType":"union","subSchemas":[{"ref":"SendText"},{"ref":"SendImage"},{"ref":"SendAudio"},{"ref":"SendDocument"},{"ref":"SendSticker"},{"ref":"SendVideo"},{"ref":"SendContact"},{"ref":"SendLocation"},{"ref":"SendReaction"},{"ref":"SendInteractive"}]},
                     req: {"in":"request","name":"req","required":true,"dataType":"object"},
             };
 

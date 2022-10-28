@@ -3,6 +3,7 @@ import { Message as MessageWPP } from '@wppconnect-team/wppconnect';
 import { ClientWhatsApp, RequestEx } from '../models/Request';
 import { Error } from '../models/Error';
 import { ServerError } from './server-error';
+import { SendAudio, SendContact, SendDocument, SendImage, SendInteractive, SendLocation, SendReaction, SendSticker, SendText, SendVideo } from '../models/SendMessage';
 
 export class MessagesService {
     public async get(req: RequestEx, id: string): Promise<ServerError | Message> {
@@ -133,26 +134,29 @@ export class MessagesService {
                 131009);
         }
     }
-    public async create(req: RequestEx, payload: Message): Promise<ReturnSendedMessage | Error> {
+    public async create(req: RequestEx, payload: SendText | SendImage | SendAudio | SendDocument | SendSticker | SendVideo | SendContact | SendLocation | SendReaction | SendInteractive): Promise<ReturnSendedMessage | Error> {
         try {
             let message;
             let options;
-            if(payload.context?.message_id) {
+            if(payload.type !== "reaction" && payload.type !== "interactive" && payload.context?.message_id) {
                 options = {
-                    quotedMsg: payload.context?.message_id
+                    quotedMsg: payload.context.message_id
                 }
             }
             if(payload.type === "text") {
-                message = await req.client?.sendText(payload.to, payload.text?.body as string, options);
+                message = await req.client?.sendText(payload.to, payload.text.body as string, options);
                 return Promise.resolve(this.returnMessageSucess(payload.to, message?.id as string));
             }else if(payload.type === "image") {
                 message = await req.client?.sendImage(payload.to, payload.image?.link as string, undefined, payload.image?.caption, (payload.context?.message_id ? payload.context?.message_id : undefined));
                 return Promise.resolve(this.returnMessageSucess(payload.to, message?.id as string));
             }else if(payload.type === "audio") {
-                message = await req.client?.sendPtt(payload.to, payload.audio?.link as string, undefined, undefined, (payload.context?.message_id ? payload.context?.message_id : undefined)) as MessageWPP;
+                message = await req.client?.sendPtt(payload.to, payload.audio.link as string, undefined, undefined, (payload.context?.message_id ? payload.context?.message_id : undefined)) as MessageWPP;
                 return Promise.resolve(this.returnMessageSucess(payload.to, message?.id));
-            }else if(payload.type === "document" || payload.type === "video") {
-                message = await req.client?.sendFile(payload.to, payload.document?.link as string, options) as MessageWPP;
+            }else if(payload.type === "document") {
+                message = await req.client?.sendFile(payload.to, payload.document.link as string, options) as MessageWPP;
+                return Promise.resolve(this.returnMessageSucess(payload.to, message?.id));
+            }else if(payload.type === "video") {
+                message = await req.client?.sendFile(payload.to, payload.video.link as string, options) as MessageWPP;
                 return Promise.resolve(this.returnMessageSucess(payload.to, message?.id));
             }else if(payload.type === "sticker") {
                 message = await req.client?.sendImageAsSticker(payload.to, payload.sticker?.link as string) as unknown as MessageWPP;

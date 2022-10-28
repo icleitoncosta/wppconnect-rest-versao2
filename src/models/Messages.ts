@@ -9,6 +9,7 @@ export enum MessageType {
     ORDER = "order",
     VIDEO = "video",
     CONTACTS = "contacts",
+    LOCATION ="location",
     UNKNOWN = "unknown",
     SYSTEM = "system",
     INTERACTIVE = "interactive"
@@ -69,11 +70,17 @@ export interface ReturnSendedMessage {
     }
 }
 
-interface TextMessageObject {
+export interface TextMessageObject {
+    /**
+     * @example "Welcome to Brazil!"
+     */
     body: string;
+    /**
+     * @example true
+     */
     preview_url?: boolean;
 }
-interface ReactMessageObject {
+export interface ReactMessageObject {
     /**
      * The WhatsApp Message ID (wamid) of the message on which the reaction should appear. The reaction will not be sent if:
      * The message is a reaction message
@@ -86,7 +93,7 @@ interface ReactMessageObject {
      */
     emoji: string;
 }
-interface LocationMessageObject {
+export interface LocationMessageObject {
     /**
      * Longitude of the location.
      */
@@ -196,7 +203,7 @@ export interface MediaObject {
     filename?: string;
 }
 
-interface InteractiveObject {
+export interface InteractiveObject {
     action: ActionObject;
     body?: { text: string; };
     footer?: { text: string; };
@@ -218,7 +225,7 @@ interface ActionObject {
       * Unique identifier of the product in a catalog.
       */
      product_retailer_id?: string;
-     sections?: Sections;
+     sections?: Sections[];
 }
 
 export interface Buttons {
@@ -247,7 +254,7 @@ interface Sections {
     /**
      * Contains a list of rows. You can have a total of 10 rows across your sections.
      */
-    rows?: SectionsRows;
+    rows?: SectionsRows[];
     /**
      * Required if the message has more than one section.
      * Title of the section.
@@ -259,3 +266,4 @@ interface SectionsRows {
     title: string;
     description?: string;
 }
+
