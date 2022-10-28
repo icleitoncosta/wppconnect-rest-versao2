@@ -1,7 +1,7 @@
 import config from "../config";
 
 import bcrypt from "bcrypt";
-import { ClientWhatsApp, RequestEx } from "../models/Request";
+import { RequestEx } from "../models/Request";
 import { Error } from "../models/Error";
 import { clientsArray } from "../utils/session";
 interface ReturnToken {
@@ -30,12 +30,23 @@ export class TokenService {
             const hash = await bcrypt.hash(PHONE_NUMBER_ID + config.secretKey, 10);
             const hashFormat =  hash.replace(/\//g, '_').replace(/\+/g, '-');
 
-            const session: Partial<ClientWhatsApp> = {
-                session: PHONE_NUMBER_ID,
-                token: hash
-            };
-
-            clientsArray.push(session);
+            let ocurr = null;
+            for(const session of clientsArray) {
+                if(session.session === PHONE_NUMBER_ID) {
+                    session.token = hash;
+                    session.qrcode = null;
+                    session.urlcode = "";
+                    ocurr = true;
+                }
+            }
+            if(!ocurr) {
+                clientsArray.push({
+                    session: PHONE_NUMBER_ID,
+                    token: hash,
+                    qrcode: null,
+                    urlcode: "",
+                });
+            }
             
             return {
                 status: "sucess",

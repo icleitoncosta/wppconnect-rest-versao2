@@ -90,11 +90,16 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "MessageType": {
+        "dataType": "refEnum",
+        "enums": [0,1,2,3,4,5],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "TextMessageObject": {
         "dataType": "refObject",
         "properties": {
             "body": {"dataType":"string","required":true},
-            "preview_url": {"dataType":"boolean","required":true},
+            "preview_url": {"dataType":"boolean"},
         },
         "additionalProperties": false,
     },
@@ -112,6 +117,8 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "id": {"dataType":"string"},
+            "mime_type": {"dataType":"string"},
+            "sha256": {"dataType":"string"},
             "link": {"dataType":"string"},
             "caption": {"dataType":"string"},
             "filename": {"dataType":"string"},
@@ -194,7 +201,7 @@ const models: TsoaRoute.Models = {
             "emails": {"dataType":"array","array":{"dataType":"string"}},
             "name": {"ref":"NameContact","required":true},
             "org": {"ref":"OrgContact"},
-            "phones": {"ref":"PhonesContact","required":true},
+            "phones": {"dataType":"array","array":{"dataType":"refObject","ref":"PhonesContact"},"required":true},
             "urls": {"dataType":"array","array":{"dataType":"refObject","ref":"UrlsContact"}},
         },
         "additionalProperties": false,
@@ -258,18 +265,32 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "messaging_product": {"dataType":"enum","enums":["whatsapp"],"required":true},
-            "type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["text"]},{"dataType":"enum","enums":["image"]},{"dataType":"enum","enums":["audio"]},{"dataType":"enum","enums":["document"]},{"dataType":"enum","enums":["template"]},{"dataType":"enum","enums":["hsm"]}]},
+            "type": {"ref":"MessageType"},
             "to": {"dataType":"string","required":true},
+            "from": {"dataType":"string"},
+            "timestamp": {"dataType":"double"},
             "context": {"dataType":"nestedObjectLiteral","nestedProperties":{"message_id":{"dataType":"string","required":true}}},
-            "recipient_type": {"dataType":"enum","enums":["individual"]},
+            "recipient_type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["individual"]},{"dataType":"enum","enums":["group"]}]},
             "template": {"dataType":"any"},
             "hsm": {"dataType":"any"},
             "text": {"ref":"TextMessageObject"},
             "reaction": {"ref":"ReactMessageObject"},
             "image": {"ref":"MediaObject"},
             "location": {"ref":"LocationMessageObject"},
-            "contacts": {"ref":"ContactObject"},
+            "contacts": {"dataType":"array","array":{"dataType":"refObject","ref":"ContactObject"}},
             "interactive": {"ref":"InteractiveObject"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ServerError": {
+        "dataType": "refObject",
+        "properties": {
+            "error": {"dataType":"nestedObjectLiteral","nestedProperties":{"fbtrace_id":{"dataType":"undefined","required":true},"error_subcode":{"dataType":"double","required":true},"error_data":{"dataType":"nestedObjectLiteral","nestedProperties":{"details":{"dataType":"any","required":true},"messaging_product":{"dataType":"enum","enums":["whatsapp"],"required":true}},"required":true},"code":{"dataType":"double","required":true},"type":{"dataType":"string","required":true},"message":{"dataType":"string","required":true}},"required":true},
+            "type": {"dataType":"any","required":true},
+            "code": {"dataType":"double","default":3},
+            "details": {"dataType":"any","required":true},
+            "subcode": {"dataType":"double","default":0},
         },
         "additionalProperties": false,
     },

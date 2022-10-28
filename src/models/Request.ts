@@ -6,6 +6,7 @@ export interface RequestEx extends Express.Request {
     session?: string;
     token?: string;
     logger?: any;
+    data?: any;
 }
 
 export interface ClientWhatsApp extends Whatsapp {
@@ -14,4 +15,13 @@ export interface ClientWhatsApp extends Whatsapp {
     qrcode?: string | null;
     status?: string;
     config?: any;
+}
+
+export interface Sessions {
+    client?: ClientWhatsApp;
+    status?: string;
+    session?: string;
+    token?: string;
+    qrcode?: string | null;
+    urlcode?: string;
 }

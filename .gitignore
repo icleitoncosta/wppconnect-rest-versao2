@@ -3,6 +3,7 @@ tsoa
 build
 log
 userDataDir
+tokens
 
 # Logs
 logs

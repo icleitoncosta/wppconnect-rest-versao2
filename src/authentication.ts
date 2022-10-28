@@ -1,56 +1,72 @@
-import { Whatsapp } from "@wppconnect-team/wppconnect";
 import bcrypt from "bcrypt";
 import config from "./config";
-import { RequestEx } from "./models/Request";
+import { ClientWhatsApp, RequestEx } from "./models/Request";
 import { ServerError } from "./services/server-error";
 import { clientsArray } from "./utils/session";
 
-export async function expressAuthentication(
+export function expressAuthentication(
   request: RequestEx,
   _securityName: string,
   _scopes?: string[]
-): Promise<any> {
+): Promise<void> {
     const secret  = config.secretKey;
-    let tokenDecrypt = '';
 
     const { authorization: token } = request.headers; 
 
-    try {
-        if (token && token !== '' && (token as string).split(' ').length > 0) {
-            const token_value = (token as string).split(' ')[1];
-            if (token_value) tokenDecrypt = token_value.replace(/_/g, '/').replace(/-/g, '+');
-        } else {
-            return Promise.reject(new ServerError(
-                "Token in not present", 
-                "invalid_request", 
-                3, 
-                "Token is not present. Check your header and try again",
-                132000
-                ));
-        }
-
-        for (const session of clientsArray) {
-            if (session.token === token) {
-                try {
-                    await bcrypt.compare(session.session + secret, tokenDecrypt);
-                    request.session = session.session;
-                    request.token = tokenDecrypt;
-                    request.client = session as Whatsapp;
-                } catch (err: any) {
-                    
-                return Promise.reject(new ServerError(
-                    "Validation Failed", 
+    return new Promise(async (resolve, reject)=> {
+        let tokenDecrypt = '';
+        try {
+            if (token && token !== '' && (token as string).split(' ').length > 0) {
+                const token_value = (token as string).split(' ')[1];
+                if (token_value) tokenDecrypt = token_value.replace(/_/g, '/').replace(/-/g, '+');
+    
+                let sessionOcurr = false;
+                clientsArray.forEach(async (session) => {
+                    console.log(token);
+                    if (session.token == token) {
+                        try {
+                            console.log('sessao correta... vamos setar');
+                            sessionOcurr = true;
+                            await bcrypt.compare(session.session + secret, tokenDecrypt);
+                            request.session = session.session;
+                            request.token = tokenDecrypt;
+                            request.data = session as ClientWhatsApp;
+                            request.client = session.client;
+                            resolve();
+                        } catch (err: any) {
+                            console.log(err);
+                            reject(new ServerError(
+                                "Validation Failed", 
+                                "invalid_request", 
+                                3, 
+                                err,
+                                132000
+                            ));
+                        }
+                    }
+                });
+                if(!sessionOcurr) {
+                    reject(new ServerError(
+                        "Validation Failed", 
+                        "invalid_request", 
+                        3, 
+                        "Token is incorrect. Check your header and try again",
+                        132000
+                    ));
+                    console.log('erro de sessao nao encontrada"');
+                    console.log(clientsArray);
+                }
+            } else {
+                reject(new ServerError(
+                    "Token in not present", 
                     "invalid_request", 
                     3, 
-                    "Token is incorrect. Check your header and try again",
+                    "Token is not present. Check your header and try again",
                     132000
                     ));
-                }
             }
+        } catch (error) {
+            return reject(error);
         }
-        return Promise.resolve();
-        
-    } catch (error) {
-        return Promise.reject(error);
-    }
+    })
 }

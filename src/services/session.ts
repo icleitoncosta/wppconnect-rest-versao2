@@ -1,4 +1,4 @@
-import { ClientWhatsApp, RequestEx } from "../models/Request";
+import { RequestEx, Sessions } from "../models/Request";
 import QRCode from "qrcode";
 import { version } from '../../package.json';
 import { ServerError } from "./server-error";
@@ -22,10 +22,11 @@ export class SessionService {
 
     private async getSessionState(_req: RequestEx): Promise<any> {
         try {
-          const client = _req.client as ClientWhatsApp;
-          const qr = client.urlcode ? await QRCode.toDataURL(client.urlcode) : null;
+          const client = _req.client as Sessions;
+          const data = _req.data as Sessions;
+          const qr = data.urlcode ? await QRCode.toDataURL(data.urlcode) : null;
       
-          if ((client == null || client.status == null))
+          if ((client == null || data.status == null))
           {
             return {
                 status: "CLOSED",
@@ -36,9 +37,9 @@ export class SessionService {
           }
           else if (client != null) {
             return {
-              status: client.status as string,
+              status: data.status as string,
               qrcode: qr,
-              urlcode: client.urlcode as string,
+              urlcode: data.urlcode as string,
               version: version,
             };
           }
