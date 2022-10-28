@@ -15,6 +15,7 @@ import {
   } from "tsoa";
 import { RequestEx } from "../models/Request";
 import { Error } from "../models/Error";
+import { ServerError } from "../services/server-error";
 
 @Route("/")
 export class MessagesController extends Controller {
@@ -30,7 +31,7 @@ export class MessagesController extends Controller {
   public async getMessage(
     @Path() MESSAGE_ID: string,
     @Request() req: RequestEx
-  ): Promise<Message> {
+  ): Promise<Message | ServerError> {
     return new MessagesService().get(req, MESSAGE_ID);
   }
   /**

@@ -1,3 +1,11 @@
+export enum MessageType {
+    'text',
+    'image', 'audio',
+    'document',
+    'template',
+    'hsm'
+}
+
 export interface Message {
     /**
      * Send Messages, audio, etc
@@ -7,17 +15,19 @@ export interface Message {
      * Required for message templates.
      * The type of message being sent.
      */
-    type?: 'text' | 'image' | 'audio' | 'document' | 'template' | 'hsm';
+    type?: MessageType;
     /**
      * ID of user or group "xxxxxxxxxx@c.us" for contacts, "xxxxxxxxxx@g.us" for groups
      * @example 5521985523778@c.us
      */
     to: string;
+    from?: string;
+    timestamp?: number;
     /**
      * Reply for a message
      */
     context?: { message_id: string };
-    recipient_type?: 'individual';
+    recipient_type?: 'individual' | 'group';
     /**
      * Required for template messages.
      * Contains all model information.
@@ -32,7 +42,7 @@ export interface Message {
     reaction?: ReactMessageObject;
     image?: MediaObject;
     location?: LocationMessageObject;
-    contacts?: ContactObject;
+    contacts?: ContactObject[];
     interactive?: InteractiveObject;
 }
 
@@ -49,7 +59,7 @@ export interface ReturnSendedMessage {
 
 interface TextMessageObject {
     body: string;
-    preview_url: boolean;
+    preview_url?: boolean;
 }
 interface ReactMessageObject {
     /**
@@ -102,7 +112,7 @@ export interface ContactObject {
      * Not implemented yeat on WAJS
      */
     org?: OrgContact;
-    phones: PhonesContact;
+    phones: PhonesContact[];
     /**
      * Not implemented yeat on WAJS
      */
@@ -153,6 +163,9 @@ export interface MediaObject {
      * Required when type is audio, document, image, sticker, or video and you are not using a link.
      */
     id?: string;
+
+    mime_type?: string;
+    sha256?: string;
     /**
      * Send LINK HTTPS or <base64>
      * Required when type is audio, document, image, sticker, or video and you are not using an uploaded media ID.
