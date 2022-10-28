@@ -10,9 +10,11 @@ import {
     SuccessResponse,
     Tags,
     Request,
-    Security
+    Security,
+    Response
   } from "tsoa";
 import { Contact, BusinessProfileInterface, FieldsBusinessContact, FieldsContact } from "../models/Contact";
+import { Error } from "../models/Error";
 import { ContactService } from "../services/contact";
 
 @Route("/")
@@ -25,6 +27,20 @@ export class ContactsController extends Controller {
   @Get("{PHONE_NUMBER_ID}/whatsapp_contact_profile")
   @Tags("Contacts")
   @Security("apiKey")
+  @Response<Error>(401, "Unauthorized", {
+    error: {
+      fbtrace_id: undefined,
+      message: "Token in not present",
+      type: "invalid_request",
+      code: 3,
+      error_data: {
+        "messaging_product": "whatsapp",
+        "details": "Token is not present. Check your header and try again"
+      },
+      "error_subcode": 132000
+    }
+  }
+)
   public async getContact(
     @Path() PHONE_NUMBER_ID: string,
     @Query() fields: FieldsContact[],
@@ -40,6 +56,20 @@ export class ContactsController extends Controller {
   @Get("{PHONE_NUMBER_ID}/whatsapp_business_profile")
   @Tags("Contacts")
   @Security("apiKey")
+  @Response<Error>(401, "Unauthorized", {
+    error: {
+      fbtrace_id: undefined,
+      message: "Token in not present",
+      type: "invalid_request",
+      code: 3,
+      error_data: {
+        "messaging_product": "whatsapp",
+        "details": "Token is not present. Check your header and try again"
+      },
+      "error_subcode": 132000
+    }
+  }
+)
   public async getBusinessContact(
     @Path() PHONE_NUMBER_ID: string,
     @Query() fields: FieldsBusinessContact[],
@@ -54,6 +84,20 @@ export class ContactsController extends Controller {
   @Post("{PHONE_NUMBER_ID}/whatsapp_business_profile")
   @Tags("Profile")
   @Security("apiKey")
+  @Response<Error>(401, "Unauthorized", {
+    error: {
+      fbtrace_id: undefined,
+      message: "Token in not present",
+      type: "invalid_request",
+      code: 3,
+      error_data: {
+        "messaging_product": "whatsapp",
+        "details": "Token is not present. Check your header and try again"
+      },
+      "error_subcode": 132000
+    }
+  }
+)
   @SuccessResponse("200", "Created") 
   public async updateBusinessProfile(
     @Path() PHONE_NUMBER_ID: string,

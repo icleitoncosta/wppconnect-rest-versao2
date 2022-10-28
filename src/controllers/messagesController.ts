@@ -24,6 +24,7 @@ import { ReceivedAndGetMessage } from "../models/Webhook";
 export class MessagesController extends Controller {
   /**
    * Retrieves the details of an existing message.
+   * It's exactly the same way you get it via Webhooks.
    * @param PHONE_NUMBER_ID ID of user or group "xxxxxxxxxx@c.us" for contacts, "xxxxxxxxxx@g.us" for groups
    * @MESSAGE_ID MessageID for you retrieve
   */
@@ -31,6 +32,20 @@ export class MessagesController extends Controller {
   @Tags("Messages")
   @Security("apiKey")
   @Response<Error>(400, "Incorrect request")
+  @Response<Error>(401, "Unauthorized", {
+      error: {
+        fbtrace_id: undefined,
+        message: "Token in not present",
+        type: "invalid_request",
+        code: 3,
+        error_data: {
+          "messaging_product": "whatsapp",
+          "details": "Token is not present. Check your header and try again"
+        },
+        "error_subcode": 132000
+      }
+    }
+  )
   @Example<ReceivedAndGetMessage>({
     object: "whatsapp_business_account",
     entry: [
@@ -313,6 +328,20 @@ export class MessagesController extends Controller {
    * @param PHONE_NUMBER_ID ID of your user "xxxxxxxxxx@c.us"
   */
   @Post("{PHONE_NUMBER_ID}/messages")
+  @Response<Error>(401, "Unauthorized", {
+      error: {
+        fbtrace_id: undefined,
+        message: "Token in not present",
+        type: "invalid_request",
+        code: 3,
+        error_data: {
+          "messaging_product": "whatsapp",
+          "details": "Token is not present. Check your header and try again"
+        },
+        "error_subcode": 132000
+      }
+    }
+  )
   @Example<SendText>({
     messaging_product: "whatsapp",
     recipient_type: "individual",

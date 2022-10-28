@@ -10,11 +10,13 @@ import {
     Tags,
     UploadedFile,
     Request,
-    Security
+    Security,
+    Response
   } from "tsoa";
 import { MediaService } from "../services/media";
 import { Media, ReturnMedia } from "../models/Media";
 import { RequestEx } from "../models/Request";
+import { Error } from "../models/Error";
 
 @Route("/")
 export class MediasController extends Controller {
@@ -25,6 +27,20 @@ export class MediasController extends Controller {
   @Get("{MEDIA_ID}")
   @Tags("Media")
   @Security("apiKey")
+  @Response<Error>(401, "Unauthorized", {
+    error: {
+      fbtrace_id: undefined,
+      message: "Token in not present",
+      type: "invalid_request",
+      code: 3,
+      error_data: {
+        "messaging_product": "whatsapp",
+        "details": "Token is not present. Check your header and try again"
+      },
+      "error_subcode": 132000
+    }
+  }
+)
   public async getMedia(
     @Path() MEDIA_ID: string,
     @Request() req: RequestEx
@@ -39,6 +55,20 @@ export class MediasController extends Controller {
   @Tags("Media")
   @Security("apiKey")
   @SuccessResponse("200", "Created") 
+  @Response<Error>(401, "Unauthorized", {
+    error: {
+      fbtrace_id: undefined,
+      message: "Token in not present",
+      type: "invalid_request",
+      code: 3,
+      error_data: {
+        "messaging_product": "whatsapp",
+        "details": "Token is not present. Check your header and try again"
+      },
+      "error_subcode": 132000
+    }
+  }
+)
   public async createMedia(
     @FormField() payload: Media,
     @UploadedFile() file: Express.Multer.File,
@@ -54,6 +84,20 @@ export class MediasController extends Controller {
   @Delete("{MEDIA_ID}")
   @Tags("Media")
   @Security("apiKey")
+  @Response<Error>(401, "Unauthorized", {
+    error: {
+      fbtrace_id: undefined,
+      message: "Token in not present",
+      type: "invalid_request",
+      code: 3,
+      error_data: {
+        "messaging_product": "whatsapp",
+        "details": "Token is not present. Check your header and try again"
+      },
+      "error_subcode": 132000
+    }
+  }
+)
   public async deleteMedia(
     @Path() MEDIA_ID: string,
     @Request() req: RequestEx

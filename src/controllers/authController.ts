@@ -7,7 +7,8 @@ import {
 	Tags,
     Request,
     NoSecurity,
-    Security
+    Security,
+    Response
 } from "tsoa";
 import { RequestEx } from "../models/Request";
 import { Error } from "../models/Error";
@@ -36,6 +37,20 @@ export class AuthController extends Controller {
     @Get("{PHONE_NUMBER_ID}/start")
     @Tags("Auth")
     @Security("apiKey")
+    @Response<Error>(401, "Unauthorized", {
+      error: {
+        fbtrace_id: undefined,
+        message: "Token in not present",
+        type: "invalid_request",
+        code: 3,
+        error_data: {
+          "messaging_product": "whatsapp",
+          "details": "Token is not present. Check your header and try again"
+        },
+        "error_subcode": 132000
+      }
+    }
+  )
     public async startSession(
         @Path() PHONE_NUMBER_ID: string,
         @Request() req: RequestEx
@@ -54,6 +69,20 @@ export class AuthController extends Controller {
     @Get("{PHONE_NUMBER_ID}/qr_code")
     @Tags("Auth")
     @Security("apiKey")
+    @Response<Error>(401, "Unauthorized", {
+      error: {
+        fbtrace_id: undefined,
+        message: "Token in not present",
+        type: "invalid_request",
+        code: 3,
+        error_data: {
+          "messaging_product": "whatsapp",
+          "details": "Token is not present. Check your header and try again"
+        },
+        "error_subcode": 132000
+      }
+    }
+  )
     public async getQrCode(
         @Path() PHONE_NUMBER_ID: string,
         @Request() req: RequestEx
