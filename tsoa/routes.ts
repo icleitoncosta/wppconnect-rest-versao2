@@ -91,8 +91,8 @@ const models: TsoaRoute.Models = {
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "MessageType": {
-        "dataType": "refEnum",
-        "enums": ["text","image","audio","document","template","hsm","sticker","order","video","contacts","location","unknown","system","interactive"],
+        "dataType": "refAlias",
+        "type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["text"]},{"dataType":"enum","enums":["image"]},{"dataType":"enum","enums":["audio"]},{"dataType":"enum","enums":["document"]},{"dataType":"enum","enums":["template"]},{"dataType":"enum","enums":["hsm"]},{"dataType":"enum","enums":["sticker"]},{"dataType":"enum","enums":["order"]},{"dataType":"enum","enums":["video"]},{"dataType":"enum","enums":["contacts"]},{"dataType":"enum","enums":["location"]},{"dataType":"enum","enums":["unknown"]},{"dataType":"enum","enums":["system"]},{"dataType":"enum","enums":["interactive"]}],"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "TextMessageObject": {
@@ -267,6 +267,7 @@ const models: TsoaRoute.Models = {
             "type": {"ref":"MessageType"},
             "to": {"dataType":"string","required":true},
             "from": {"dataType":"string"},
+            "id": {"dataType":"string","required":true},
             "timestamp": {"dataType":"double"},
             "context": {"dataType":"nestedObjectLiteral","nestedProperties":{"message_id":{"dataType":"string","required":true}}},
             "recipient_type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["individual"]},{"dataType":"enum","enums":["group"]}]},

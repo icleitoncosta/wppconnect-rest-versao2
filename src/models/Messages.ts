@@ -1,19 +1,5 @@
-export enum MessageType {
-    TEXT = 'text',
-    IMAGE = 'image', 
-    AUDIO = 'audio',
-    DOCUMENT = 'document',
-    TEMPLATE = 'template',
-    HSM = 'hsm',
-    STICKER = "sticker",
-    ORDER = "order",
-    VIDEO = "video",
-    CONTACTS = "contacts",
-    LOCATION ="location",
-    UNKNOWN = "unknown",
-    SYSTEM = "system",
-    INTERACTIVE = "interactive"
-}
+export type MessageType = 'text' | 'image' | 'audio' | 'document' | 'template' | 'hsm' | "sticker" |
+"order" | "video" | "contacts" | "location" | "unknown" | "system" | "interactive";
 
 export interface Message {
     /**
@@ -31,6 +17,7 @@ export interface Message {
      */
     to: string;
     from?: string;
+    id: string;
     timestamp?: number;
     /**
      * Reply for a message

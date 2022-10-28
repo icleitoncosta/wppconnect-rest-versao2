@@ -21,6 +21,7 @@ export class MessagesService {
     
                 let resolve: Message = {
                     messaging_product: "whatsapp",
+                    id: message.id,
                     type: message.type as unknown as MessageType,
                     timestamp: message.timestamp,
                     to: message.to as string,
@@ -77,8 +78,8 @@ export class MessagesService {
                     resolve.location = {
                         latitude: message.lat as unknown as number,
                         longitude: message.lng ,
-                        name: message.loc,
-                        address: message.loc,
+                        name: message.name,
+                        address: message.adress,
                     }
                 }
     

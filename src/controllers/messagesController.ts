@@ -18,6 +18,7 @@ import { RequestEx } from "../models/Request";
 import { Error } from "../models/Error";
 import { ServerError } from "../services/server-error";
 import { SendAudio, SendContact, SendDocument, SendImage, SendInteractive, SendLocation, SendPoll, SendReaction, SendSticker, SendText, SendVideo } from "../models/SendMessage";
+import { ReceivedAndGetMessage } from "../models/Webhook";
 
 @Route("/")
 export class MessagesController extends Controller {
@@ -30,6 +31,277 @@ export class MessagesController extends Controller {
   @Tags("Messages")
   @Security("apiKey")
   @Response<Error>(400, "Incorrect request")
+  @Example<ReceivedAndGetMessage>({
+    object: "whatsapp_business_account",
+    entry: [
+        {
+            id: "your_session_name",
+            changes: [
+                {
+                    value: {
+                        messaging_product: "whatsapp",
+                        metadata: {
+                            display_phone_number: "display phone or name of contact",
+                            phone_number_id: "phone number of client",
+                        },
+                        contacts: [
+                          {
+                            wa_id: "556589988988c.us",
+                            profile: {
+                              name: "Rafael Barroso",
+                            }
+                          },
+                        ],
+                        messages: [
+                          {
+                            messaging_product: "whatsapp",
+                            id: "false_as5685989898989_56898989@c.us",
+                            type: "text",
+                            to: "5521988892356@c.us",
+                            from: "552198523878@c.us",
+                            timestamp: 56565665678,
+                            recipient_type: "individual",
+                            text: {
+                              body: "You receive a text message from Brazil!"
+                            }
+                          }
+                        ]
+                    },
+                    field: "messages",
+                }
+            ]
+        }
+    ]
+  }, "Return of Get Text Message")
+  @Example<ReceivedAndGetMessage>({
+    object: "whatsapp_business_account",
+    entry: [
+        {
+            id: "your_session_name",
+            changes: [
+                {
+                    value: {
+                        messaging_product: "whatsapp",
+                        metadata: {
+                            display_phone_number: "display phone or name of contact",
+                            phone_number_id: "phone number of client",
+                        },
+                        contacts: [
+                          {
+                            wa_id: "556589988988c.us",
+                            profile: {
+                              name: "Rafael Barroso",
+                            }
+                          },
+                        ],
+                        messages: [
+                          {
+                            messaging_product: "whatsapp",
+                            id: "false_as5685989898989_56898989@c.us",
+                            type: "image",
+                            to: "5521988892356@c.us",
+                            from: "552198523878@c.us",
+                            timestamp: 56565665678,
+                            recipient_type: "individual",
+                            image: {
+                              id: "false_as5685989898989_56898989@c.us",
+                              mime_type: "image/jpg",
+                              sha256: "a63ab36162a4f4ee6622ccd787b0a048c26b93acfc05c6b1843659b253c3c00b",
+                              link: "http://localhost:21465/false_as5685989898989_56898989@c.us",
+                              caption: "Look this image from Brazil",
+                            }
+                          }
+                        ]
+                    },
+                    field: "messages",
+                }
+            ]
+        }
+    ]
+  }, "Return of Get Image Message")
+  @Example<ReceivedAndGetMessage>({
+    object: "whatsapp_business_account",
+    entry: [
+        {
+            id: "your_session_name",
+            changes: [
+                {
+                    value: {
+                        messaging_product: "whatsapp",
+                        metadata: {
+                            display_phone_number: "display phone or name of contact",
+                            phone_number_id: "phone number of client",
+                        },
+                        contacts: [
+                          {
+                            wa_id: "556589988988c.us",
+                            profile: {
+                              name: "Rafael Barroso",
+                            }
+                          },
+                        ],
+                        messages: [
+                          {
+                            messaging_product: "whatsapp",
+                            id: "false_as5685989898989_56898989@c.us",
+                            type: "image",
+                            to: "5521988892356@c.us",
+                            from: "552198523878@c.us",
+                            timestamp: 56565665678,
+                            recipient_type: "individual",
+                            video: {
+                              id: "false_as5685989898989_56898989@c.us",
+                              mime_type: "video/mp4",
+                              sha256: "a63ab36162a4f4ee6622ccd787b0a048c26b93acfc05c6b1843659b253c3c00b",
+                              link: "http://localhost:21465/false_as5685989898989_56898989@c.us",
+                              caption: "Look this video from Brazil",
+                            }
+                          }
+                        ]
+                    },
+                    field: "messages",
+                }
+            ]
+        }
+    ]
+  }, "Return of Get Video Message")
+  @Example<ReceivedAndGetMessage>({
+    object: "whatsapp_business_account",
+    entry: [
+        {
+            id: "your_session_name",
+            changes: [
+                {
+                    value: {
+                        messaging_product: "whatsapp",
+                        metadata: {
+                            display_phone_number: "display phone or name of contact",
+                            phone_number_id: "phone number of client",
+                        },
+                        contacts: [
+                          {
+                            wa_id: "556589988988c.us",
+                            profile: {
+                              name: "Rafael Barroso",
+                            }
+                          },
+                        ],
+                        messages: [
+                          {
+                            messaging_product: "whatsapp",
+                            id: "false_as5685989898989_56898989@c.us",
+                            type: "image",
+                            to: "5521988892356@c.us",
+                            from: "552198523878@c.us",
+                            timestamp: 56565665678,
+                            recipient_type: "individual",
+                            audio: {
+                              id: "false_as5685989898989_56898989@c.us",
+                              mime_type: "video/mp4",
+                              sha256: "a63ab36162a4f4ee6622ccd787b0a048c26b93acfc05c6b1843659b253c3c00b",
+                              link: "http://localhost:21465/false_as5685989898989_56898989@c.us",
+                              caption: "Look this audio from Brazil",
+                            }
+                          }
+                        ]
+                    },
+                    field: "messages",
+                }
+            ]
+        }
+    ]
+  }, "Return of Get Audio Message")
+  @Example<ReceivedAndGetMessage>({
+    object: "whatsapp_business_account",
+    entry: [
+        {
+            id: "your_session_name",
+            changes: [
+                {
+                    value: {
+                        messaging_product: "whatsapp",
+                        metadata: {
+                            display_phone_number: "display phone or name of contact",
+                            phone_number_id: "phone number of client",
+                        },
+                        contacts: [
+                          {
+                            wa_id: "556589988988c.us",
+                            profile: {
+                              name: "Rafael Barroso",
+                            }
+                          },
+                        ],
+                        messages: [
+                          {
+                            messaging_product: "whatsapp",
+                            id: "false_as5685989898989_56898989@c.us",
+                            type: "image",
+                            to: "5521988892356@c.us",
+                            from: "552198523878@c.us",
+                            timestamp: 56565665678,
+                            recipient_type: "group",
+                            sticker: {
+                              id: "false_as5685989898989_56898989@c.us",
+                              mime_type: "video/mp4",
+                              sha256: "a63ab36162a4f4ee6622ccd787b0a048c26b93acfc05c6b1843659b253c3c00b",
+                              link: "http://localhost:21465/false_as5685989898989_56898989@c.us",
+                              caption: "Look this audio from Brazil",
+                            }
+                          }
+                        ]
+                    },
+                    field: "messages",
+                }
+            ]
+        }
+    ]
+  }, "Return of Get Sticker Message")
+  @Example<ReceivedAndGetMessage>({
+    object: "whatsapp_business_account",
+    entry: [
+        {
+            id: "your_session_name",
+            changes: [
+                {
+                    value: {
+                        messaging_product: "whatsapp",
+                        metadata: {
+                            display_phone_number: "display phone or name of contact",
+                            phone_number_id: "phone number of client",
+                        },
+                        contacts: [
+                          {
+                            wa_id: "556589988988c.us",
+                            profile: {
+                              name: "Rafael Barroso",
+                            }
+                          },
+                        ],
+                        messages: [
+                          {
+                            messaging_product: "whatsapp",
+                            id: "false_as5685989898989_56898989@c.us",
+                            type: "image",
+                            to: "5521988892356@c.us",
+                            from: "552198523878@c.us",
+                            timestamp: 56565665678,
+                            recipient_type: "group",
+                            location: {
+                              latitude: "-56564889",
+                              longitude: "8989846",
+                              name: "Brasília - DF",
+                              address: "Welcome To Brazil!",
+                            }
+                          }
+                        ]
+                    },
+                    field: "messages",
+                }
+            ]
+        }
+    ]
+  }, "Return of Get Location Message")
   public async getMessage(
     @Path() MESSAGE_ID: string,
     @Request() req: RequestEx

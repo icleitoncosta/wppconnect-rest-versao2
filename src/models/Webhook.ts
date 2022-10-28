@@ -2,71 +2,25 @@ import { Contact } from "./Contact";
 import { Message } from "./Messages";
 import { StatusMessage } from "./StatusMessages";
 
-export interface ReceivedMessage {
+export interface ReceivedAndGetMessage {
     object: "whatsapp_business_account";
-    entry: [
-        {
-            id: string;
-            changes: [
-                {
-                    value: {
-                        messaging_product: "whatsapp",
-                        metadata: {
-                            display_phone_number: string;
-                            phone_number_id: string;
-                        },
-                        contacts: Contact[];
-                        messages: Message[];
-                    }
-                    field: string;
-                }
-            ]
-        }
-    ]
+    entry: EntryObject[];
 }
 
-export interface ReceivedStatusUpdate {
-    object: "whatsapp_business_account";
-    entry: [
-        {
-            id: string;
-            changes: [
-                {
-                    value: {
-                        messaging_product: "whatsapp",
-                        metadata: {
-                            display_phone_number: string;
-                            phone_number_id: string;
-                        },
-                        statuses: StatusMessage[];
-                    }
-                    field: string;
-                }
-            ]
-        }
-    ]
+interface EntryObject {
+    id: string;
+    changes: ChangesObject[]
 }
-
-
-export interface ReceivedContacts {
-    object: "whatsapp_business_account";
-    entry: [
-        {
-            id: string;
-            changes: [
-                {
-                    value: {
-                        messaging_product: "whatsapp",
-                        metadata: {
-                            display_phone_number: string;
-                            phone_number_id: string;
-                        },
-                        contacts: Contact[];
-                        messages: Message[];
-                    }
-                    field: string;
-                }
-            ]
-        }
-    ]
+interface ChangesObject {
+    field: string;
+    value: {
+        messaging_product: "whatsapp",
+        metadata: {
+            display_phone_number: string;
+            phone_number_id: string;
+        },
+        contacts: Contact[];
+        messages?: Message[];
+        statuses?: StatusMessage[];
+    }
 }
