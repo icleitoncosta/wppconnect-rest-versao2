@@ -246,8 +246,8 @@ export class MessagesController extends Controller {
     type: "location",
     to: "number@c.us",
     location: {
-      latitude: -15.721387,
-      longitude: -48.0774438,
+      latitude: "-15.721387",
+      longitude: "-48.0774438",
       name: "Brasilia - BR",
       address: "Capital dos Três Poderes - DF"
     }

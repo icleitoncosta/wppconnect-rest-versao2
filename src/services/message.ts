@@ -171,6 +171,9 @@ export class MessagesService {
             }else if(payload.type === "sticker") {
                 message = await req.client?.sendImageAsSticker(payload.to, payload.sticker?.link as string) as unknown as MessageWPP;
                 return Promise.resolve(this.returnMessageSucess(payload.to, message?.id));
+            }else if(payload.type === "location") {
+                message = await req.client?.sendLocation(payload.to, { lat: payload.location.latitude, lng: payload.location.longitude, address: payload.location.address, name: payload.location.name}) as unknown as MessageWPP;
+                return Promise.resolve(this.returnMessageSucess(payload.to, message?.id));
             }else if(payload.type === "poll") {
                 if(!payload.to.includes("@g.us") || payload.recipient_type === 'individual') {
                     return {

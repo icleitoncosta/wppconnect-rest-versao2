@@ -313,13 +313,27 @@
 			"LocationMessageObject": {
 				"properties": {
 					"longitude": {
-						"type": "number",
-						"format": "double",
+						"anyOf": [
+							{
+								"type": "number",
+								"format": "double"
+							},
+							{
+								"type": "string"
+							}
+						],
 						"description": "Longitude of the location."
 					},
 					"latitude": {
-						"type": "number",
-						"format": "double",
+						"anyOf": [
+							{
+								"type": "number",
+								"format": "double"
+							},
+							{
+								"type": "string"
+							}
+						],
 						"description": "Latitude of the location."
 					},
 					"name": {
@@ -2146,6 +2160,8 @@
 											"type": "location",
 											"to": "number@c.us",
 											"location": {
+												"latitude": "-15.721387",
+												"longitude": "-48.0774438",
 												"name": "Brasilia - BR",
 												"address": "Capital dos Três Poderes - DF"
 											}

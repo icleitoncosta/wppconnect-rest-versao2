@@ -97,11 +97,11 @@ export interface LocationMessageObject {
     /**
      * Longitude of the location.
      */
-    longitude: number;
+    longitude: number | string;
     /**
      * Latitude of the location.
      */
-    latitude: number;
+    latitude: number | string;
     /**
      * Name of the location.
      */

@@ -129,8 +129,8 @@ const models: TsoaRoute.Models = {
     "LocationMessageObject": {
         "dataType": "refObject",
         "properties": {
-            "longitude": {"dataType":"double","required":true},
-            "latitude": {"dataType":"double","required":true},
+            "longitude": {"dataType":"union","subSchemas":[{"dataType":"double"},{"dataType":"string"}],"required":true},
+            "latitude": {"dataType":"union","subSchemas":[{"dataType":"double"},{"dataType":"string"}],"required":true},
             "name": {"dataType":"string"},
             "address": {"dataType":"string"},
         },
