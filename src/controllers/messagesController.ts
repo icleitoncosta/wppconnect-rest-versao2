@@ -1,4 +1,4 @@
-import { ReturnSendedMessage, Message } from "../models/Messages";
+import { ReturnSendedMessage } from "../models/Messages";
 import { MessagesService } from "../services/message";
 import {
     Body,
@@ -320,7 +320,7 @@ export class MessagesController extends Controller {
   public async getMessage(
     @Path() MESSAGE_ID: string,
     @Request() req: RequestEx
-  ): Promise<Message | ServerError> {
+  ): Promise<ReceivedAndGetMessage | ServerError> {
     return new MessagesService().get(req, MESSAGE_ID);
   }
   /**

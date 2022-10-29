@@ -1,5 +1,7 @@
+import { Message as MessageWPP } from "@wppconnect-team/wppconnect";
+
 export type MessageType = 'text' | 'image' | 'audio' | 'document' | 'template' | 'hsm' | "sticker" |
-"order" | "video" | "contacts" | "location" | "unknown" | "system" | "interactive";
+"order" | "video" | "contacts" | "location" | "unknown" | "system" | "interactive" | "poll";
 
 export interface Message {
     /**
@@ -40,10 +42,14 @@ export interface Message {
     video?: MediaObject;
     audio?: MediaObject;
     document?: MediaObject;
+    sticker?: MediaObject;
     location?: LocationMessageObject;
     contacts?: ContactObject[];
     interactive?: InteractiveObject;
-    sticker?: MediaObject;
+    poll?: PollMessageObject;
+    order?: any;
+    unknown?: any;
+    system?: any;
 }
 
 export interface ReturnSendedMessage {
@@ -197,7 +203,7 @@ export interface InteractiveObject {
     header?: { type: "text"; text: string; };
     type: "button" | "list" | "product" | "product_list";
 }
-interface ActionObject {
+export interface ActionObject {
     /**
      * Required for List Messages.
      * Button content. It cannot be an empty string and must be unique within the message. Emojis are supported, markdown is not.
@@ -267,4 +273,26 @@ export interface PollMessageObject {
      * @example 1
      */
      selectableCount?: number;
+}
+export interface SessionExtra extends MessageWPP {
+    session: string;
+    lat?: string | number;
+    lng?: string | number;
+    loc?: string;
+    address?: string;
+    buttons?: any;
+    title?: string;
+    footer?: string;
+    caption?: string;
+    vcardList?: Array<any>;
+    replyButtons?: Array<any>;
+    list?: {
+        buttonText: string;
+        description: string;
+        title?: string;
+        footerText?: string;
+        listType: number;
+        sections: Sections[]
+    };
+    poll?: any;
 }

@@ -1,123 +1,27 @@
-import { Message, ReturnSendedMessage, MessageType, Buttons } from '../models/Messages';
+import { ReturnSendedMessage, MessageType, Buttons, SessionExtra, TextMessageObject, MediaObject, LocationMessageObject, ContactObject, InteractiveObject, PollMessageObject } from '../models/Messages';
 import { Message as MessageWPP } from '@wppconnect-team/wppconnect';
 import { ClientWhatsApp, RequestEx } from '../models/Request';
 import { Error } from '../models/Error';
 import { ServerError } from './server-error';
 import { SendAudio, SendContact, SendDocument, SendImage, SendInteractive, SendLocation, SendPoll, SendReaction, SendSticker, SendText, SendVideo } from '../models/SendMessage';
+import { ReceivedAndGetMessage } from '../models/Webhook';
+import config from '../config';
+import vCard from "vcf";
 
 export class MessagesService {
-    public async get(req: RequestEx, id: string): Promise<ServerError | Message> {
+    public async get(req: RequestEx, id: string): Promise<ServerError | ReceivedAndGetMessage> {
         if(id.length < 23) {
             return new ServerError("Error on get message",
                 "error_retrieve",
                 3,
-                "Message id is incorrect format",
+                "Message not found",
                 131009
             );
         }
         try {
-            const message: Message | any = await (req.client as ClientWhatsApp).getMessageById(id);
+            const message: MessageWPP | any = await (req.client as ClientWhatsApp).getMessageById(id);
             if(message) {
-    
-                let resolve: Message = {
-                    messaging_product: "whatsapp",
-                    id: message.id,
-                    type: message.type as unknown as MessageType,
-                    timestamp: message.timestamp,
-                    to: message.to as string,
-                    from: message.from,
-                    recipient_type: (message.isGroupMsg) ? "group" : "individual",
-                }
-                if(message.type === "template_button_reply" || message.type === "buttons_response") {
-                    resolve.template = "buttons";
-                    resolve.hsm = null;
-                }else if(message.type === "list_response") {
-                    resolve.template = "list";
-                    resolve.hsm = null;
-                }
-                if(message.quotedMsgId){
-                    resolve.context = {
-                        message_id: message.quotedMsgId as unknown as string,
-                    }
-                }
-                if(message.type === "chat") {
-                    resolve.text = {
-                        body: message.body,
-                    }
-                }
-    
-                if(message.type === "image") {
-                    resolve.image = {
-                        caption: message.content,
-                        mime_type: message.mimetype,
-                        sha256: message.mediaKey,
-                        id: message.id
-                    }
-                }
-    
-                if(message.type === "audio" || message.type === "ptt" ) {
-                    // Check fix return for location
-                    resolve.audio = {
-                        mime_type: message.mimetype,
-                        sha256: message.mediaKey,
-                        id: message.id
-                    }
-                }
-    
-                if(message.type === "document") {
-                    // Check fix return for location
-                    resolve.document = {
-                        mime_type: message.mimetype,
-                        sha256: message.mediaKey,
-                        id: message.id
-                    }
-                }
-    
-                if(message.type === "location") {
-                    // Check fix return for location
-                    resolve.location = {
-                        latitude: message.lat as unknown as number,
-                        longitude: message.lng ,
-                        name: message.name,
-                        address: message.adress,
-                    }
-                }
-    
-                if(message.type === "vcard" || message.type === "multi_vcard") {
-                    // Check fix return for location
-                    resolve.contacts = 
-                        [
-                            {
-                                name: {
-                                    formatted_name: message.sender.formattedName,
-                                },
-                                phones: [
-                                    {
-                                        phone: message.sender.id._serialized.replace("@c.us", "")
-                                    }
-                                ]
-                            }
-                        ]
-                }
-
-                if(message.type === "template_button_reply" || message.type === "buttons_response" || message.type === "list_response") {
-                    let type: "button" | "list" | "product" | "product_list" = "button";
-                    if(message.type === "list_response") type = "list";
-    
-                    // Fix interactive buttons
-                    resolve.interactive = {
-                        action: {
-                            button: message.button,
-                            //buttons: null,
-                        },
-                        body: message.body,
-                        footer: message.footer,
-                        header: message.header,
-                        type: type,
-                    }
-                }
-    
-                return resolve;
+                return this.returnGetMessage(message);
             } else {
                 return new ServerError("Error on get message",
                     "error_retrieve",
@@ -135,6 +39,192 @@ export class MessagesService {
                 131009);
         }
     }
+    private returnGetMessage(message: SessionExtra): Promise<ReceivedAndGetMessage> {
+        let resolve: ReceivedAndGetMessage = {
+            object: "whatsapp_business_account",
+            entry: [
+                {
+                    id: message.session,
+                    changes: [
+                        {
+                            value: {
+                                messaging_product: "whatsapp",
+                                metadata: {
+                                    display_phone_number: message.sender.formattedName,
+                                    phone_number_id: message.sender.id._serialized,
+                                },
+                                contacts: [
+                                  {
+                                    wa_id: message.sender.id._serialized,
+                                    profile: {
+                                      name: (!message.sender.name) ? message.sender.pushname as string : message.sender.formattedName,
+                                    }
+                                  },
+                                ],
+                                messages: [
+                                  {
+                                    messaging_product: "whatsapp",
+                                    id: message.id,
+                                    type: this.getMessageType(message),
+                                    to: (message.isGroupMsg) ? message.from : message.to,
+                                    from: (message.isGroupMsg) ? message.sender.id._serialized : message.from,
+                                    timestamp: message.timestamp,
+                                    context: this.getMessageContext(message),
+                                    recipient_type: message.isGroupMsg ? "group" : "individual",
+                                    text: this.getTextObject(message),
+                                    image: this.getMediaObject(message, "image"),
+                                    audio: this.getMediaObject(message, "audio"),
+                                    video: this.getMediaObject(message, "video"),
+                                    document: this.getMediaObject(message, "document"),
+                                    sticker: this.getMediaObject(message, "sticker"),
+                                    interactive: this.getInteractiveObject(message),
+                                    contacts: this.getContactObject(message),
+                                    location: this.getLocationObject(message),
+                                    poll: this.getPollObject(message),
+                                  }
+                                ]
+                            },
+                            field: "messages",
+                        }
+                    ]
+                }
+            ]
+          }
+        return Promise.resolve(resolve);
+    }
+    private getMessageType(message: SessionExtra): MessageType {
+        if(message.type === "chat" && message.replyButtons) return "interactive";
+        else if(message.type === "chat") return "text";
+        else if(message.type === "unknown") return "poll";
+        else if(message.type === "audio" || message.type === "ptt") return "audio";
+        else if(message.type === "vcard" || message.type === "multi_vcard" ) return "contacts";
+        else if(message.type === "template_button_reply") return "interactive";
+        else if(message.type === "list") return "interactive";
+        else if(message.type === "location" 
+        || message.type === "image" 
+        || message.type === "video" 
+        || message.type === "document" 
+        || message.type === "hsm" 
+        || message.type === "sticker") return message.type;
+        else return "unknown";
+    }
+    private getTextObject(message: SessionExtra): TextMessageObject | undefined {
+        if(this.getMessageType(message) === "text") {
+            return {
+                body: message.content,
+            }
+        }else return undefined;
+    }
+    private getMediaObject(message: SessionExtra, mediaType: string): MediaObject | undefined {
+        if(this.getMessageType(message) === mediaType) {
+            return {
+                id: message.id,
+                link: `${config.host}:${config.port}/${message.id}`,
+                sha256: message.mediaKey,
+                caption: message.caption,
+                mime_type: message.mimetype
+            }
+        }else return undefined;
+    }
+    private getLocationObject(message: SessionExtra): LocationMessageObject | undefined {
+        if(this.getMessageType(message) === "location") {
+            return {
+                latitude: message.lat as number,
+                longitude: message.lng as number,
+                name: message.loc?.split("\n")[0] as string,
+                address: message.loc?.split("\n")[1] as string
+            }
+        }else return undefined;
+    }
+    private getPollObject(message: SessionExtra): PollMessageObject | undefined {
+        if(this.getMessageType(message) === "poll") {
+            return {
+                title: message.poll?.title as string,
+                options: message.poll.options as string[],
+                selectableCount: message.poll.selectableCount,
+            }
+        }else return undefined;
+    }
+    private getContactObject(message: SessionExtra): ContactObject[] | undefined {
+        try {
+            if(message.type === "vcard") {
+                const vcard = new vCard().parse(message.body.replace("\n", "\r\n"));
+    
+                return [{
+                    name: {
+                        formatted_name: vcard.data.fn ? vcard.data.fn.valueOf() as string : "",
+                        first_name: vcard.data.fn ? vcard.data.fn.valueOf() as string : "",
+                        last_name: vcard.data.ln ?vcard.data.ln.valueOf() as string : "",
+                        middle_name: "",
+                        suffix: "",
+                        prefix: "",
+                        
+                    },
+                    phones: [{
+                        type: "CELL",
+                        phone: vcard.data.tel ? vcard.data.tel.valueOf() as string : undefined,
+                        wa_id: "",
+                    }]
+                }]
+            }else if(message.type === "multi_vcard") {
+                let arrayContacts: ContactObject[] = [];
+                for(const contact of message.vcardList as Array<any>) {
+                    const vcard = new vCard().parse(contact.vcard.replace("\n", "\r\n"));
+                    arrayContacts.push({
+                        name: {
+                            formatted_name: vcard.data.fn.valueOf() as string,
+                            first_name: vcard.data.fn.valueOf() as string,
+                            last_name: vcard.data.ln.valueOf() as string,
+                            middle_name: "",
+                            suffix: "",
+                            prefix: "",
+                            
+                        },
+                        phones: [{
+                            type: "CELL",
+                            phone: vcard.data.tel.valueOf() as string,
+                            wa_id: "",
+                        }]
+                    })
+                }
+                return arrayContacts;
+            } else return undefined;
+        } catch (error) {
+            console.log(error);
+            return undefined;
+        }
+        
+    }
+    private getInteractiveObject(message: SessionExtra): InteractiveObject | undefined {
+        if(this.getMessageType(message) === "interactive") {
+            let replyBtn = [];
+            if(message.type === "chat") {
+                replyBtn = message.replyButtons as Array<any>;
+                replyBtn["title" as any] = replyBtn["displayText" as any] as any;
+                delete replyBtn["displayText" as any];
+            }
+            return {
+                action: {
+                    button: (message.type === "list") ? message.list?.buttonText as string : "",
+                    buttons: (message.type === "chat") ? replyBtn : undefined,
+                    sections: (message.type === "list") ? message.list?.sections : undefined,
+                },
+                type: (message.type === "chat") ? "button" : "list",
+                body: {
+                    text: message.list?.description as string
+                },
+                header: (message.type === "list") ? { type: "text",text: message.list?.title as string } : undefined,
+                footer: (message.type === "list") ? { text: message.list?.footerText as string } : undefined
+            }
+        }else return undefined;
+    }
+    private getMessageContext(message: SessionExtra) : { message_id: string } | undefined {
+        if(message.quotedMsgId) return { message_id: message.quotedMsgId}
+        else return undefined;
+    }
+    /**
+     * Function to create and send message to contact
+     */
     public async create(req: RequestEx, payload: SendText | SendImage | SendAudio | SendDocument | SendSticker | SendVideo | SendContact | SendLocation | SendReaction | SendInteractive | SendPoll): Promise<ReturnSendedMessage | Error> {
         try {
             let message;

@@ -244,7 +244,8 @@
 					"location",
 					"unknown",
 					"system",
-					"interactive"
+					"interactive",
+					"poll"
 				]
 			},
 			"TextMessageObject": {
@@ -683,6 +684,31 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"PollMessageObject": {
+				"properties": {
+					"title": {
+						"type": "string",
+						"example": "What is the best city for the beach?"
+					},
+					"options": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"selectableCount": {
+						"type": "number",
+						"format": "double",
+						"example": 1
+					}
+				},
+				"required": [
+					"title",
+					"options"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"Message": {
 				"properties": {
 					"messaging_product": {
@@ -754,6 +780,9 @@
 					"document": {
 						"$ref": "#/components/schemas/MediaObject"
 					},
+					"sticker": {
+						"$ref": "#/components/schemas/MediaObject"
+					},
 					"location": {
 						"$ref": "#/components/schemas/LocationMessageObject"
 					},
@@ -766,14 +795,169 @@
 					"interactive": {
 						"$ref": "#/components/schemas/InteractiveObject"
 					},
-					"sticker": {
-						"$ref": "#/components/schemas/MediaObject"
-					}
+					"poll": {
+						"$ref": "#/components/schemas/PollMessageObject"
+					},
+					"order": {},
+					"unknown": {},
+					"system": {}
 				},
 				"required": [
 					"messaging_product",
 					"to",
 					"id"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"StatusMessage": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"recipient_id": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string",
+						"enum": [
+							"read",
+							"delivered",
+							"sent",
+							"failed",
+							"deleted"
+						]
+					},
+					"timestamp": {
+						"type": "number",
+						"format": "double"
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"message"
+						],
+						"nullable": false
+					},
+					"pricing": {
+						"type": "string",
+						"enum": [
+							"free"
+						],
+						"nullable": false
+					},
+					"errors": {}
+				},
+				"required": [
+					"id",
+					"recipient_id",
+					"status",
+					"timestamp"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ChangesObject": {
+				"properties": {
+					"field": {
+						"type": "string"
+					},
+					"value": {
+						"properties": {
+							"statuses": {
+								"items": {
+									"$ref": "#/components/schemas/StatusMessage"
+								},
+								"type": "array"
+							},
+							"messages": {
+								"items": {
+									"$ref": "#/components/schemas/Message"
+								},
+								"type": "array"
+							},
+							"contacts": {
+								"items": {
+									"$ref": "#/components/schemas/Contact"
+								},
+								"type": "array"
+							},
+							"metadata": {
+								"properties": {
+									"phone_number_id": {
+										"type": "string"
+									},
+									"display_phone_number": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"phone_number_id",
+									"display_phone_number"
+								],
+								"type": "object"
+							},
+							"messaging_product": {
+								"type": "string",
+								"enum": [
+									"whatsapp"
+								],
+								"nullable": false
+							}
+						},
+						"required": [
+							"contacts",
+							"metadata",
+							"messaging_product"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"field",
+					"value"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"EntryObject": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"changes": {
+						"items": {
+							"$ref": "#/components/schemas/ChangesObject"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"id",
+					"changes"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ReceivedAndGetMessage": {
+				"properties": {
+					"object": {
+						"type": "string",
+						"enum": [
+							"whatsapp_business_account"
+						],
+						"nullable": false
+					},
+					"entry": {
+						"items": {
+							"$ref": "#/components/schemas/EntryObject"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"object",
+					"entry"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -2069,7 +2253,7 @@
 								"schema": {
 									"anyOf": [
 										{
-											"$ref": "#/components/schemas/Message"
+											"$ref": "#/components/schemas/ReceivedAndGetMessage"
 										},
 										{
 											"$ref": "#/components/schemas/ServerError"

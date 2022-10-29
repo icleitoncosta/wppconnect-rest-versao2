@@ -92,7 +92,7 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "MessageType": {
         "dataType": "refAlias",
-        "type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["text"]},{"dataType":"enum","enums":["image"]},{"dataType":"enum","enums":["audio"]},{"dataType":"enum","enums":["document"]},{"dataType":"enum","enums":["template"]},{"dataType":"enum","enums":["hsm"]},{"dataType":"enum","enums":["sticker"]},{"dataType":"enum","enums":["order"]},{"dataType":"enum","enums":["video"]},{"dataType":"enum","enums":["contacts"]},{"dataType":"enum","enums":["location"]},{"dataType":"enum","enums":["unknown"]},{"dataType":"enum","enums":["system"]},{"dataType":"enum","enums":["interactive"]}],"validators":{}},
+        "type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["text"]},{"dataType":"enum","enums":["image"]},{"dataType":"enum","enums":["audio"]},{"dataType":"enum","enums":["document"]},{"dataType":"enum","enums":["template"]},{"dataType":"enum","enums":["hsm"]},{"dataType":"enum","enums":["sticker"]},{"dataType":"enum","enums":["order"]},{"dataType":"enum","enums":["video"]},{"dataType":"enum","enums":["contacts"]},{"dataType":"enum","enums":["location"]},{"dataType":"enum","enums":["unknown"]},{"dataType":"enum","enums":["system"]},{"dataType":"enum","enums":["interactive"]},{"dataType":"enum","enums":["poll"]}],"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "TextMessageObject": {
@@ -260,6 +260,16 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "PollMessageObject": {
+        "dataType": "refObject",
+        "properties": {
+            "title": {"dataType":"string","required":true},
+            "options": {"dataType":"array","array":{"dataType":"string"},"required":true},
+            "selectableCount": {"dataType":"double"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Message": {
         "dataType": "refObject",
         "properties": {
@@ -279,10 +289,55 @@ const models: TsoaRoute.Models = {
             "video": {"ref":"MediaObject"},
             "audio": {"ref":"MediaObject"},
             "document": {"ref":"MediaObject"},
+            "sticker": {"ref":"MediaObject"},
             "location": {"ref":"LocationMessageObject"},
             "contacts": {"dataType":"array","array":{"dataType":"refObject","ref":"ContactObject"}},
             "interactive": {"ref":"InteractiveObject"},
-            "sticker": {"ref":"MediaObject"},
+            "poll": {"ref":"PollMessageObject"},
+            "order": {"dataType":"any"},
+            "unknown": {"dataType":"any"},
+            "system": {"dataType":"any"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "StatusMessage": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"string","required":true},
+            "recipient_id": {"dataType":"string","required":true},
+            "status": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["read"]},{"dataType":"enum","enums":["delivered"]},{"dataType":"enum","enums":["sent"]},{"dataType":"enum","enums":["failed"]},{"dataType":"enum","enums":["deleted"]}],"required":true},
+            "timestamp": {"dataType":"double","required":true},
+            "type": {"dataType":"enum","enums":["message"]},
+            "pricing": {"dataType":"enum","enums":["free"]},
+            "errors": {"dataType":"any"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ChangesObject": {
+        "dataType": "refObject",
+        "properties": {
+            "field": {"dataType":"string","required":true},
+            "value": {"dataType":"nestedObjectLiteral","nestedProperties":{"statuses":{"dataType":"array","array":{"dataType":"refObject","ref":"StatusMessage"}},"messages":{"dataType":"array","array":{"dataType":"refObject","ref":"Message"}},"contacts":{"dataType":"array","array":{"dataType":"refObject","ref":"Contact"},"required":true},"metadata":{"dataType":"nestedObjectLiteral","nestedProperties":{"phone_number_id":{"dataType":"string","required":true},"display_phone_number":{"dataType":"string","required":true}},"required":true},"messaging_product":{"dataType":"enum","enums":["whatsapp"],"required":true}},"required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "EntryObject": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"string","required":true},
+            "changes": {"dataType":"array","array":{"dataType":"refObject","ref":"ChangesObject"},"required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ReceivedAndGetMessage": {
+        "dataType": "refObject",
+        "properties": {
+            "object": {"dataType":"enum","enums":["whatsapp_business_account"],"required":true},
+            "entry": {"dataType":"array","array":{"dataType":"refObject","ref":"EntryObject"},"required":true},
         },
         "additionalProperties": false,
     },
