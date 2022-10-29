@@ -304,13 +304,9 @@ const models: TsoaRoute.Models = {
     "StatusMessage": {
         "dataType": "refObject",
         "properties": {
-            "id": {"dataType":"string","required":true},
-            "recipient_id": {"dataType":"string","required":true},
-            "status": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["read"]},{"dataType":"enum","enums":["delivered"]},{"dataType":"enum","enums":["sent"]},{"dataType":"enum","enums":["failed"]},{"dataType":"enum","enums":["deleted"]}],"required":true},
-            "timestamp": {"dataType":"double","required":true},
-            "type": {"dataType":"enum","enums":["message"]},
-            "pricing": {"dataType":"enum","enums":["free"]},
-            "errors": {"dataType":"any"},
+            "messaging_product": {"dataType":"enum","enums":["whatsapp"],"required":true},
+            "status": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["read"]},{"dataType":"enum","enums":["played"]},{"dataType":"enum","enums":["delivered"]},{"dataType":"enum","enums":["sent"]},{"dataType":"enum","enums":["failed"]},{"dataType":"enum","enums":["deleted"]}],"required":true},
+            "message_id": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -500,6 +496,16 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "DeleteMessage": {
+        "dataType": "refObject",
+        "properties": {
+            "messaging_product": {"dataType":"enum","enums":["whatsapp"],"required":true},
+            "status": {"dataType":"enum","enums":["deleted"],"required":true},
+            "message_id": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 };
 const validationService = new ValidationService(models);
 
@@ -537,7 +543,7 @@ export function RegisterRoutes(app: express.Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/:PHONE_NUMBER_ID/start',
+        app.post('/:PHONE_NUMBER_ID/start',
             authenticateMiddleware([{"apiKey":[]}]),
             ...(fetchMiddlewares<RequestHandler>(AuthController)),
             ...(fetchMiddlewares<RequestHandler>(AuthController.prototype.startSession)),
@@ -792,7 +798,6 @@ export function RegisterRoutes(app: express.Router) {
 
             function MessagesController_sendMessage(request: any, response: any, next: any) {
             const args = {
-                    PHONE_NUMBER_ID: {"in":"path","name":"PHONE_NUMBER_ID","required":true,"dataType":"string"},
                     payload: {"in":"body","name":"payload","required":true,"dataType":"union","subSchemas":[{"ref":"SendText"},{"ref":"SendImage"},{"ref":"SendAudio"},{"ref":"SendDocument"},{"ref":"SendSticker"},{"ref":"SendVideo"},{"ref":"SendContact"},{"ref":"SendLocation"},{"ref":"SendReaction"},{"ref":"SendInteractive"}]},
                     req: {"in":"request","name":"req","required":true,"dataType":"object"},
             };
@@ -807,6 +812,60 @@ export function RegisterRoutes(app: express.Router) {
 
 
               const promise = controller.sendMessage.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/:PHONE_NUMBER_ID/messages',
+            authenticateMiddleware([{"apiKey":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(MessagesController)),
+            ...(fetchMiddlewares<RequestHandler>(MessagesController.prototype.markStatusMessage)),
+
+            function MessagesController_markStatusMessage(request: any, response: any, next: any) {
+            const args = {
+                    payload: {"in":"body","name":"payload","required":true,"ref":"StatusMessage"},
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new MessagesController();
+
+
+              const promise = controller.markStatusMessage.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/:PHONE_NUMBER_ID/messages',
+            authenticateMiddleware([{"apiKey":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(MessagesController)),
+            ...(fetchMiddlewares<RequestHandler>(MessagesController.prototype.deleteMessage)),
+
+            function MessagesController_deleteMessage(request: any, response: any, next: any) {
+            const args = {
+                    payload: {"in":"body","name":"payload","required":true,"ref":"DeleteMessage"},
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new MessagesController();
+
+
+              const promise = controller.deleteMessage.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, 200, next);
             } catch (err) {
                 return next(err);

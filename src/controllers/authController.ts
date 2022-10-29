@@ -8,7 +8,8 @@ import {
     Request,
     NoSecurity,
     Security,
-    Response
+    Response,
+    Post
 } from "tsoa";
 import { RequestEx } from "../models/Request";
 import { Error } from "../models/Error";
@@ -34,7 +35,7 @@ export class AuthController extends Controller {
     /**
      * Start the session (qrCode is send via webhook)
      */
-    @Get("{PHONE_NUMBER_ID}/start")
+    @Post("{PHONE_NUMBER_ID}/start")
     @Tags("Auth")
     @Security("apiKey")
     @Response<Error>(401, "Unauthorized", {

@@ -812,47 +812,35 @@
 			},
 			"StatusMessage": {
 				"properties": {
-					"id": {
-						"type": "string"
-					},
-					"recipient_id": {
-						"type": "string"
+					"messaging_product": {
+						"type": "string",
+						"enum": [
+							"whatsapp"
+						],
+						"nullable": false
 					},
 					"status": {
 						"type": "string",
 						"enum": [
 							"read",
+							"played",
 							"delivered",
 							"sent",
 							"failed",
 							"deleted"
-						]
-					},
-					"timestamp": {
-						"type": "number",
-						"format": "double"
-					},
-					"type": {
-						"type": "string",
-						"enum": [
-							"message"
 						],
-						"nullable": false
+						"description": "Availables: \"read\" | \"played\" | \"delivered\" | \"sent\" | \"failed\" | \"deleted\"",
+						"example": "read"
 					},
-					"pricing": {
+					"message_id": {
 						"type": "string",
-						"enum": [
-							"free"
-						],
-						"nullable": false
-					},
-					"errors": {}
+						"example": "false_5689889598@8965656_g.us"
+					}
 				},
 				"required": [
-					"id",
-					"recipient_id",
+					"messaging_product",
 					"status",
-					"timestamp"
+					"message_id"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -1568,6 +1556,35 @@
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"DeleteMessage": {
+				"properties": {
+					"messaging_product": {
+						"type": "string",
+						"enum": [
+							"whatsapp"
+						],
+						"nullable": false
+					},
+					"status": {
+						"type": "string",
+						"enum": [
+							"deleted"
+						],
+						"nullable": false
+					},
+					"message_id": {
+						"type": "string",
+						"example": "false_5689889598@8965656_g.us"
+					}
+				},
+				"required": [
+					"messaging_product",
+					"status",
+					"message_id"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {
@@ -1652,7 +1669,7 @@
 			}
 		},
 		"/{PHONE_NUMBER_ID}/start": {
-			"get": {
+			"post": {
 				"operationId": "StartSession",
 				"responses": {
 					"200": {
@@ -3041,17 +3058,7 @@
 						"apiKey": []
 					}
 				],
-				"parameters": [
-					{
-						"description": "ID of your user \"xxxxxxxxxx@c.us\"",
-						"in": "path",
-						"name": "PHONE_NUMBER_ID",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				],
+				"parameters": [],
 				"requestBody": {
 					"required": true,
 					"content": {
@@ -3089,6 +3096,178 @@
 										"$ref": "#/components/schemas/SendInteractive"
 									}
 								]
+							}
+						}
+					}
+				}
+			},
+			"put": {
+				"operationId": "MarkStatusMessage",
+				"responses": {
+					"200": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"properties": {
+												"sucess": {
+													"type": "boolean"
+												}
+											},
+											"required": [
+												"sucess"
+											],
+											"type": "object"
+										},
+										{
+											"$ref": "#/components/schemas/ServerError"
+										}
+									]
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Incorrect request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Error"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Error"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"error": {
+												"message": "Token in not present",
+												"type": "invalid_request",
+												"code": 3,
+												"error_data": {
+													"messaging_product": "whatsapp",
+													"details": "Token is not present. Check your header and try again"
+												},
+												"error_subcode": 132000
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "When you receive an incoming message from Webhooks, you could use messages endpoint to change the status of it to read.\nWe recommend marking incoming messages as read within 30 days of receipt.\nNote: you cannot mark outgoing messages you sent as read.\n\nYou need to obtain the message_id of the incoming message from Webhooks.",
+				"tags": [
+					"Messages"
+				],
+				"security": [
+					{
+						"apiKey": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/StatusMessage"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "DeleteMessage",
+				"responses": {
+					"200": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"properties": {
+												"sucess": {
+													"type": "boolean"
+												}
+											},
+											"required": [
+												"sucess"
+											],
+											"type": "object"
+										},
+										{
+											"$ref": "#/components/schemas/ServerError"
+										}
+									]
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Incorrect request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Error"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Error"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"error": {
+												"message": "Token in not present",
+												"type": "invalid_request",
+												"code": 3,
+												"error_data": {
+													"messaging_product": "whatsapp",
+													"details": "Token is not present. Check your header and try again"
+												},
+												"error_subcode": 132000
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "This is NOT similar to Official API\nUse this route to delete message",
+				"tags": [
+					"Messages"
+				],
+				"security": [
+					{
+						"apiKey": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/DeleteMessage"
 							}
 						}
 					}

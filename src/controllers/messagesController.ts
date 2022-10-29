@@ -12,13 +12,16 @@ import {
     Tags,
     Request,
     Security,
-    Example
+    Example,
+    Put,
+    Delete
   } from "tsoa";
 import { RequestEx } from "../models/Request";
 import { Error } from "../models/Error";
 import { ServerError } from "../services/server-error";
 import { SendAudio, SendContact, SendDocument, SendImage, SendInteractive, SendLocation, SendPoll, SendReaction, SendSticker, SendText, SendVideo } from "../models/SendMessage";
 import { ReceivedAndGetMessage } from "../models/Webhook";
+import { DeleteMessage, StatusMessage } from "../models/StatusMessages";
 
 @Route("/")
 export class MessagesController extends Controller {
@@ -663,12 +666,74 @@ export class MessagesController extends Controller {
   @Response<Error>(400, "Incorrect request")
   @SuccessResponse("200", "Created") 
   public async sendMessage(
-    @Path() PHONE_NUMBER_ID: string,
     @Body() payload: SendText | SendImage | SendAudio | SendDocument | SendSticker | SendVideo | SendContact | SendLocation | SendReaction | SendInteractive,
     @Request() req: RequestEx
   ): Promise<ReturnSendedMessage | Error> {
-    console.log(PHONE_NUMBER_ID);
     this.setStatus(200);
     return new MessagesService().create(req, payload);
+  }
+  /**
+   * When you receive an incoming message from Webhooks, you could use messages endpoint to change the status of it to read.
+   * We recommend marking incoming messages as read within 30 days of receipt.
+   * Note: you cannot mark outgoing messages you sent as read.
+   * 
+   * You need to obtain the message_id of the incoming message from Webhooks.
+   * @param PHONE_NUMBER_ID ID of your user "xxxxxxxxxx@c.us"
+   */
+  @Put("{PHONE_NUMBER_ID}/messages")
+  @Tags("Messages")
+  @Security("apiKey")
+  @SuccessResponse("200", "Created") 
+  @Response<Error>(400, "Incorrect request")
+  @Response<Error>(401, "Unauthorized", {
+      error: {
+        fbtrace_id: undefined,
+        message: "Token in not present",
+        type: "invalid_request",
+        code: 3,
+        error_data: {
+          "messaging_product": "whatsapp",
+          "details": "Token is not present. Check your header and try again"
+        },
+        "error_subcode": 132000
+      }
+    }
+  )
+  public async markStatusMessage(
+    @Body() payload: StatusMessage,
+    @Request() req: RequestEx
+  ): Promise<{ sucess: boolean } | ServerError> {
+    return new MessagesService().markStatusMessage(req, payload);
+  }
+  /**
+   * This is NOT similar to Official API
+   * Use this route to delete message
+   * 
+   * @param PHONE_NUMBER_ID ID of your user "xxxxxxxxxx@c.us"
+   */
+  @Delete("{PHONE_NUMBER_ID}/messages")
+  @Tags("Messages")
+  @Security("apiKey")
+  @SuccessResponse("200", "Created") 
+  @Response<Error>(400, "Incorrect request")
+  @Response<Error>(401, "Unauthorized", {
+      error: {
+        fbtrace_id: undefined,
+        message: "Token in not present",
+        type: "invalid_request",
+        code: 3,
+        error_data: {
+          "messaging_product": "whatsapp",
+          "details": "Token is not present. Check your header and try again"
+        },
+        "error_subcode": 132000
+      }
+    }
+  )
+  public async deleteMessage(
+    @Body() payload: DeleteMessage,
+    @Request() req: RequestEx
+  ): Promise<{ sucess: boolean } | ServerError> {
+    return new MessagesService().markStatusMessage(req, payload);
   }
 }

@@ -7,6 +7,7 @@ import { SendAudio, SendContact, SendDocument, SendImage, SendInteractive, SendL
 import { ReceivedAndGetMessage } from '../models/Webhook';
 import config from '../config';
 import vCard from "vcf";
+import { StatusMessage } from '../models/StatusMessages';
 
 export class MessagesService {
     public async get(req: RequestEx, id: string): Promise<ServerError | ReceivedAndGetMessage> {
@@ -370,5 +371,48 @@ export class MessagesService {
                 id: msgId as string,
             }
         }
+    }
+
+    /**
+     * Mark status message as read and played
+     */
+    public async markStatusMessage(req: RequestEx, payload: StatusMessage): Promise<any> {
+        try {
+            if(payload.status === "read") {
+                try {
+                    await req.client?.sendSeen(this.getChatIdByMessageId(payload.message_id));
+                    return Promise.resolve({ sucess: true });
+                } catch (error) {
+                    return Promise.reject(new ServerError("Error on get markstatus message",
+                        "error_set_status",
+                        3,
+                        error,
+                        131009));
+                }
+            } else if(payload.status === "played") {
+                await req.client?.markPlayed(payload.message_id);
+                return Promise.resolve({ sucess: true });
+            } else if(payload.status === "deleted") {
+                await req.client?.deleteMessage(this.getChatIdByMessageId(payload.message_id), payload.message_id, false);
+                return Promise.resolve({ sucess: true });
+            } else {
+                Promise.resolve({ sucess: false });
+            }
+        } catch (error: any) {
+            return Promise.reject(new ServerError("Error on get markstatus message",
+                "error_set_status",
+                3,
+                error,
+                131009));
+        }
+    }
+    private getChatIdByMessageId(messageId: string): string {
+        let msgId = "";
+        if(messageId.includes("@c.us")) {
+            msgId = messageId.replace("false_","").replace("true_","").split("@c.us")[0];
+        } else {
+            msgId = messageId.replace("false_","").replace("true_","").split("@g.us")[0];
+        }
+        return msgId;
     }
 }
