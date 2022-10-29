@@ -10,14 +10,16 @@ export interface Contact {
 interface ProfileInterface {
     name: string;
 }
-
+export interface MiniBusinessProfile {
+    business_profile: BusinessProfileInterface
+}
 export interface BusinessProfileInterface {
     name?: string;
     about?: string;
     adress?: string;
     description?: string;
     email?: string;
-    messaging_product?: 'whatsapp';
+    messaging_product: 'whatsapp';
     profile_picture_url: string;
     websites?: string[];
     vertical?: string;

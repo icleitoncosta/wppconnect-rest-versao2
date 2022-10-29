@@ -13,9 +13,10 @@ import {
     Security,
     Response
   } from "tsoa";
-import { Contact, BusinessProfileInterface, FieldsBusinessContact, FieldsContact } from "../models/Contact";
+import { Contact, BusinessProfileInterface, FieldsContact, MiniBusinessProfile } from "../models/Contact";
 import { Error } from "../models/Error";
 import { ContactService } from "../services/contact";
+import { ServerError } from "../services/server-error";
 
 @Route("/")
 export class ContactsController extends Controller {
@@ -45,7 +46,7 @@ export class ContactsController extends Controller {
     @Path() PHONE_NUMBER_ID: string,
     @Query() fields: FieldsContact[],
     @Request() req: RequestEx
-  ): Promise<Contact> {
+  ): Promise<Contact | ServerError> {
     return new ContactService().get(req, PHONE_NUMBER_ID, fields);
   }
 
@@ -72,9 +73,9 @@ export class ContactsController extends Controller {
 )
   public async getBusinessContact(
     @Path() PHONE_NUMBER_ID: string,
-    @Query() fields: FieldsBusinessContact[],
+    @Query() fields: string,
     @Request() req: RequestEx
-  ): Promise<{ data: BusinessProfileInterface[]} > {
+  ): Promise<{ data: MiniBusinessProfile[] } | ServerError> {
     return new ContactService().getBusiness(req, PHONE_NUMBER_ID, fields);
   }
   /**

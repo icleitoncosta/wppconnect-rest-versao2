@@ -46,6 +46,18 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ServerError": {
+        "dataType": "refObject",
+        "properties": {
+            "error": {"dataType":"nestedObjectLiteral","nestedProperties":{"fbtrace_id":{"dataType":"undefined","required":true},"error_subcode":{"dataType":"double","required":true},"error_data":{"dataType":"nestedObjectLiteral","nestedProperties":{"details":{"dataType":"any","required":true},"messaging_product":{"dataType":"enum","enums":["whatsapp"],"required":true}},"required":true},"code":{"dataType":"double","required":true},"type":{"dataType":"string","required":true},"message":{"dataType":"string","required":true}},"required":true},
+            "type": {"dataType":"any","required":true},
+            "code": {"dataType":"double","default":3},
+            "details": {"dataType":"any","required":true},
+            "subcode": {"dataType":"double","default":0},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "FieldsContact": {
         "dataType": "refAlias",
         "type": {"dataType":"enum","enums":["name"],"validators":{}},
@@ -59,7 +71,7 @@ const models: TsoaRoute.Models = {
             "adress": {"dataType":"string"},
             "description": {"dataType":"string"},
             "email": {"dataType":"string"},
-            "messaging_product": {"dataType":"enum","enums":["whatsapp"]},
+            "messaging_product": {"dataType":"enum","enums":["whatsapp"],"required":true},
             "profile_picture_url": {"dataType":"string","required":true},
             "websites": {"dataType":"array","array":{"dataType":"string"}},
             "vertical": {"dataType":"string"},
@@ -67,9 +79,12 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "FieldsBusinessContact": {
-        "dataType": "refAlias",
-        "type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["about"]},{"dataType":"enum","enums":["address"]},{"dataType":"enum","enums":["description"]},{"dataType":"enum","enums":["email"]},{"dataType":"enum","enums":["profile_picture_url"]},{"dataType":"enum","enums":["websites"]}],"validators":{}},
+    "MiniBusinessProfile": {
+        "dataType": "refObject",
+        "properties": {
+            "business_profile": {"ref":"BusinessProfileInterface","required":true},
+        },
+        "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Partial_BusinessProfileInterface_": {
@@ -334,18 +349,6 @@ const models: TsoaRoute.Models = {
         "properties": {
             "object": {"dataType":"enum","enums":["whatsapp_business_account"],"required":true},
             "entry": {"dataType":"array","array":{"dataType":"refObject","ref":"EntryObject"},"required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ServerError": {
-        "dataType": "refObject",
-        "properties": {
-            "error": {"dataType":"nestedObjectLiteral","nestedProperties":{"fbtrace_id":{"dataType":"undefined","required":true},"error_subcode":{"dataType":"double","required":true},"error_data":{"dataType":"nestedObjectLiteral","nestedProperties":{"details":{"dataType":"any","required":true},"messaging_product":{"dataType":"enum","enums":["whatsapp"],"required":true}},"required":true},"code":{"dataType":"double","required":true},"type":{"dataType":"string","required":true},"message":{"dataType":"string","required":true}},"required":true},
-            "type": {"dataType":"any","required":true},
-            "code": {"dataType":"double","default":3},
-            "details": {"dataType":"any","required":true},
-            "subcode": {"dataType":"double","default":0},
         },
         "additionalProperties": false,
     },
@@ -633,7 +636,7 @@ export function RegisterRoutes(app: express.Router) {
             function ContactsController_getBusinessContact(request: any, response: any, next: any) {
             const args = {
                     PHONE_NUMBER_ID: {"in":"path","name":"PHONE_NUMBER_ID","required":true,"dataType":"string"},
-                    fields: {"in":"query","name":"fields","required":true,"dataType":"array","array":{"dataType":"refAlias","ref":"FieldsBusinessContact"}},
+                    fields: {"in":"query","name":"fields","required":true,"dataType":"string"},
                     req: {"in":"request","name":"req","required":true,"dataType":"object"},
             };
 

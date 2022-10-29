@@ -90,6 +90,75 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"ServerError": {
+				"properties": {
+					"error": {
+						"properties": {
+							"fbtrace_id": {},
+							"error_subcode": {
+								"type": "number",
+								"format": "double"
+							},
+							"error_data": {
+								"properties": {
+									"details": {},
+									"messaging_product": {
+										"type": "string",
+										"enum": [
+											"whatsapp"
+										],
+										"nullable": false
+									}
+								},
+								"required": [
+									"details",
+									"messaging_product"
+								],
+								"type": "object"
+							},
+							"code": {
+								"type": "number",
+								"format": "double",
+								"description": "We recommend that you build your app's error handling around error codes rather than subcodes or HTTP response status codes."
+							},
+							"type": {
+								"type": "string"
+							},
+							"message": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"error_subcode",
+							"error_data",
+							"code",
+							"type",
+							"message"
+						],
+						"type": "object",
+						"description": "Error Codes\r\n0 - AuthException - Unable to authenticate the app user.\r\n3 - Api Method - Indicates an issue involving resources or permissions.\r\n10 - Permission denied - Permission has not been granted or has been removed.\r\n190 - Expired token\r\nAPI Permissions - Permission has not been granted or has been removed.\r\n\r\nLimitation errors\r\n4 - API Limit - The app has reached its API call rate limit.\r\n80007 - WhatsApp Business account has reached the volume limit.\r\n\r\nIntegrity errors\r\n368 | 131031 - The WhatsApp Business account associated with the app has been restricted or disabled for violating a platform policy.\r\n\r\nOther errors\r\n1 - Invalid request or possible server error.\r\n2 - Temporary due to inactivity or being overloaded.\r\n100 - The request included one or more incompatible or misspelled parameters.\r\n131000 - Falha ao enviar a mensagem devido a um erro desconhecido.\r\n131005 - Permission has not been granted or has been removed.\r\n131008 - A required parameter is missing from the order.\r\n131009 - One or more parameter values are not supported, the recipient's phone number is not valid for WhatsApp, or the sender's phone number has not been added to the WhatsApp Business Platform.\r\n131016 - A service is temporarily unavailable.\r\n131021 - The recipient's and sender's phone number is the same.\r\n131026 - The recipient uses a version of WhatsApp that is not compatible with the message content.\r\n131051 - Message type is not supported.\r\n131052 | 131053 - The type of media sent by WhatsApp user is not supported.\r\n132000 - The number of variable parameter values included in the request does not match the number of variable parameters defined in the template.\r\n133004 - The server is temporarily unavailable.\r\n133010 - The phone number is not registered and connected.\r\n135000 - Failed to send message due to an unknown error with your request parameters."
+					},
+					"type": {},
+					"code": {
+						"type": "number",
+						"format": "double",
+						"default": 3
+					},
+					"details": {},
+					"subcode": {
+						"type": "number",
+						"format": "double",
+						"default": 0
+					}
+				},
+				"required": [
+					"error",
+					"type",
+					"details"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"FieldsContact": {
 				"type": "string",
 				"enum": [
@@ -135,21 +204,23 @@
 					}
 				},
 				"required": [
+					"messaging_product",
 					"profile_picture_url"
 				],
 				"type": "object",
 				"additionalProperties": false
 			},
-			"FieldsBusinessContact": {
-				"type": "string",
-				"enum": [
-					"about",
-					"address",
-					"description",
-					"email",
-					"profile_picture_url",
-					"websites"
-				]
+			"MiniBusinessProfile": {
+				"properties": {
+					"business_profile": {
+						"$ref": "#/components/schemas/BusinessProfileInterface"
+					}
+				},
+				"required": [
+					"business_profile"
+				],
+				"type": "object",
+				"additionalProperties": false
 			},
 			"Partial_BusinessProfileInterface_": {
 				"properties": {
@@ -946,75 +1017,6 @@
 				"required": [
 					"object",
 					"entry"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"ServerError": {
-				"properties": {
-					"error": {
-						"properties": {
-							"fbtrace_id": {},
-							"error_subcode": {
-								"type": "number",
-								"format": "double"
-							},
-							"error_data": {
-								"properties": {
-									"details": {},
-									"messaging_product": {
-										"type": "string",
-										"enum": [
-											"whatsapp"
-										],
-										"nullable": false
-									}
-								},
-								"required": [
-									"details",
-									"messaging_product"
-								],
-								"type": "object"
-							},
-							"code": {
-								"type": "number",
-								"format": "double",
-								"description": "We recommend that you build your app's error handling around error codes rather than subcodes or HTTP response status codes."
-							},
-							"type": {
-								"type": "string"
-							},
-							"message": {
-								"type": "string"
-							}
-						},
-						"required": [
-							"error_subcode",
-							"error_data",
-							"code",
-							"type",
-							"message"
-						],
-						"type": "object",
-						"description": "Error Codes\r\n0 - AuthException - Unable to authenticate the app user.\r\n3 - Api Method - Indicates an issue involving resources or permissions.\r\n10 - Permission denied - Permission has not been granted or has been removed.\r\n190 - Expired token\r\nAPI Permissions - Permission has not been granted or has been removed.\r\n\r\nLimitation errors\r\n4 - API Limit - The app has reached its API call rate limit.\r\n80007 - WhatsApp Business account has reached the volume limit.\r\n\r\nIntegrity errors\r\n368 | 131031 - The WhatsApp Business account associated with the app has been restricted or disabled for violating a platform policy.\r\n\r\nOther errors\r\n1 - Invalid request or possible server error.\r\n2 - Temporary due to inactivity or being overloaded.\r\n100 - The request included one or more incompatible or misspelled parameters.\r\n131000 - Falha ao enviar a mensagem devido a um erro desconhecido.\r\n131005 - Permission has not been granted or has been removed.\r\n131008 - A required parameter is missing from the order.\r\n131009 - One or more parameter values are not supported, the recipient's phone number is not valid for WhatsApp, or the sender's phone number has not been added to the WhatsApp Business Platform.\r\n131016 - A service is temporarily unavailable.\r\n131021 - The recipient's and sender's phone number is the same.\r\n131026 - The recipient uses a version of WhatsApp that is not compatible with the message content.\r\n131051 - Message type is not supported.\r\n131052 | 131053 - The type of media sent by WhatsApp user is not supported.\r\n132000 - The number of variable parameter values included in the request does not match the number of variable parameters defined in the template.\r\n133004 - The server is temporarily unavailable.\r\n133010 - The phone number is not registered and connected.\r\n135000 - Failed to send message due to an unknown error with your request parameters."
-					},
-					"type": {},
-					"code": {
-						"type": "number",
-						"format": "double",
-						"default": 3
-					},
-					"details": {},
-					"subcode": {
-						"type": "number",
-						"format": "double",
-						"default": 0
-					}
-				},
-				"required": [
-					"error",
-					"type",
-					"details"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -1831,7 +1833,14 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/Contact"
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/Contact"
+										},
+										{
+											"$ref": "#/components/schemas/ServerError"
+										}
+									]
 								}
 							}
 						}
@@ -1905,18 +1914,25 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"properties": {
-										"data": {
-											"items": {
-												"$ref": "#/components/schemas/BusinessProfileInterface"
+									"anyOf": [
+										{
+											"properties": {
+												"data": {
+													"items": {
+														"$ref": "#/components/schemas/MiniBusinessProfile"
+													},
+													"type": "array"
+												}
 											},
-											"type": "array"
+											"required": [
+												"data"
+											],
+											"type": "object"
+										},
+										{
+											"$ref": "#/components/schemas/ServerError"
 										}
-									},
-									"required": [
-										"data"
-									],
-									"type": "object"
+									]
 								}
 							}
 						}
@@ -1972,10 +1988,7 @@
 						"name": "fields",
 						"required": true,
 						"schema": {
-							"type": "array",
-							"items": {
-								"$ref": "#/components/schemas/FieldsBusinessContact"
-							}
+							"type": "string"
 						}
 					}
 				]
