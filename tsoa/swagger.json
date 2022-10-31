@@ -2075,7 +2075,7 @@
 					},
 					{
 						"in": "query",
-						"name": "reject_call",
+						"name": "reject_all_calls",
 						"required": false,
 						"schema": {
 							"type": "boolean"

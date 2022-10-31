@@ -641,7 +641,7 @@ export function RegisterRoutes(app: express.Router) {
                     PHONE_NUMBER_ID: {"in":"path","name":"PHONE_NUMBER_ID","required":true,"dataType":"string"},
                     SECRET_KEY: {"in":"path","name":"SECRET_KEY","required":true,"dataType":"enum","enums":["THISISMYSECURETOKEN"]},
                     req: {"in":"request","name":"req","required":true,"dataType":"object"},
-                    refuseCall: {"in":"query","name":"reject_call","dataType":"boolean"},
+                    refuseCall: {"in":"query","name":"reject_all_calls","dataType":"boolean"},
                     msgRefuseCall: {"in":"query","name":"msg","dataType":"string"},
             };
 

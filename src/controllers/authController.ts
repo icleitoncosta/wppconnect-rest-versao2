@@ -23,6 +23,7 @@ import { ServerError } from "../services/server-error";
 export class AuthController extends Controller {
     /**
      * Generate token for acess qr-code
+     * @param msg Insert message for send on call
      */
     @Get("{PHONE_NUMBER_ID}/{SECRET_KEY}/request_code")
     @Tags("Auth")
@@ -31,7 +32,7 @@ export class AuthController extends Controller {
         @Path() PHONE_NUMBER_ID: string,
         @Path("SECRET_KEY") SECRET_KEY: "THISISMYSECURETOKEN",
         @Request() req: RequestEx,
-        @Query("reject_call") refuseCall?: boolean,
+        @Query("reject_all_calls") refuseCall?: boolean,
         @Query("msg") msgRefuseCall?: string,
 	): Promise<{status: string; token: string | null; data: any; } | Error> {
 		this.setStatus(200);
