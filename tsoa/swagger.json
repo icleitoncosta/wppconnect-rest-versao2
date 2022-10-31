@@ -2170,12 +2170,24 @@
 							"application/json": {
 								"schema": {
 									"properties": {
-										"qrCode": {
+										"version": {
+											"type": "string"
+										},
+										"urlcode": {
+											"type": "string"
+										},
+										"qrcode": {
+											"type": "string"
+										},
+										"status": {
 											"type": "string"
 										}
 									},
 									"required": [
-										"qrCode"
+										"version",
+										"urlcode",
+										"qrcode",
+										"status"
 									],
 									"type": "object"
 								}
@@ -2225,60 +2237,6 @@
 						"required": true,
 						"schema": {
 							"type": "string"
-						}
-					}
-				]
-			}
-		},
-		"/{SECRET_KEY}/start-all": {
-			"post": {
-				"operationId": "StartAllSessions",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"anyOf": [
-										{
-											"properties": {
-												"success": {
-													"type": "boolean",
-													"enum": [
-														true
-													],
-													"nullable": false
-												}
-											},
-											"required": [
-												"success"
-											],
-											"type": "object"
-										},
-										{
-											"$ref": "#/components/schemas/ServerError"
-										}
-									]
-								}
-							}
-						}
-					}
-				},
-				"description": "Generate token for acess qr-code",
-				"tags": [
-					"Auth"
-				],
-				"security": [],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "SECRET_KEY",
-						"required": true,
-						"schema": {
-							"type": "string",
-							"enum": [
-								"THISISMYSECURETOKEN"
-							]
 						}
 					}
 				]

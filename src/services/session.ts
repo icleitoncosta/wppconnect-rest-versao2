@@ -24,7 +24,7 @@ export class SessionService {
         return this.getSessionState(_req);
     }
 
-    private async getSessionState(_req: RequestEx): Promise<any> {
+    public async getSessionState(_req: RequestEx): Promise<any> {
         try {
           const client = _req.client;
           const qr = client?.urlcode ? await QRCode.toDataURL(client.urlcode) : null;

@@ -89,11 +89,13 @@ export class AuthController extends Controller {
     public async getQrCode(
         @Path() PHONE_NUMBER_ID: string,
         @Request() req: RequestEx
-    ): Promise<{qrCode: string}> {
-    	console.log(req, PHONE_NUMBER_ID); // for fix
-    	return {
-    		qrCode: "adasd"
-    	};
+    ): Promise<{
+      status: string,
+      qrcode: string,
+      urlcode: string,
+      version: string,
+    }> {
+    	return new SessionService(PHONE_NUMBER_ID).getSessionState(req);
     }
     /**
      * Start All Sessions
