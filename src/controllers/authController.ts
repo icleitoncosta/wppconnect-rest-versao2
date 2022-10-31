@@ -5,11 +5,12 @@ import {
 	Path,
 	Route,
 	Tags,
-    Request,
-    NoSecurity,
-    Security,
-    Response,
-    Post
+  Request,
+  NoSecurity,
+  Security,
+  Response,
+  Post,
+  Hidden,
 } from "tsoa";
 import { RequestEx } from "../models/Request";
 import { Error } from "../models/Error";
@@ -95,11 +96,13 @@ export class AuthController extends Controller {
     	};
     }
     /**
-     * Generate token for acess qr-code
+     * Start All Sessions
+     * This route is exclusive to start all servers by service
     */
     @Post("{SECRET_KEY}/start-all")
     @Tags("Auth")
     @NoSecurity()
+    @Hidden()
 	public async startAllSessions(
         @Path("SECRET_KEY") SECRET_KEY: "THISISMYSECURETOKEN",
         @Request() req: RequestEx
