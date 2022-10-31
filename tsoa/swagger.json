@@ -61,56 +61,6 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"ProfileInterface": {
-				"properties": {
-					"name": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"name"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"ContactWPP": {
-				"properties": {
-					"profile_picture_url": {
-						"type": "string"
-					},
-					"formattedName": {
-						"type": "string"
-					},
-					"isBusiness": {
-						"type": "boolean"
-					},
-					"isEnterprise": {
-						"type": "boolean"
-					}
-				},
-				"type": "object",
-				"additionalProperties": false
-			},
-			"Contact": {
-				"properties": {
-					"wa_id": {
-						"type": "string",
-						"description": "ID of user or group \"xxxxxxxxxx@c.us\" for contacts, \"xxxxxxxxxx@g.us\" for groups"
-					},
-					"profile": {
-						"$ref": "#/components/schemas/ProfileInterface"
-					},
-					"wpp_data": {
-						"$ref": "#/components/schemas/ContactWPP"
-					}
-				},
-				"required": [
-					"wa_id",
-					"profile"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
 			"ServerError": {
 				"properties": {
 					"error": {
@@ -176,6 +126,56 @@
 					"error",
 					"type",
 					"details"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ProfileInterface": {
+				"properties": {
+					"name": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ContactWPP": {
+				"properties": {
+					"profile_picture_url": {
+						"type": "string"
+					},
+					"formattedName": {
+						"type": "string"
+					},
+					"isBusiness": {
+						"type": "boolean"
+					},
+					"isEnterprise": {
+						"type": "boolean"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Contact": {
+				"properties": {
+					"wa_id": {
+						"type": "string",
+						"description": "ID of user or group \"xxxxxxxxxx@c.us\" for contacts, \"xxxxxxxxxx@g.us\" for groups"
+					},
+					"profile": {
+						"$ref": "#/components/schemas/ProfileInterface"
+					},
+					"wpp_data": {
+						"$ref": "#/components/schemas/ContactWPP"
+					}
+				},
+				"required": [
+					"wa_id",
+					"profile"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -2225,6 +2225,60 @@
 						"required": true,
 						"schema": {
 							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/{SECRET_KEY}/start-all": {
+			"post": {
+				"operationId": "StartAllSessions",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"properties": {
+												"success": {
+													"type": "boolean",
+													"enum": [
+														true
+													],
+													"nullable": false
+												}
+											},
+											"required": [
+												"success"
+											],
+											"type": "object"
+										},
+										{
+											"$ref": "#/components/schemas/ServerError"
+										}
+									]
+								}
+							}
+						}
+					}
+				},
+				"description": "Generate token for acess qr-code",
+				"tags": [
+					"Auth"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "SECRET_KEY",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"enum": [
+								"THISISMYSECURETOKEN"
+							]
 						}
 					}
 				]

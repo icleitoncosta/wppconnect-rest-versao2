@@ -14,6 +14,7 @@ import {
 import { RequestEx } from "../models/Request";
 import { Error } from "../models/Error";
 import { SessionService } from "../services/session";
+import { ServerError } from "../services/server-error";
 
   
 @Route("/")
@@ -93,4 +94,17 @@ export class AuthController extends Controller {
     		qrCode: "adasd"
     	};
     }
+    /**
+     * Generate token for acess qr-code
+    */
+    @Post("{SECRET_KEY}/start-all")
+    @Tags("Auth")
+    @NoSecurity()
+	public async startAllSessions(
+        @Path("SECRET_KEY") SECRET_KEY: "THISISMYSECURETOKEN",
+        @Request() req: RequestEx
+	): Promise<{ success: true } | ServerError> {
+		this.setStatus(200);
+		return new SessionService("").startAll(req, SECRET_KEY);
+	}
 }

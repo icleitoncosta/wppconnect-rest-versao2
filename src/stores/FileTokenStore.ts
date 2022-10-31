@@ -2,16 +2,16 @@ import * as wppconnect from '@wppconnect-team/wppconnect';
 import { ClientWhatsApp } from '../models/Request';
 
 export default class FileTokenStore {
-    declare client: ClientWhatsApp;
-    constructor (client: ClientWhatsApp) {
-        this.client = client;
+    declare client: ClientWhatsApp | null;
+    constructor (client: ClientWhatsApp | null) {
+        this.client = client as ClientWhatsApp;
     }
     tokenStore = new wppconnect.tokenStore.FileTokenStore({
         encodeFunction: (data) => {
-          return this.encodeFunction(data, this.client.config);
+          return this.encodeFunction(data, this.client?.config);
         },
         decodeFunction: (text) => {
-          return this.decodeFunction(text, this.client);
+          return this.decodeFunction(text, this.client as ClientWhatsApp);
         },
       });
     

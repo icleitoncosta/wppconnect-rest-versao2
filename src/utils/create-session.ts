@@ -51,6 +51,7 @@ export default class CreateSessionUtil {
         for(const ses of clientsArray) {
           if(ses.session == session) {
             ses.client = wppClient;
+            client = wppClient;
           }
         }
         await this.start(req, client);
@@ -135,8 +136,8 @@ export default class CreateSessionUtil {
           });
       });
   
-      client.onAnyMessage((message: Message) => {
-        console.log(message);
+      client.onAnyMessage((_message: Message) => {
+        
       });
   
       client.onIncomingCall(async (_call: any) => {
@@ -165,7 +166,8 @@ export default class CreateSessionUtil {
   
     getClient(session: string, req?: RequestEx): ClientWhatsApp {
       let client = null;
-      if(req?.client) {
+      if(req?.client && req.client.session) {
+        console.log(req?.client);
         client = req?.client;
       }else {
         for(const cli of clientsArray) {
@@ -176,9 +178,21 @@ export default class CreateSessionUtil {
       }
   
       if (!client) {
-        clientsArray.push({ status: undefined, session: session })
+        console.log("Opa amigos");
+        console.log(session);
+        clientsArray.push(
+          { 
+            status: "CLOSED",
+            session: session,
+            token: "", 
+            client: {
+              status: "CLOSED",
+              session: session
+            },
+          })
         for(const arrItem of clientsArray) {
           if(arrItem.session === session) {
+            console.log(arrItem);
             client = arrItem.client;
           }
         }
