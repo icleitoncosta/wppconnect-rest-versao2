@@ -34,6 +34,10 @@
         {
           "name": "Media",
           "description": "Methods for get, delete and upload media to server"
+        },
+        {
+          "name": "Groups",
+          "description": "NOT similar to OFFICIAL API. Methods for manage groups"
         }
       ]
     },

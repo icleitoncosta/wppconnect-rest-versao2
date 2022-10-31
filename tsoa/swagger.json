@@ -73,6 +73,24 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"ContactWPP": {
+				"properties": {
+					"profile_picture_url": {
+						"type": "string"
+					},
+					"formattedName": {
+						"type": "string"
+					},
+					"isBusiness": {
+						"type": "boolean"
+					},
+					"isEnterprise": {
+						"type": "boolean"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
 			"Contact": {
 				"properties": {
 					"wa_id": {
@@ -81,6 +99,9 @@
 					},
 					"profile": {
 						"$ref": "#/components/schemas/ProfileInterface"
+					},
+					"wpp_data": {
+						"$ref": "#/components/schemas/ContactWPP"
 					}
 				},
 				"required": [
@@ -162,19 +183,26 @@
 			"FieldsContact": {
 				"type": "string",
 				"enum": [
-					"name"
-				],
-				"nullable": false
+					"name",
+					"wpp_data"
+				]
 			},
 			"BusinessProfileInterface": {
 				"properties": {
+					"messaging_product": {
+						"type": "string",
+						"enum": [
+							"whatsapp"
+						],
+						"nullable": false
+					},
 					"name": {
 						"type": "string"
 					},
 					"about": {
 						"type": "string"
 					},
-					"adress": {
+					"address": {
 						"type": "string"
 					},
 					"description": {
@@ -182,13 +210,6 @@
 					},
 					"email": {
 						"type": "string"
-					},
-					"messaging_product": {
-						"type": "string",
-						"enum": [
-							"whatsapp"
-						],
-						"nullable": false
 					},
 					"profile_picture_url": {
 						"type": "string"
@@ -200,12 +221,12 @@
 						"type": "array"
 					},
 					"vertical": {
-						"type": "string"
+						"type": "string",
+						"example": "INDUSTRY"
 					}
 				},
 				"required": [
-					"messaging_product",
-					"profile_picture_url"
+					"messaging_product"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -214,6 +235,9 @@
 				"properties": {
 					"business_profile": {
 						"$ref": "#/components/schemas/BusinessProfileInterface"
+					},
+					"wpp_data": {
+						"$ref": "#/components/schemas/ContactWPP"
 					}
 				},
 				"required": [
@@ -222,15 +246,36 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"FieldsBusinessContact": {
+				"type": "string",
+				"enum": [
+					"name",
+					"about",
+					"address",
+					"description",
+					"email",
+					"profile_picture_url",
+					"websites",
+					"vertical",
+					"wpp_data"
+				]
+			},
 			"Partial_BusinessProfileInterface_": {
 				"properties": {
+					"messaging_product": {
+						"type": "string",
+						"enum": [
+							"whatsapp"
+						],
+						"nullable": false
+					},
 					"name": {
 						"type": "string"
 					},
 					"about": {
 						"type": "string"
 					},
-					"adress": {
+					"address": {
 						"type": "string"
 					},
 					"description": {
@@ -238,13 +283,6 @@
 					},
 					"email": {
 						"type": "string"
-					},
-					"messaging_product": {
-						"type": "string",
-						"enum": [
-							"whatsapp"
-						],
-						"nullable": false
 					},
 					"profile_picture_url": {
 						"type": "string"
@@ -256,11 +294,379 @@
 						"type": "array"
 					},
 					"vertical": {
-						"type": "string"
+						"type": "string",
+						"example": "INDUSTRY"
 					}
 				},
 				"type": "object",
 				"description": "Make all properties in T optional"
+			},
+			"Group": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"pic": {
+						"type": "string"
+					},
+					"participants": {},
+					"admins": {},
+					"invite": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"description",
+					"admins",
+					"invite"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ReturnGroup": {
+				"description": "THIS IS NOT SIMILAR TO OFFICIAL API\r\nEXCLUSIVE BY WPPCONNECT",
+				"properties": {
+					"messaging_product": {
+						"type": "string",
+						"enum": [
+							"whatsapp"
+						],
+						"nullable": false
+					},
+					"group": {
+						"$ref": "#/components/schemas/Group"
+					}
+				},
+				"required": [
+					"messaging_product",
+					"group"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CreateGroup": {
+				"properties": {
+					"messaging_product": {
+						"type": "string",
+						"enum": [
+							"whatsapp"
+						],
+						"nullable": false
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"create_group"
+						],
+						"nullable": false
+					},
+					"create": {
+						"properties": {
+							"members": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							},
+							"description": {
+								"type": "string"
+							},
+							"name": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"members",
+							"description",
+							"name"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"messaging_product",
+					"type",
+					"create"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"EditGroup": {
+				"properties": {
+					"messaging_product": {
+						"type": "string",
+						"enum": [
+							"whatsapp"
+						],
+						"nullable": false
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"edit_group"
+						],
+						"nullable": false
+					},
+					"edit": {
+						"properties": {
+							"pic": {
+								"type": "string"
+							},
+							"description": {
+								"type": "string"
+							},
+							"name": {
+								"type": "string"
+							},
+							"id": {
+								"type": "string",
+								"description": "group id"
+							}
+						},
+						"required": [
+							"id"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"messaging_product",
+					"type",
+					"edit"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"AddParticipantGroup": {
+				"properties": {
+					"messaging_product": {
+						"type": "string",
+						"enum": [
+							"whatsapp"
+						],
+						"nullable": false
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"add_participant"
+						],
+						"nullable": false
+					},
+					"add_participant": {
+						"properties": {
+							"phones": {
+								"anyOf": [
+									{
+										"items": {
+											"type": "string"
+										},
+										"type": "array"
+									},
+									{
+										"type": "string"
+									}
+								]
+							},
+							"id": {
+								"type": "string",
+								"description": "group id"
+							}
+						},
+						"required": [
+							"phones",
+							"id"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"messaging_product",
+					"type",
+					"add_participant"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"DeleteParticipantGroup": {
+				"properties": {
+					"messaging_product": {
+						"type": "string",
+						"enum": [
+							"whatsapp"
+						],
+						"nullable": false
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"remove_participant"
+						],
+						"nullable": false
+					},
+					"remove_participant": {
+						"properties": {
+							"phones": {
+								"anyOf": [
+									{
+										"items": {
+											"type": "string"
+										},
+										"type": "array"
+									},
+									{
+										"type": "string"
+									}
+								]
+							},
+							"id": {
+								"type": "string",
+								"description": "group id"
+							}
+						},
+						"required": [
+							"phones",
+							"id"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"messaging_product",
+					"type",
+					"remove_participant"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"DemoteParticipantGroup": {
+				"properties": {
+					"messaging_product": {
+						"type": "string",
+						"enum": [
+							"whatsapp"
+						],
+						"nullable": false
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"demote_participant"
+						],
+						"nullable": false
+					},
+					"demote": {
+						"properties": {
+							"phone": {
+								"type": "string",
+								"description": "participant id"
+							},
+							"id": {
+								"type": "string",
+								"description": "group id"
+							}
+						},
+						"required": [
+							"phone",
+							"id"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"messaging_product",
+					"type",
+					"demote"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"PromoteParticipantGroup": {
+				"properties": {
+					"messaging_product": {
+						"type": "string",
+						"enum": [
+							"whatsapp"
+						],
+						"nullable": false
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"promote_participant"
+						],
+						"nullable": false
+					},
+					"promote": {
+						"properties": {
+							"phone": {
+								"type": "string",
+								"description": "participant id"
+							},
+							"id": {
+								"type": "string",
+								"description": "group id"
+							}
+						},
+						"required": [
+							"phone",
+							"id"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"messaging_product",
+					"type",
+					"promote"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"RemoveLinkGroup": {
+				"properties": {
+					"messaging_product": {
+						"type": "string",
+						"enum": [
+							"whatsapp"
+						],
+						"nullable": false
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"revoke_link"
+						],
+						"nullable": false
+					},
+					"revoke": {
+						"properties": {
+							"id": {
+								"type": "string",
+								"description": "group id"
+							}
+						},
+						"required": [
+							"id"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"messaging_product",
+					"type",
+					"revoke"
+				],
+				"type": "object",
+				"additionalProperties": false
 			},
 			"ReturnMedia": {
 				"properties": {
@@ -1988,7 +2394,10 @@
 						"name": "fields",
 						"required": true,
 						"schema": {
-							"type": "string"
+							"type": "array",
+							"items": {
+								"$ref": "#/components/schemas/FieldsBusinessContact"
+							}
 						}
 					}
 				]
@@ -2035,23 +2444,401 @@
 						"apiKey": []
 					}
 				],
-				"parameters": [
-					{
-						"description": "ID of your user \"xxxxxxxxxx@c.us\"",
-						"in": "path",
-						"name": "PHONE_NUMBER_ID",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				],
+				"parameters": [],
 				"requestBody": {
 					"required": true,
 					"content": {
 						"application/json": {
 							"schema": {
 								"$ref": "#/components/schemas/Partial_BusinessProfileInterface_"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/{PHONE_NUMBER_ID}/groups/{GROUP_ID}": {
+			"get": {
+				"operationId": "GetGroup",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/ReturnGroup"
+										},
+										{
+											"$ref": "#/components/schemas/Error"
+										}
+									]
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Incorrect request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Error"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Error"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"error": {
+												"message": "Token in not present",
+												"type": "invalid_request",
+												"code": 3,
+												"error_data": {
+													"messaging_product": "whatsapp",
+													"details": "Token is not present. Check your header and try again"
+												},
+												"error_subcode": 132000
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Retrieves details of groups\r\nIt's exactly the same way you get it via Webhooks.",
+				"tags": [
+					"Groups"
+				],
+				"security": [
+					{
+						"apiKey": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "GROUP_ID",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"put": {
+				"operationId": "ManageMyGroup",
+				"responses": {
+					"200": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"properties": {
+												"sucess": {
+													"type": "boolean",
+													"enum": [
+														true
+													],
+													"nullable": false
+												}
+											},
+											"required": [
+												"sucess"
+											],
+											"type": "object"
+										},
+										{
+											"$ref": "#/components/schemas/Error"
+										}
+									]
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Incorrect request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Error"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Error"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"error": {
+												"message": "Token in not present",
+												"type": "invalid_request",
+												"code": 3,
+												"error_data": {
+													"messaging_product": "whatsapp",
+													"details": "Token is not present. Check your header and try again"
+												},
+												"error_subcode": 132000
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "This is NOT similar to Official API\r\nUse this route to leave and join to group",
+				"tags": [
+					"Groups"
+				],
+				"security": [
+					{
+						"apiKey": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "GROUP_ID",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "type",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"enum": [
+								"leave",
+								"join"
+							]
+						}
+					},
+					{
+						"in": "query",
+						"name": "link",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/{PHONE_NUMBER_ID}/groups": {
+			"post": {
+				"operationId": "ManageGroups",
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/ReturnGroup"
+										},
+										{
+											"$ref": "#/components/schemas/Error"
+										}
+									]
+								},
+								"examples": {
+									"1 - Response Success": {
+										"value": {
+											"messaging_product": "whatsapp",
+											"group": {
+												"id": "56898982356@g.us",
+												"name": "Name of your group",
+												"description": "Description of group",
+												"pic": "http://imgpicofgroup.com.br",
+												"participants": [
+													"556589785332@c.us"
+												],
+												"admins": [
+													"556589785332@c.us"
+												],
+												"invite": "http://wid.com/8898999a6sa6"
+											}
+										}
+									},
+									"2 - Payload: Create group": {
+										"value": {
+											"messaging_product": "whatsapp",
+											"type": "create_group",
+											"create": {
+												"name": "Name for your group",
+												"description": "Description for your Group",
+												"members": [
+													"55219855232878@c.us",
+													"5521967855658@c.us"
+												]
+											}
+										}
+									},
+									"3 - Payload: Edit data of group": {
+										"value": {
+											"messaging_product": "whatsapp",
+											"type": "edit_group",
+											"edit": {
+												"id": "5689785264498989@g.us",
+												"name": "New name for my group",
+												"description": "New description to my group\nWith new line"
+											}
+										}
+									},
+									"4 - Payload: Add participants": {
+										"value": {
+											"messaging_product": "whatsapp",
+											"type": "add_participant",
+											"add_participant": {
+												"id": "585668889887897@g.us",
+												"phones": [
+													"5521985232927@c.us"
+												]
+											}
+										}
+									},
+									"5 - Payload: Delete participants": {
+										"value": {
+											"messaging_product": "whatsapp",
+											"type": "remove_participant",
+											"remove_participant": {
+												"id": "585668889887897@g.us",
+												"phones": [
+													"5521985232927@c.us"
+												]
+											}
+										}
+									},
+									"6 - Payload: Demote participants (remove admin)": {
+										"value": {
+											"messaging_product": "whatsapp",
+											"type": "demote_participant",
+											"demote": {
+												"id": "585668889887897@g.us",
+												"phone": "5521985232927@c.us"
+											}
+										}
+									},
+									"7 - Payload: Promove participants (promove admin)": {
+										"value": {
+											"messaging_product": "whatsapp",
+											"type": "promote_participant",
+											"promote": {
+												"id": "585668889887897@g.us",
+												"phone": "5521985232927@c.us"
+											}
+										}
+									},
+									"8 - Payload: Revoke Link Group": {
+										"value": {
+											"messaging_product": "whatsapp",
+											"type": "revoke_link",
+											"revoke": {
+												"id": "585668889887897@g.us"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Incorrect request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Error"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Error"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"error": {
+												"message": "Token in not present",
+												"type": "invalid_request",
+												"code": 3,
+												"error_data": {
+													"messaging_product": "whatsapp",
+													"details": "Token is not present. Check your header and try again"
+												},
+												"error_subcode": 132000
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Use the /PHONE_NUMBER_ID/groups endpoint to edit groups and functions",
+				"tags": [
+					"Groups"
+				],
+				"security": [
+					{
+						"apiKey": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"anyOf": [
+									{
+										"$ref": "#/components/schemas/CreateGroup"
+									},
+									{
+										"$ref": "#/components/schemas/EditGroup"
+									},
+									{
+										"$ref": "#/components/schemas/AddParticipantGroup"
+									},
+									{
+										"$ref": "#/components/schemas/DeleteParticipantGroup"
+									},
+									{
+										"$ref": "#/components/schemas/DemoteParticipantGroup"
+									},
+									{
+										"$ref": "#/components/schemas/PromoteParticipantGroup"
+									},
+									{
+										"$ref": "#/components/schemas/RemoveLinkGroup"
+									}
+								]
 							}
 						}
 					}
@@ -3313,6 +4100,10 @@
 		{
 			"name": "Media",
 			"description": "Methods for get, delete and upload media to server"
+		},
+		{
+			"name": "Groups",
+			"description": "NOT similar to OFFICIAL API. Methods for manage groups"
 		}
 	]
 }
