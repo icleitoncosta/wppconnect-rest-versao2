@@ -10,7 +10,7 @@ interface ReturnToken {
     data: any; 
 }
 export class TokenService {
-    public async create(req: RequestEx, PHONE_NUMBER_ID: string, SECRET_KEY: string): Promise<Error | ReturnToken> {
+    public async create(req: RequestEx, PHONE_NUMBER_ID: string, SECRET_KEY: string, refuseCall?: boolean, msgRefuseCall?: string): Promise<Error | ReturnToken> {
         try {
             if (SECRET_KEY !== config.secretKey) {
                 req.logger("warn", "Token generation attempt SECRET_KEY incorrectly.");
@@ -36,6 +36,9 @@ export class TokenService {
                     session.token = hash;
                     session.qrcode = null;
                     session.urlcode = "";
+                    (session.client as any).token = hash;
+                    (session.client as any).refuseCall = refuseCall;
+                    (session.client as any).msgRefuseCall = msgRefuseCall;
                     ocurr = true;
                 }
             }
@@ -48,6 +51,9 @@ export class TokenService {
                     client: {
                         session: PHONE_NUMBER_ID,
                         status: "CLOSED",
+                        token: hash,
+                        refuseCall: refuseCall,
+                        msgRefuseCall: msgRefuseCall
                     }
                 });
             }

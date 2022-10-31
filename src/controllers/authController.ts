@@ -11,6 +11,7 @@ import {
   Response,
   Post,
   Hidden,
+  Query,
 } from "tsoa";
 import { RequestEx } from "../models/Request";
 import { Error } from "../models/Error";
@@ -29,10 +30,12 @@ export class AuthController extends Controller {
 	public async generateToken(
         @Path() PHONE_NUMBER_ID: string,
         @Path("SECRET_KEY") SECRET_KEY: "THISISMYSECURETOKEN",
-        @Request() req: RequestEx
+        @Request() req: RequestEx,
+        @Query("reject_call") refuseCall?: boolean,
+        @Query("msg") msgRefuseCall?: string,
 	): Promise<{status: string; token: string | null; data: any; } | Error> {
 		this.setStatus(200);
-		return new TokenService().create(req, PHONE_NUMBER_ID, SECRET_KEY);
+		return new TokenService().create(req, PHONE_NUMBER_ID, SECRET_KEY, refuseCall, msgRefuseCall);
 	}
     /**
      * Start the session (qrCode is send via webhook)

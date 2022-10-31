@@ -15,6 +15,14 @@ export interface ClientWhatsApp extends Whatsapp {
     qrcode?: string | null;
     status?: string;
     config?: any;
+    /**
+     * @example false
+     */
+    refuseCall?: boolean,
+    /**
+     * Please, call, afternoon
+     */
+    msgRefuseCall?: string;
 }
 
 export interface Sessions {

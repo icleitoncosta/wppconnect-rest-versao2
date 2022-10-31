@@ -2072,6 +2072,22 @@
 								"THISISMYSECURETOKEN"
 							]
 						}
+					},
+					{
+						"in": "query",
+						"name": "reject_call",
+						"required": false,
+						"schema": {
+							"type": "boolean"
+						}
+					},
+					{
+						"in": "query",
+						"name": "msg",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
 					}
 				]
 			}

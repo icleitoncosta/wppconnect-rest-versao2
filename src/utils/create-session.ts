@@ -10,10 +10,22 @@ export default class CreateSessionUtil {
         let client = this.getClient(session, req);
         if (client.status != null && client.status !== 'CLOSED') return;
         client.status = 'INITIALIZING';
+        client.config = {
+          token: client.token,
+          refuseCall: client.refuseCall,
+          msgRefuseCall: client.msgRefuseCall
+        }
   
         const myTokenStore = new FileTokenStore(client).tokenStore;
   
-        await myTokenStore.getToken(session);
+        const myToken = await myTokenStore.getToken(session);
+        if((myToken as any).config) {
+          client.config = {
+            token: (myToken as any).config.token,
+            refuseCall: (myToken as any).config.refuseCall,
+            msgRefuseCall: (myToken as any).config.msgRefuseCall
+          }
+        }
   
         if (config.customUserDataDir) {
             config.createOptions.puppeteerOptions = {
@@ -47,11 +59,22 @@ export default class CreateSessionUtil {
                 },
               }) as unknown as CreateOptions
         );
-
+              
+        if((myToken as any).config) {
+          (wppClient as any).config = {
+            token: (myToken as any).config.token,
+            refuseCall: (myToken as any).config.refuseCall,
+            msgRefuseCall: (myToken as any).config.msgRefuseCall,
+          };
+          (wppClient as any).token = (myToken as any).config.token;
+          (wppClient as any).refuseCall = (myToken as any).config.refuseCall;
+          (wppClient as any).msgRefuseCall = (myToken as any).config.msgRefuseCall;
+        }
         for(const ses of clientsArray) {
           if(ses.session == session) {
             ses.client = wppClient;
             client = wppClient;
+            ses.token = client.token;
           }
         }
         await this.start(req, client);
@@ -104,19 +127,19 @@ export default class CreateSessionUtil {
         //req.io.emit('session-error', client.session);
       }
   
-      await this.checkStateSession(client as Whatsapp, req);
-      await this.listenMessages(client as Whatsapp, req);
+      await this.checkStateSession(client as ClientWhatsApp, req);
+      await this.listenMessages(client as ClientWhatsApp, req);
   
       if (config.webhook.acks) {
-        await this.listenAcks(client as Whatsapp, req);
+        await this.listenAcks(client as ClientWhatsApp, req);
       }
   
       if (config.webhook.presence) {
-        await this.onPresenceChanged(client as Whatsapp, req);
+        await this.onPresenceChanged(client as ClientWhatsApp, req);
       }
     }
   
-    async checkStateSession(client: Whatsapp, req: RequestEx) {
+    async checkStateSession(client: ClientWhatsApp, req: RequestEx) {
       client.onStateChange((state) => {
         req.logger.info(`State Change ${state}: ${client.session}`);
         const conflits = [SocketState.CONFLICT];
@@ -127,7 +150,7 @@ export default class CreateSessionUtil {
       });
     }
   
-    async listenMessages(client: Whatsapp, _req: RequestEx) {
+    async listenMessages(client: ClientWhatsApp, _req: RequestEx) {
       client.onMessage(async (message: Message) => {
         
         if (message.type === 'location')
@@ -136,28 +159,33 @@ export default class CreateSessionUtil {
           });
       });
   
-      client.onAnyMessage((_message: Message) => {
-        
+      client.onAnyMessage(async (_message: Message) => {
       });
   
-      client.onIncomingCall(async (_call: any) => {
+      client.onIncomingCall(async (call: any) => {
+        if(client.refuseCall) {
+          await client.rejectCall(call.id);
+          if(client.msgRefuseCall) {
+            await client.sendText(call.peerJid, client.msgRefuseCall)
+          }
+        }
         //req.io.emit('incomingcall', call);
       });
     }
   
-    async listenAcks(client: Whatsapp, _req: RequestEx) {
+    async listenAcks(client: ClientWhatsApp, _req: RequestEx) {
       client.onAck(async (_ack: Ack) => {
         //req.io.emit('onack', ack);
       });
     }
   
-    async onPresenceChanged(client: Whatsapp, _req: RequestEx) {
+    async onPresenceChanged(client: ClientWhatsApp, _req: RequestEx) {
       client.onPresenceChanged(async (_presenceChangedEvent: PresenceEvent) => {
         //req.io.emit('onpresencechanged', presenceChangedEvent);
       });
     }
   
-    async onReactionMessage(client: Whatsapp, _req: RequestEx) {
+    async onReactionMessage(client: ClientWhatsApp, _req: RequestEx) {
       await client.isConnected();
       client.onReactionMessage(async (_reaction: any) => {
         //req.io.emit('onreactionmessage', reaction);
@@ -167,7 +195,6 @@ export default class CreateSessionUtil {
     getClient(session: string, req?: RequestEx): ClientWhatsApp {
       let client = null;
       if(req?.client && req.client.session) {
-        console.log(req?.client);
         client = req?.client;
       }else {
         for(const cli of clientsArray) {
@@ -178,13 +205,10 @@ export default class CreateSessionUtil {
       }
   
       if (!client) {
-        console.log("Opa amigos");
-        console.log(session);
         clientsArray.push(
           { 
             status: "CLOSED",
             session: session,
-            token: "", 
             client: {
               status: "CLOSED",
               session: session
@@ -192,7 +216,6 @@ export default class CreateSessionUtil {
           })
         for(const arrItem of clientsArray) {
           if(arrItem.session === session) {
-            console.log(arrItem);
             client = arrItem.client;
           }
         }
