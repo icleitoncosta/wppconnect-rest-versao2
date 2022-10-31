@@ -17,23 +17,25 @@ export function expressAuthentication(
             reject(new ServerError(
                 "Token in not present", 
                 "invalid_request", 
-                3, 
+                0, 
                 "Token is not present. Check your header and try again",
-                132000
+                190
             ));
         }
         let tokenDecrypt = '';
+        let clientFound = false;
         tokenDecrypt = token?.replace(/_/g, '/').replace(/-/g, '+') as string;
         clientsArray.forEach( (session) => {
             if (session.token === tokenDecrypt) {
+                clientFound = true;
                 bcrypt.compare(session.session + config.secretKey, tokenDecrypt, (err, same) => {
                     if(err) {
                         reject(new ServerError(
                             "Token error", 
                             "error_request", 
-                            3, 
+                            0, 
                             err,
-                            132000
+                            190
                         ));
                     }
                     if(same) {
@@ -46,5 +48,14 @@ export function expressAuthentication(
                 });
             }
         });
+        if(!clientFound) {
+            reject(new ServerError(
+                "Token is incorrect", 
+                "invalid_request", 
+                0, 
+                "Token is incorrect. Check your header and try again",
+                190
+            ));
+        }
     })
 }
