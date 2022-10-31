@@ -40,8 +40,7 @@ export function expressAuthentication(
                         resolve();
                         request.session = session.session;
                         request.token = session.token;
-                        request.data = [];
-                        request.client = session.client as ClientWhatsApp;
+                        request.client = session.client as Partial<ClientWhatsApp>;
                         resolve();
                     }
                 });

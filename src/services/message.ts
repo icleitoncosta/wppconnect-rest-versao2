@@ -228,6 +228,7 @@ export class MessagesService {
      */
     public async create(req: RequestEx, payload: SendText | SendImage | SendAudio | SendDocument | SendSticker | SendVideo | SendContact | SendLocation | SendReaction | SendInteractive | SendPoll): Promise<ReturnSendedMessage | Error> {
         try {
+            const client = req.client as ClientWhatsApp;
             let message;
             let options;
             if(payload.type !== "reaction" && payload.type !== "interactive" && payload.type !== "poll" && payload.context?.message_id) {
@@ -236,35 +237,35 @@ export class MessagesService {
                 }
             }
             if(payload.type === "text") {
-                message = await req.client?.sendText(payload.to, payload.text.body as string, options);
+                message = await client.sendText(payload.to, payload.text.body as string, options);
                 return Promise.resolve(this.returnMessageSucess(payload.to, message?.id as string));
             }else if(payload.type === "image") {
                 if(payload.image.link?.includes("base64")) {
-                    message = await req.client?.sendImageFromBase64(payload.to, payload.image?.link as string, "image.jpg", payload.image?.caption, (payload.context?.message_id ? payload.context?.message_id : undefined));
+                    message = await client.sendImageFromBase64(payload.to, payload.image?.link as string, "image.jpg", payload.image?.caption, (payload.context?.message_id ? payload.context?.message_id : undefined));
                     return Promise.resolve(this.returnMessageSucess(payload.to, message?.id as string));
                 } else {
-                    message = await req.client?.sendImage(payload.to, payload.image?.link as string, undefined, payload.image?.caption, (payload.context?.message_id ? payload.context?.message_id : undefined));
+                    message = await client.sendImage(payload.to, payload.image?.link as string, undefined, payload.image?.caption, (payload.context?.message_id ? payload.context?.message_id : undefined));
                     return Promise.resolve(this.returnMessageSucess(payload.to, message?.id as string));
                 }
             }else if(payload.type === "audio") {
                 if(payload.audio.link?.includes("base64")) {
-                    message = await req.client?.sendPttFromBase64(payload.to, payload.audio.link as string, "audio.mp3", undefined, (payload.context?.message_id ? payload.context?.message_id : undefined));
+                    message = await client.sendPttFromBase64(payload.to, payload.audio.link as string, "audio.mp3", undefined, (payload.context?.message_id ? payload.context?.message_id : undefined));
                     return Promise.resolve(this.returnMessageSucess(payload.to, message?.id as string));
                 } else {
-                    message = await req.client?.sendPtt(payload.to, payload.audio.link as string, undefined, undefined, (payload.context?.message_id ? payload.context?.message_id : undefined)) as MessageWPP;
+                    message = await client.sendPtt(payload.to, payload.audio.link as string, undefined, undefined, (payload.context?.message_id ? payload.context?.message_id : undefined)) as MessageWPP;
                     return Promise.resolve(this.returnMessageSucess(payload.to, message?.id));
                 }
             }else if(payload.type === "document") {
-                message = await req.client?.sendFile(payload.to, payload.document.link as string, options) as MessageWPP;
+                message = await client.sendFile(payload.to, payload.document.link as string, options) as MessageWPP;
                 return Promise.resolve(this.returnMessageSucess(payload.to, message?.id));
             }else if(payload.type === "video") {
-                message = await req.client?.sendFile(payload.to, payload.video.link as string, options) as MessageWPP;
+                message = await client.sendFile(payload.to, payload.video.link as string, options) as MessageWPP;
                 return Promise.resolve(this.returnMessageSucess(payload.to, message?.id));
             }else if(payload.type === "sticker") {
-                message = await req.client?.sendImageAsSticker(payload.to, payload.sticker?.link as string) as unknown as MessageWPP;
+                message = await client.sendImageAsSticker(payload.to, payload.sticker?.link as string) as unknown as MessageWPP;
                 return Promise.resolve(this.returnMessageSucess(payload.to, message?.id));
             }else if(payload.type === "location") {
-                message = await req.client?.sendLocation(payload.to, { lat: payload.location.latitude, lng: payload.location.longitude, address: payload.location.address, name: payload.location.name}) as unknown as MessageWPP;
+                message = await client.sendLocation(payload.to, { lat: payload.location.latitude, lng: payload.location.longitude, address: payload.location.address, name: payload.location.name}) as unknown as MessageWPP;
                 return Promise.resolve(this.returnMessageSucess(payload.to, message?.id));
             }else if(payload.type === "poll") {
                 if(!payload.to.includes("@g.us") || payload.recipient_type === 'individual') {
@@ -284,10 +285,10 @@ export class MessagesService {
                 }
                 //Await wppconnect release a version for implement sendPollMessage
 
-                //message = await req.client?.sendPollMessage(payload.to, payload.poll.title, payload.poll.options, { selectableCount: payload.poll.selectableCount} ) as unknown as MessageWPP;
+                //message = await client.sendPollMessage(payload.to, payload.poll.title, payload.poll.options, { selectableCount: payload.poll.selectableCount} ) as unknown as MessageWPP;
                 return Promise.resolve(this.returnMessageSucess(payload.to, "Please, implement release on WPPConnect"));
             }else if(payload.type === "reaction") {
-                message = await req.client?.sendReactionToMessage(payload.reaction.message_id, payload.reaction.emoji) as unknown as MessageWPP;
+                message = await client.sendReactionToMessage(payload.reaction.message_id, payload.reaction.emoji) as unknown as MessageWPP;
                 return Promise.resolve(this.returnMessageSucess(payload.to, message?.id));
             }else if(payload.type === "interactive") {
                 if(payload.interactive?.type === "button") {
@@ -298,7 +299,7 @@ export class MessagesService {
                             text: btn.reply.title
                         });
                     }
-                    message = await req.client?.sendText(payload.to, payload.interactive?.body?.text as string, {
+                    message = await client.sendText(payload.to, payload.interactive?.body?.text as string, {
                         useTemplateButtons: false,
                         buttons: buttons
                     })
@@ -319,7 +320,7 @@ export class MessagesService {
                             }
                         }
                     }
-                    message = await req.client?.sendListMessage(payload.to, {
+                    message = await client.sendListMessage(payload.to, {
                         buttonText: payload.interactive.action.button as string,
                         description: payload.interactive.body?.text as string,
                         sections: payload.interactive.action.sections as any,
@@ -378,9 +379,10 @@ export class MessagesService {
      */
     public async markStatusMessage(req: RequestEx, payload: StatusMessage): Promise<any> {
         try {
+            const client = req.client as ClientWhatsApp;
             if(payload.status === "read") {
                 try {
-                    await req.client?.sendSeen(this.getChatIdByMessageId(payload.message_id));
+                    await client.sendSeen(this.getChatIdByMessageId(payload.message_id));
                     return Promise.resolve({ sucess: true });
                 } catch (error) {
                     return Promise.reject(new ServerError("Error on get markstatus message",
@@ -390,10 +392,10 @@ export class MessagesService {
                         131009));
                 }
             } else if(payload.status === "played") {
-                await req.client?.markPlayed(payload.message_id);
+                await client.markPlayed(payload.message_id);
                 return Promise.resolve({ sucess: true });
             } else if(payload.status === "deleted") {
-                await req.client?.deleteMessage(this.getChatIdByMessageId(payload.message_id), payload.message_id, false);
+                await client.deleteMessage(this.getChatIdByMessageId(payload.message_id), payload.message_id, false);
                 return Promise.resolve({ sucess: true });
             } else {
                 Promise.resolve({ sucess: false });

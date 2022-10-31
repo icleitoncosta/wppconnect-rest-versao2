@@ -2,11 +2,11 @@ import { Whatsapp } from "@wppconnect-team/wppconnect"
 import Express from "express";
 
 export interface RequestEx extends Express.Request {
-    client?: ClientWhatsApp;
+    client?: Partial<ClientWhatsApp>;
     session?: string;
     token?: string;
     logger?: any;
-    data?: any;
+    status?: string;
 }
 
 export interface ClientWhatsApp extends Whatsapp {
@@ -18,7 +18,7 @@ export interface ClientWhatsApp extends Whatsapp {
 }
 
 export interface Sessions {
-    client?: ClientWhatsApp;
+    client?: Partial<ClientWhatsApp>;
     status?: string;
     session?: string;
     token?: string;

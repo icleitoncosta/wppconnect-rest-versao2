@@ -45,6 +45,10 @@ export class TokenService {
                     token: hash,
                     qrcode: null,
                     urlcode: "",
+                    client: {
+                        session: PHONE_NUMBER_ID,
+                        status: "CLOSED",
+                    }
                 });
             }
             

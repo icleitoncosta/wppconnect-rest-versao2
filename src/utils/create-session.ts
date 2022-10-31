@@ -1,17 +1,17 @@
 import { Ack, create, SocketState, LiveLocation, Message, ParticipantEvent, PresenceEvent, CreateOptions, Whatsapp } from "@wppconnect-team/wppconnect";
 import FileTokenStore from "../stores/FileTokenStore";
 import config from "../config";
-import { ClientWhatsApp, RequestEx, Sessions } from "../models/Request";
+import { ClientWhatsApp, RequestEx } from "../models/Request";
 import { clientsArray } from "./session";
 
 export default class CreateSessionUtil {
     async create(req: RequestEx, clientsArray: Array<any>, session: any) {
       try {
-        let dataConfig: Sessions = this.getClient(session);
-        if (dataConfig.status != null && dataConfig.status !== 'CLOSED') return;
-        dataConfig.status = 'INITIALIZING';
+        let client = this.getClient(session, req);
+        if (client.status != null && client.status !== 'CLOSED') return;
+        client.status = 'INITIALIZING';
   
-        const myTokenStore = new FileTokenStore(dataConfig.client as ClientWhatsApp).tokenStore;
+        const myTokenStore = new FileTokenStore(client).tokenStore;
   
         await myTokenStore.getToken(session);
   
@@ -28,7 +28,7 @@ export default class CreateSessionUtil {
                 poweredBy: config.poweredBy || 'WPPConnect-Server',
                 
                 catchQR: (base64Qr: string, _asciiQR: string, _attempt: string, urlCode: string) => {
-                  this.exportQR(req, base64Qr, urlCode, dataConfig);
+                  this.exportQR(req, base64Qr, urlCode, client);
                 },
                 onLoadingScreen: (percent: string, message: string) => {
                   req.logger.info(`[${session}] ${percent}% - ${message}`);
@@ -36,9 +36,9 @@ export default class CreateSessionUtil {
                 statusFind: (statusFind: string) => {
                   try {
                     if (statusFind === 'autocloseCalled' || statusFind === 'desconnectedMobile') {
-                      dataConfig.status = 'CLOSED';
-                      dataConfig.qrcode = null;
-                      dataConfig.client?.close();
+                      client.status = 'CLOSED';
+                      client.qrcode = null;
+                      client.close();
                       //clientsArray[session] = undefined;
                     }
                     //callWebHook(client, req, 'status-find', { status: statusFind });
@@ -53,14 +53,14 @@ export default class CreateSessionUtil {
             ses.client = wppClient;
           }
         }
-        await this.start(req, dataConfig);
+        await this.start(req, client);
   
         if (config.webhook.participants_changed_group) {
-          await this.onParticipantsChanged(req, dataConfig.client as Whatsapp);
+          await this.onParticipantsChanged(req, client as Whatsapp);
         }
   
         if (config.webhook.reactions) {
-          await this.onReactionMessage(dataConfig.client as Whatsapp, req);
+          await this.onReactionMessage(client as Whatsapp, req);
         }
       } catch (e) {
         req.logger.error(e);
@@ -71,7 +71,7 @@ export default class CreateSessionUtil {
       await this.create(req, clientsArray, session);
     }
   
-    exportQR(_req: RequestEx, qrCode: string, urlCode: string, client: Sessions) {
+    exportQR(_req: RequestEx, qrCode: string, urlCode: string, client: ClientWhatsApp) {
       //eventEmitter.emit(`qrcode-${client.session}`, qrCode, urlCode, client);]
       client.qrcode = qrCode;
       client.status = 'QRCODE';
@@ -89,9 +89,9 @@ export default class CreateSessionUtil {
       });
     }
   
-    async start(req: RequestEx, client: Sessions) {
+    async start(req: RequestEx, client: ClientWhatsApp) {
       try {
-        await client.client?.isConnected();
+        await client?.isConnected();
         client.status = "CONNECTED";
         client.qrcode = null;
   
@@ -103,15 +103,15 @@ export default class CreateSessionUtil {
         //req.io.emit('session-error', client.session);
       }
   
-      await this.checkStateSession(client.client as Whatsapp, req);
-      await this.listenMessages(client.client as Whatsapp, req);
+      await this.checkStateSession(client as Whatsapp, req);
+      await this.listenMessages(client as Whatsapp, req);
   
       if (config.webhook.acks) {
-        await this.listenAcks(client.client as Whatsapp, req);
+        await this.listenAcks(client as Whatsapp, req);
       }
   
       if (config.webhook.presence) {
-        await this.onPresenceChanged(client.client as Whatsapp, req);
+        await this.onPresenceChanged(client as Whatsapp, req);
       }
     }
   
@@ -163,19 +163,23 @@ export default class CreateSessionUtil {
       });
     }
   
-    getClient(session: any): ClientWhatsApp {
+    getClient(session: string, req?: RequestEx): ClientWhatsApp {
       let client = null;
-      for(const cli of clientsArray) {
-        if(cli.session === session) {
-          client = cli;
+      if(req?.client) {
+        client = req?.client;
+      }else {
+        for(const cli of clientsArray) {
+          if(cli.session === session) {
+            client = cli.client;
+          }
         }
       }
   
       if (!client) {
         clientsArray.push({ status: undefined, session: session })
-        for(const cli of clientsArray) {
-          if(cli.session === session) {
-            client = cli;
+        for(const arrItem of clientsArray) {
+          if(arrItem.session === session) {
+            client = arrItem.client;
           }
         }
       }

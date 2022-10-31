@@ -1,12 +1,12 @@
 import { ProfilePicThumbObj } from '@wppconnect-team/wppconnect';
-import { RequestEx } from 'src/models/Request';
+import { ClientWhatsApp, RequestEx } from 'src/models/Request';
 import { BusinessProfileInterface, Contact, FieldsBusinessContact, FieldsContact, MiniBusinessProfile } from '../models/Contact';
 import { ServerError } from './server-error';
 
 export class ContactService {
     public async get(req: RequestEx, id: string, _fields: FieldsContact[]): Promise<Contact | ServerError> {
         try {
-            const contact = await req.client?.getContact(id);
+            const contact = await (req?.client as ClientWhatsApp).getContact(id);
             console.log(contact);
             return {
                 wa_id: contact?.id._serialized as string,
@@ -14,7 +14,7 @@ export class ContactService {
                     name: contact?.name as string,
                 },
                 wpp_data: _fields.includes("wpp_data") ? {
-                    profile_picture_url: (await req.client?.getProfilePicFromServer(id) as ProfilePicThumbObj).eurl as string,
+                    profile_picture_url: (await (req?.client as ClientWhatsApp).getProfilePicFromServer(id) as ProfilePicThumbObj).eurl as string,
                     formattedName: contact?.formattedName,
                     isBusiness: contact?.isBusiness,
                     isEnterprise: contact?.isEnterprise
@@ -30,13 +30,13 @@ export class ContactService {
     }
     public async getBusiness(req: RequestEx, id: string, fields: FieldsBusinessContact[]): Promise<{ data: MiniBusinessProfile[]} | ServerError> {
         try {
-            const contact = await req.client?.getContact(id);
+            const contact = await (req?.client as ClientWhatsApp).getContact(id);
             return {
                 data: [
                     {
                         business_profile: {
                             messaging_product: "whatsapp",
-                            profile_picture_url: fields.includes("profile_picture_url") ? (await req.client?.getProfilePicFromServer(id) as ProfilePicThumbObj).eurl as string : "",
+                            profile_picture_url: fields.includes("profile_picture_url") ? (await (req?.client as ClientWhatsApp).getProfilePicFromServer(id) as ProfilePicThumbObj).eurl as string : "",
                             name: fields.includes("name") ? contact?.name : undefined,
                             about: fields.includes("about") ? "" : undefined,
                             address: fields.includes("address") ? "" : undefined,
@@ -46,7 +46,7 @@ export class ContactService {
                             vertical: fields.includes("vertical") ? "" : undefined,
                         },
                         wpp_data: fields.includes("wpp_data") ? {
-                            profile_picture_url: (await req.client?.getProfilePicFromServer(id) as ProfilePicThumbObj).eurl as string,
+                            profile_picture_url: (await (req?.client as ClientWhatsApp).getProfilePicFromServer(id) as ProfilePicThumbObj).eurl as string,
                             formattedName: contact?.formattedName,
                             isBusiness: contact?.isBusiness,
                             isEnterprise: contact?.isEnterprise
