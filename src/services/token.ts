@@ -33,7 +33,7 @@ export class TokenService {
             let ocurr = null;
             for(const session of clientsArray) {
                 if(session.session === PHONE_NUMBER_ID) {
-                    session.token = hashFormat;
+                    session.token = hash;
                     session.qrcode = null;
                     session.urlcode = "";
                     ocurr = true;
@@ -42,7 +42,7 @@ export class TokenService {
             if(!ocurr) {
                 clientsArray.push({
                     session: PHONE_NUMBER_ID,
-                    token: hashFormat,
+                    token: hash,
                     qrcode: null,
                     urlcode: "",
                 });

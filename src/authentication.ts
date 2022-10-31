@@ -9,57 +9,43 @@ export function expressAuthentication(
   _securityName: string,
   _scopes?: string[]
 ): Promise<void> {
-    const secret  = config.secretKey;
 
     const { authorization: token } = request.headers; 
-    let sessionOcurr = false;
 
-    return new Promise(async (resolve, reject)=> {
+    return new Promise((resolve, reject)=> {
+        if (!token && token == '') {
+            reject(new ServerError(
+                "Token in not present", 
+                "invalid_request", 
+                3, 
+                "Token is not present. Check your header and try again",
+                132000
+            ));
+        }
         let tokenDecrypt = '';
-        try {
-            if (token && token !== '' && (token as string).split(' ').length > 0) {
-                const token_value = (token as string).split(' ')[1];
-                if (token_value) tokenDecrypt = token_value.replace(/_/g, '/').replace(/-/g, '+');
-    
-                clientsArray.forEach( async (session) => {
-                    if (session.token === token.toString()) {
-                        await bcrypt.compare(session.session + secret, tokenDecrypt);
-                        sessionOcurr = true;
+        tokenDecrypt = token?.replace(/_/g, '/').replace(/-/g, '+') as string;
+        clientsArray.forEach( (session) => {
+            if (session.token === tokenDecrypt) {
+                bcrypt.compare(session.session + config.secretKey, tokenDecrypt, (err, same) => {
+                    if(err) {
+                        reject(new ServerError(
+                            "Token error", 
+                            "error_request", 
+                            3, 
+                            err,
+                            132000
+                        ));
+                    }
+                    if(same) {
+                        resolve();
                         request.session = session.session;
-                        request.token = tokenDecrypt;
-                        request.data = session as ClientWhatsApp;
-                        request.client = session.client;
+                        request.token = session.token;
+                        request.data = [];
+                        request.client = session.client as ClientWhatsApp;
                         resolve();
                     }
                 });
-            } else {
-                reject(new ServerError(
-                    "Token in not present", 
-                    "invalid_request", 
-                    3, 
-                    "Token is not present. Check your header and try again",
-                    132000
-                    ));
             }
-        } catch (error) {
-            reject(new ServerError(
-                "Validation Failed", 
-                "token_error", 
-                3, 
-                error,
-                132000
-            ));
-            return reject(error);
-        } finally {
-            if(!sessionOcurr) {
-                reject(new ServerError(
-                    "Validation Failed", 
-                    "invalid_request", 
-                    3, 
-                    "Token is incorrect. Check your header and try again",
-                    132000
-                ));
-            }
-        }
+        });
     })
 }
