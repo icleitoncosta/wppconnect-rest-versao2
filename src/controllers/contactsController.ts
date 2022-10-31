@@ -13,7 +13,7 @@ import {
     Security,
     Response
   } from "tsoa";
-import { Contact, BusinessProfileInterface, FieldsContact, MiniBusinessProfile } from "../models/Contact";
+import { Contact, BusinessProfileInterface, FieldsContact, MiniBusinessProfile, FieldsBusinessContact } from "../models/Contact";
 import { Error } from "../models/Error";
 import { ContactService } from "../services/contact";
 import { ServerError } from "../services/server-error";
@@ -73,7 +73,7 @@ export class ContactsController extends Controller {
 )
   public async getBusinessContact(
     @Path() PHONE_NUMBER_ID: string,
-    @Query() fields: string,
+    @Query() fields: FieldsBusinessContact[],
     @Request() req: RequestEx
   ): Promise<{ data: MiniBusinessProfile[] } | ServerError> {
     return new ContactService().getBusiness(req, PHONE_NUMBER_ID, fields);
@@ -101,11 +101,9 @@ export class ContactsController extends Controller {
 )
   @SuccessResponse("200", "Created") 
   public async updateBusinessProfile(
-    @Path() PHONE_NUMBER_ID: string,
     @Body() payload: Partial<BusinessProfileInterface>,
     @Request() req: RequestEx
   ): Promise<void> {
-    console.log(PHONE_NUMBER_ID);
     this.setStatus(200);
     new ContactService().updateBusinessProfile(req, payload);
     return;
