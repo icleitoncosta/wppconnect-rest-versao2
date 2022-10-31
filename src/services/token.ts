@@ -13,7 +13,7 @@ export class TokenService {
     public async create(req: RequestEx, PHONE_NUMBER_ID: string, SECRET_KEY: string): Promise<Error | ReturnToken> {
         try {
             if (SECRET_KEY !== config.secretKey) {
-                req.logger("warn", "Token generation attempt without SECRET_KEY.");
+                req.logger("warn", "Token generation attempt SECRET_KEY incorrectly.");
                 return {
                     error: {
                     message: "Validation Failed",
@@ -33,7 +33,7 @@ export class TokenService {
             let ocurr = null;
             for(const session of clientsArray) {
                 if(session.session === PHONE_NUMBER_ID) {
-                    session.token = hash;
+                    session.token = hashFormat;
                     session.qrcode = null;
                     session.urlcode = "";
                     ocurr = true;
@@ -42,7 +42,7 @@ export class TokenService {
             if(!ocurr) {
                 clientsArray.push({
                     session: PHONE_NUMBER_ID,
-                    token: hash,
+                    token: hashFormat,
                     qrcode: null,
                     urlcode: "",
                 });
