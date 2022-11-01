@@ -12,6 +12,8 @@ import {
   Post,
   Hidden,
   Query,
+  Produces,
+  UploadedFile
 } from "tsoa";
 import { RequestEx } from "../models/Request";
 import { Error } from "../models/Error";
@@ -102,6 +104,43 @@ export class AuthController extends Controller {
     	return new SessionService(PHONE_NUMBER_ID).getSessionState(req);
     }
     /**
+     * Backup all sessions
+     * Use this call to backup both sessions and restore to another WPPConnect project.
+     * 
+     * 
+     * TRY THIS OS BROWSER!!!
+     * 
+     * The request in Swagger is broken, is need to fix it
+     * 
+    */
+    @Get("{SECRET_KEY}/backup-all-sessions")
+    @Tags("Auth")
+    @NoSecurity()
+    @Produces("application/zip")
+    public async backupAllSessions(
+      @Path("SECRET_KEY") SECRET_KEY: "THISISMYSECURETOKEN",
+      @Request() req: RequestEx
+    ) {
+      this.setHeader("Content-Type", "application/zip");
+      return new SessionService("").backupAllSessions(req, SECRET_KEY);
+    }
+    /**
+     * Restore sessions
+     * Use this route to restore files of sessions backaped on router /backup-all-sessions
+     * 
+     * 
+    */
+    @Tags("Auth")
+    @NoSecurity()
+    @Post("{SECRET_KEY}/restore-sessions")
+    public async restoreSessions(
+      @Path("SECRET_KEY") SECRET_KEY: "THISISMYSECURETOKEN",
+      @Request() req: RequestEx,
+      @UploadedFile() file: Express.Multer.File,
+    ) {
+      return new SessionService("").restoreSessionByUpload(req, SECRET_KEY, file);
+    }
+    /**
      * Start All Sessions
      * This route is exclusive to start all servers by service
     */
@@ -110,8 +149,8 @@ export class AuthController extends Controller {
     @NoSecurity()
     @Hidden()
 	public async startAllSessions(
-        @Path("SECRET_KEY") SECRET_KEY: "THISISMYSECURETOKEN",
-        @Request() req: RequestEx
+    @Path("SECRET_KEY") SECRET_KEY: "THISISMYSECURETOKEN",
+    @Request() req: RequestEx
 	): Promise<{ success: true } | ServerError> {
 		this.setStatus(200);
 		return new SessionService("").startAll(req, SECRET_KEY);

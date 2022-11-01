@@ -2258,6 +2258,112 @@
 				]
 			}
 		},
+		"/{SECRET_KEY}/backup-all-sessions": {
+			"get": {
+				"operationId": "BackupAllSessions",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/zip": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"description": "Backup all sessions\nUse this call to backup both sessions and restore to another WPPConnect project.\n\n\nTRY THIS OS BROWSER!!!\n\nThe request in Swagger is broken, is need to fix it",
+				"tags": [
+					"Auth"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "SECRET_KEY",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"enum": [
+								"THISISMYSECURETOKEN"
+							]
+						}
+					}
+				]
+			}
+		},
+		"/{SECRET_KEY}/restore-sessions": {
+			"post": {
+				"operationId": "RestoreSessions",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"properties": {
+												"success": {
+													"type": "boolean",
+													"enum": [
+														true
+													],
+													"nullable": false
+												}
+											},
+											"required": [
+												"success"
+											],
+											"type": "object"
+										},
+										{
+											"$ref": "#/components/schemas/ServerError"
+										}
+									]
+								}
+							}
+						}
+					}
+				},
+				"description": "Restore sessions\nUse this route to restore files of sessions backaped on router /backup-all-sessions",
+				"tags": [
+					"Auth"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "SECRET_KEY",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"enum": [
+								"THISISMYSECURETOKEN"
+							]
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"multipart/form-data": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"file": {
+										"type": "string",
+										"format": "binary"
+									}
+								},
+								"required": [
+									"file"
+								]
+							}
+						}
+					}
+				}
+			}
+		},
 		"/{PHONE_NUMBER_ID}/whatsapp_contact_profile": {
 			"get": {
 				"operationId": "GetContact",

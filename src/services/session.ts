@@ -7,6 +7,8 @@ import { Logger } from "winston";
 import api from "axios";
 import FileTokenStore from "../stores/FileTokenStore";
 import config from "../config";
+import archiver  from "archiver";
+import fileSystem from "fs";
 
 export class SessionService {
     declare session;
@@ -112,5 +114,86 @@ export class SessionService {
             132000
         );
       }
+    }
+
+    public async restoreSessionByUpload(_req: RequestEx, SECRET_KEY: string, _file: any): Promise<{ success: true } | ServerError>{
+      if(SECRET_KEY !== config.secretKey) {
+        return new ServerError(
+            "Internal error", 
+            "invalid_request", 
+            3, 
+            "Secret KEY is invalid!",
+            132000
+        );
+      }else {
+        try {    
+          //await unzip(file.buffer, { to: { directory: "./test", fs: fileSystem}});
+          return { success: true };
+        } catch (error) {
+          console.log(error);
+            return new ServerError(
+            "Internal error", 
+            "invalid_request", 
+            3, 
+            error,
+            139000
+          );
+        }
+      }
+    }
+
+    public async backupAllSessions(_req: RequestEx, SECRET_KEY: string): Promise<any> {
+      if(SECRET_KEY !== config.secretKey) {
+        return new ServerError(
+            "Internal error", 
+            "invalid_request", 
+            3, 
+            "Secret KEY is invalid!",
+            132000
+        );
+      }else {
+        try {    
+          return await this.backupFolders(_req);
+        } catch (error) {return new ServerError(
+          "Internal error", 
+          "invalid_request", 
+          3, 
+          error,
+          139000
+      );
+        }
+      }
+    }
+    private backupFolders(req: RequestEx) : Promise<any> {
+      return new Promise((resolve, reject) => {
+        const output = fileSystem.createWriteStream(__dirname + '/../backupSessions.zip');
+        const archive = archiver('zip', {
+          zlib: { level: 9 } // Sets the compression level.
+        });
+        archive.on('error', function(err) {
+          reject(err);
+          req.logger.error(err);
+        });
+        archive.pipe(output);
+        archive.directory(__dirname + '/../../tokens', "tokens");
+        fileSystem.cpSync(config.customUserDataDir, __dirname + "/../../backupFolder", { force: true, recursive: true});
+        
+        archive.directory(__dirname + "/../../backupFolder", "userDataDir");
+        archive.finalize();
+        
+        output.on('close', () => {
+          fileSystem.rmSync(__dirname + "/../../backupFolder", { recursive: true })
+          const myStream = fileSystem.createReadStream(__dirname + "/../backupSessions.zip");
+          myStream.on("end", () => {
+            req.res?.end();
+            myStream.pipe(req.res as any);
+          });
+          myStream.on('error', function(err: any) {
+            console.log(err);
+            reject(err);
+          });
+          resolve(myStream);
+        });
+      })
     }
 }

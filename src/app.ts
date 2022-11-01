@@ -5,9 +5,12 @@ import { ValidateError } from "tsoa";
 import { createLogger } from "./utils/logger";
 import config from "./config";
 import { RequestEx } from "./models/Request";
+import fileSystem from "fs";
 
 export const app = express();
 export const logger = createLogger(config.log);
+
+fileSystem.rm(__dirname + "/backupSessions.zip", () => {});
 
 // Use body parser to read sent json payloads
 app.use(
