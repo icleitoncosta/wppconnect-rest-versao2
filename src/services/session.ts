@@ -118,7 +118,16 @@ export class SessionService {
       }
     }
 
-    public async restoreSessionByUpload(_req: RequestEx, SECRET_KEY: string, file: any): Promise<{ success: true } | ServerError> {
+    public async restoreSessionByUpload(_req: RequestEx, SECRET_KEY: string, file: Express.Multer.File): Promise<{ success: true } | ServerError> {
+      if(!file.mimetype.includes("zip")) {
+        return new ServerError(
+            "Internal error", 
+            "invalid_request", 
+            3, 
+            "The filetype is invalid",
+            133000
+        );
+      }
       if(SECRET_KEY !== config.secretKey) {
         return new ServerError(
             "Internal error", 
