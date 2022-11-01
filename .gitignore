@@ -4,8 +4,10 @@ build
 log
 userDataDir
 tokens
+restore
 backupFolder
 backupSessions.zip
+uploads/*
 
 # Logs
 logs

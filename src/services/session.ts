@@ -9,6 +9,8 @@ import FileTokenStore from "../stores/FileTokenStore";
 import config from "../config";
 import archiver  from "archiver";
 import fileSystem from "fs";
+import unzipper from "unzipper";
+import { logger } from "../app";
 
 export class SessionService {
     declare session;
@@ -116,7 +118,7 @@ export class SessionService {
       }
     }
 
-    public async restoreSessionByUpload(_req: RequestEx, SECRET_KEY: string, _file: any): Promise<{ success: true } | ServerError>{
+    public async restoreSessionByUpload(_req: RequestEx, SECRET_KEY: string, file: any): Promise<{ success: true } | ServerError> {
       if(SECRET_KEY !== config.secretKey) {
         return new ServerError(
             "Internal error", 
@@ -127,10 +129,19 @@ export class SessionService {
         );
       }else {
         try {    
-          //await unzip(file.buffer, { to: { directory: "./test", fs: fileSystem}});
+          const path = __dirname + "/../../uploads/restore.zip";
+
+          await this.downloadZIPFileForRestore(file.buffer, path);
+          
+          const extract = fileSystem.createReadStream(path).pipe(unzipper.Extract({ path: 'restore' }));
+          extract.on("close", () => {
+            fileSystem.cpSync("restore/tokens", "tokens", { force: true, recursive: true });
+            fileSystem.cpSync("restore/userDataDir", config.customUserDataDir, { force: false, recursive: true });
+            this.startAllSessions(config, logger);
+          })
+          
           return { success: true };
         } catch (error) {
-          console.log(error);
             return new ServerError(
             "Internal error", 
             "invalid_request", 
@@ -140,6 +151,22 @@ export class SessionService {
           );
         }
       }
+    }
+
+    private async downloadZIPFileForRestore(file: Buffer, path: string): Promise<string | ServerError> {
+      try {
+        await fileSystem.promises.writeFile(path, file);
+        return path;
+      } catch (error) {
+        console.log(error);
+        return new ServerError(
+          "Internal error", 
+          "invalid_request", 
+          3, 
+          error,
+          139000
+        );
+      } 
     }
 
     public async backupAllSessions(_req: RequestEx, SECRET_KEY: string): Promise<any> {

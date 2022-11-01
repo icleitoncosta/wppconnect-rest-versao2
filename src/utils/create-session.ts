@@ -19,11 +19,13 @@ export default class CreateSessionUtil {
         const myTokenStore = new FileTokenStore(client).tokenStore;
   
         const myToken = await myTokenStore.getToken(session);
-        if((myToken as any).config) {
-          client.config = {
-            token: (myToken as any).config.token,
-            refuseCall: (myToken as any).config.refuseCall,
-            msgRefuseCall: (myToken as any).config.msgRefuseCall
+        if(myToken) {
+          if((myToken as any).config) {
+            client.config = {
+              token: (myToken as any).config.token,
+              refuseCall: (myToken as any).config.refuseCall,
+              msgRefuseCall: (myToken as any).config.msgRefuseCall
+            }
           }
         }
   
@@ -59,16 +61,17 @@ export default class CreateSessionUtil {
                 },
               }) as unknown as CreateOptions
         );
-              
-        if((myToken as any).config) {
-          (wppClient as any).config = {
-            token: (myToken as any).config.token,
-            refuseCall: (myToken as any).config.refuseCall,
-            msgRefuseCall: (myToken as any).config.msgRefuseCall,
-          };
-          (wppClient as any).token = (myToken as any).config.token;
-          (wppClient as any).refuseCall = (myToken as any).config.refuseCall;
-          (wppClient as any).msgRefuseCall = (myToken as any).config.msgRefuseCall;
+        if(myToken) {
+          if((myToken as any).config) {
+            (wppClient as any).config = {
+              token: (myToken as any).config.token,
+              refuseCall: (myToken as any).config.refuseCall,
+              msgRefuseCall: (myToken as any).config.msgRefuseCall,
+            };
+            (wppClient as any).token = (myToken as any).config.token;
+            (wppClient as any).refuseCall = (myToken as any).config.refuseCall;
+            (wppClient as any).msgRefuseCall = (myToken as any).config.msgRefuseCall;
+          }
         }
         for(const ses of clientsArray) {
           if(ses.session == session) {
