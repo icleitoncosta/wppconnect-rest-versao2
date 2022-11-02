@@ -73,16 +73,16 @@ export class Webhook {
         }
     }
 
-    private async sendPresence(webhook: string, presence: any, data: ReceivedAndGetMessage, _client: ClientWhatsApp) {
+    private async sendPresence(webhook: string, presence: any, data: ReceivedAndGetMessage, client: ClientWhatsApp) {
         try {
-            //const contact = await client.getContact(call.peerJid);
+            const contact = await client.getContact(presence.id);
             data.entry[0].changes.push({
                 field: "presence",
                 value: {
                     messaging_product: "whatsapp",
                     metadata: {
-                        display_phone_number: "",
-                        phone_number_id: "",
+                        display_phone_number: contact.formattedName,
+                        phone_number_id: presence.id,
                     },
                     presence: presence
                 }
