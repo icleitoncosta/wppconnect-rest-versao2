@@ -9,7 +9,7 @@ import config from '../config';
 import vCard from "vcf";
 import { StatusMessage } from '../models/StatusMessages';
 import { MediaService } from './media';
-import { ReturnMedia } from 'src/models/Media';
+import { ReturnMedia } from '../models/Media';
 
 export class MessagesService {
     public async get(req: RequestEx, id: string): Promise<ServerError | ReceivedAndGetMessage> {
@@ -42,7 +42,7 @@ export class MessagesService {
                 131009);
         }
     }
-    private returnGetMessage(message: SessionExtra): Promise<ReceivedAndGetMessage> {
+    public returnGetMessage(message: SessionExtra): Promise<ReceivedAndGetMessage> {
         let resolve: ReceivedAndGetMessage = {
             object: "whatsapp_business_account",
             entry: [

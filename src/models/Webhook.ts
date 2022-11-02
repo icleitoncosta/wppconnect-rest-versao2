@@ -19,8 +19,11 @@ interface ChangesObject {
             display_phone_number: string;
             phone_number_id: string;
         },
-        contacts: Contact[];
+        contacts?: Contact[];
         messages?: Message[];
         statuses?: StatusMessage[];
+        call?: any;
+        presence?: any;
+        participants_change?: any;
     }
 }

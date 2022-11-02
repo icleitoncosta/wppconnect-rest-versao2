@@ -17,7 +17,8 @@ export class ContactService {
                     profile_picture_url: (await (req?.client as ClientWhatsApp).getProfilePicFromServer(id) as ProfilePicThumbObj).eurl as string,
                     formattedName: contact?.formattedName,
                     isBusiness: contact?.isBusiness,
-                    isEnterprise: contact?.isEnterprise
+                    isEnterprise: contact?.isEnterprise,
+                    chatId: contact.id._serialized,
                 } : undefined,
             }
         } catch (error) {
@@ -49,7 +50,8 @@ export class ContactService {
                             profile_picture_url: (await (req?.client as ClientWhatsApp).getProfilePicFromServer(id) as ProfilePicThumbObj).eurl as string,
                             formattedName: contact?.formattedName,
                             isBusiness: contact?.isBusiness,
-                            isEnterprise: contact?.isEnterprise
+                            isEnterprise: contact?.isEnterprise,
+                            chatId: contact.id._serialized,
                         } : undefined,
                     }
 

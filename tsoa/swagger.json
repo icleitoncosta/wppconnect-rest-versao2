@@ -31,8 +31,14 @@
 					},
 					"isEnterprise": {
 						"type": "boolean"
+					},
+					"chatId": {
+						"type": "string"
 					}
 				},
+				"required": [
+					"chatId"
+				],
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -1258,6 +1264,7 @@
 					},
 					"value": {
 						"properties": {
+							"call": {},
 							"statuses": {
 								"items": {
 									"$ref": "#/components/schemas/StatusMessage"
@@ -1300,7 +1307,6 @@
 							}
 						},
 						"required": [
-							"contacts",
 							"metadata",
 							"messaging_product"
 						],

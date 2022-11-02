@@ -1,8 +1,9 @@
-import { Ack, create, SocketState, LiveLocation, Message, ParticipantEvent, PresenceEvent, CreateOptions, Whatsapp } from "@wppconnect-team/wppconnect";
+import { Ack, create, SocketState, Message, ParticipantEvent, PresenceEvent, CreateOptions, Whatsapp } from "@wppconnect-team/wppconnect";
 import FileTokenStore from "../stores/FileTokenStore";
 import config from "../config";
 import { ClientWhatsApp, RequestEx } from "../models/Request";
 import { clientsArray } from "./session";
+import { Webhook } from "../services/webhook";
 
 export default class CreateSessionUtil {
     async create(req: RequestEx, clientsArray: Array<any>, session: any) {
@@ -111,7 +112,8 @@ export default class CreateSessionUtil {
   
     async onParticipantsChanged(_req: RequestEx, client: Whatsapp) {
       await client.isConnected();
-      await client.onParticipantsChanged((_ParticipantEvent: ParticipantEvent) => {
+      client.onParticipantsChanged((_ParticipantEvent: ParticipantEvent) => {
+        new Webhook().send(client, "participantsChangeGroup", _ParticipantEvent);
         // Logica aqui
       });
     }
@@ -154,24 +156,23 @@ export default class CreateSessionUtil {
     }
   
     async listenMessages(client: ClientWhatsApp, _req: RequestEx) {
-      client.onMessage(async (message: Message) => {
-        if (message.type === 'location')
-          client.onLiveLocation(message.sender.id._serialized, (_location: LiveLocation) => {
-            //callWebHook(client, req, 'location', location);
-          });
+      client.onMessage(async (message: any) => {
+        message.session = client.session;
+        new Webhook().send(client, "message", message);
       });
   
       client.onAnyMessage(async (_message: Message) => {
+        //new Webhook().send(client, "message", message);
       });
   
       client.onIncomingCall(async (call: any) => {
+        new Webhook().send(client, "call", call);
         if(client.refuseCall) {
           await client.rejectCall(call.id);
           if(client.msgRefuseCall) {
             await client.sendText(call.peerJid, client.msgRefuseCall)
           }
         }
-        //req.io.emit('incomingcall', call);
       });
     }
   
@@ -183,7 +184,7 @@ export default class CreateSessionUtil {
   
     async onPresenceChanged(client: ClientWhatsApp, _req: RequestEx) {
       client.onPresenceChanged(async (_presenceChangedEvent: PresenceEvent) => {
-        //req.io.emit('onpresencechanged', presenceChangedEvent);
+        new Webhook().send(client, "presence", _presenceChangedEvent);
       });
     }
   

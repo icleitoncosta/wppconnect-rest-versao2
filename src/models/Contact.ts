@@ -15,6 +15,7 @@ interface ContactWPP {
     formattedName: string | undefined;
     isBusiness: boolean | undefined;
     isEnterprise: boolean | undefined;
+    chatId: string;
 }
 export interface MiniBusinessProfile {
     business_profile: BusinessProfileInterface;

@@ -38,6 +38,7 @@ const models: TsoaRoute.Models = {
             "formattedName": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"undefined"}],"required":true},
             "isBusiness": {"dataType":"union","subSchemas":[{"dataType":"boolean"},{"dataType":"undefined"}],"required":true},
             "isEnterprise": {"dataType":"union","subSchemas":[{"dataType":"boolean"},{"dataType":"undefined"}],"required":true},
+            "chatId": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -447,7 +448,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "field": {"dataType":"string","required":true},
-            "value": {"dataType":"nestedObjectLiteral","nestedProperties":{"statuses":{"dataType":"array","array":{"dataType":"refObject","ref":"StatusMessage"}},"messages":{"dataType":"array","array":{"dataType":"refObject","ref":"Message"}},"contacts":{"dataType":"array","array":{"dataType":"refObject","ref":"Contact"},"required":true},"metadata":{"dataType":"nestedObjectLiteral","nestedProperties":{"phone_number_id":{"dataType":"string","required":true},"display_phone_number":{"dataType":"string","required":true}},"required":true},"messaging_product":{"dataType":"enum","enums":["whatsapp"],"required":true}},"required":true},
+            "value": {"dataType":"nestedObjectLiteral","nestedProperties":{"call":{"dataType":"any"},"statuses":{"dataType":"array","array":{"dataType":"refObject","ref":"StatusMessage"}},"messages":{"dataType":"array","array":{"dataType":"refObject","ref":"Message"}},"contacts":{"dataType":"array","array":{"dataType":"refObject","ref":"Contact"}},"metadata":{"dataType":"nestedObjectLiteral","nestedProperties":{"phone_number_id":{"dataType":"string","required":true},"display_phone_number":{"dataType":"string","required":true}},"required":true},"messaging_product":{"dataType":"enum","enums":["whatsapp"],"required":true}},"required":true},
         },
         "additionalProperties": false,
     },

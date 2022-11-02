@@ -10,12 +10,13 @@ const config = {
 
   // Webhook
   "webhook": {
-      "url": null, // URL for send all webhooks
-      "autoDownload": true, //Auto download files received
+      "url": "https://webhook.site/94903b4a-4442-4a35-b918-dfcdf71d8439", // URL for send all webhooks
       "acks": true, // Read confirmation, audio listening, contacts and groups
       "presence": true, // Contacts online and offile
       "participants_changed_group": true, // Group member changes
-      "reactions": true // Receive reactions that contacts give in messages
+      "reactions": true, // Receive reactions that contacts give in messages
+      "readMessage": true, // Send seen for contact
+      "calls": true, // Send event calls for webhook
     },
 
   // Logs
