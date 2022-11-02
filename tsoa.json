@@ -25,7 +25,7 @@
         },
         {
           "name": "Profile",
-          "description": "Methods for update your profile"
+          "description": "Methods for update your profile - NOT IMPLEMENTED - Await wa-js functions"
         },
         {
           "name": "Messages",

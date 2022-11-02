@@ -1264,6 +1264,8 @@
 					},
 					"value": {
 						"properties": {
+							"participants_change": {},
+							"presence": {},
 							"call": {},
 							"statuses": {
 								"items": {

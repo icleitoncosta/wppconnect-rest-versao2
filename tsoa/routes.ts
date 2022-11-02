@@ -448,7 +448,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "field": {"dataType":"string","required":true},
-            "value": {"dataType":"nestedObjectLiteral","nestedProperties":{"call":{"dataType":"any"},"statuses":{"dataType":"array","array":{"dataType":"refObject","ref":"StatusMessage"}},"messages":{"dataType":"array","array":{"dataType":"refObject","ref":"Message"}},"contacts":{"dataType":"array","array":{"dataType":"refObject","ref":"Contact"}},"metadata":{"dataType":"nestedObjectLiteral","nestedProperties":{"phone_number_id":{"dataType":"string","required":true},"display_phone_number":{"dataType":"string","required":true}},"required":true},"messaging_product":{"dataType":"enum","enums":["whatsapp"],"required":true}},"required":true},
+            "value": {"dataType":"nestedObjectLiteral","nestedProperties":{"participants_change":{"dataType":"any"},"presence":{"dataType":"any"},"call":{"dataType":"any"},"statuses":{"dataType":"array","array":{"dataType":"refObject","ref":"StatusMessage"}},"messages":{"dataType":"array","array":{"dataType":"refObject","ref":"Message"}},"contacts":{"dataType":"array","array":{"dataType":"refObject","ref":"Contact"}},"metadata":{"dataType":"nestedObjectLiteral","nestedProperties":{"phone_number_id":{"dataType":"string","required":true},"display_phone_number":{"dataType":"string","required":true}},"required":true},"messaging_product":{"dataType":"enum","enums":["whatsapp"],"required":true}},"required":true},
         },
         "additionalProperties": false,
     },
