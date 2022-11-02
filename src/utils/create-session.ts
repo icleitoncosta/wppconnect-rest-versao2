@@ -1,4 +1,4 @@
-import { Ack, create, SocketState, Message, ParticipantEvent, PresenceEvent, CreateOptions, Whatsapp } from "@wppconnect-team/wppconnect";
+import { Ack, create, SocketState, Message, ParticipantEvent, CreateOptions, Whatsapp } from "@wppconnect-team/wppconnect";
 import FileTokenStore from "../stores/FileTokenStore";
 import config from "../config";
 import { ClientWhatsApp, RequestEx } from "../models/Request";
@@ -56,7 +56,7 @@ export default class CreateSessionUtil {
                       client.close();
                       //clientsArray[session] = undefined;
                     }
-                    //callWebHook(client, req, 'status-find', { status: statusFind });
+                    new Webhook().send(client, "status-find", statusFind);
                     req.logger.info(statusFind + '\n\n');
                   } catch (error) {}
                 },
@@ -125,7 +125,7 @@ export default class CreateSessionUtil {
         client.qrcode = null;
   
         req.logger.info(`Started Session: ${client.session}`);
-        //callWebHook(client, req, 'session-logged', { status: 'CONNECTED'});
+        new Webhook().send(client, "status-find", "CONNECTED");
         //req.io.emit('session-logged', { status: true, session: client.session });
       } catch (error) {
         req.logger.error(error);
@@ -156,7 +156,7 @@ export default class CreateSessionUtil {
     }
   
     async listenMessages(client: ClientWhatsApp, _req: RequestEx) {
-      client.onMessage(async (message: any) => {
+      client.onMessage((message: any) => {
         message.session = client.session;
         new Webhook().send(client, "message", message);
       });
@@ -177,20 +177,24 @@ export default class CreateSessionUtil {
     }
   
     async listenAcks(client: ClientWhatsApp, _req: RequestEx) {
-      client.onAck(async (_ack: Ack) => {
+      client.onAck(async (ack: Ack ) => {
+        new Webhook().send(client, "ack", ack);
         //req.io.emit('onack', ack);
       });
     }
   
     async onPresenceChanged(client: ClientWhatsApp, _req: RequestEx) {
-      client.onPresenceChanged(async (_presenceChangedEvent: PresenceEvent) => {
+      client.onPresenceChanged(async (_presenceChangedEvent: any) => {
+        _presenceChangedEvent.session = client.session;
         new Webhook().send(client, "presence", _presenceChangedEvent);
       });
     }
   
     async onReactionMessage(client: ClientWhatsApp, _req: RequestEx) {
       await client.isConnected();
-      client.onReactionMessage(async (_reaction: any) => {
+      client.onReactionMessage(async (reaction: any) => {
+        reaction.session = client.session;
+        new Webhook().send(client, "reaction", reaction);
         //req.io.emit('onreactionmessage', reaction);
       });
     }

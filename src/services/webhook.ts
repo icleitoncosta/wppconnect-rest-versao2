@@ -5,7 +5,8 @@ import { ReceivedAndGetMessage } from "../models/Webhook";
 import { logger } from "../app";
 import { MessagesService } from "./message";
 import { SessionExtra } from "../models/Messages";
-import { ParticipantEvent } from "@wppconnect-team/wppconnect";
+import { Ack, ParticipantEvent } from "@wppconnect-team/wppconnect";
+import { StatusMessage } from "src/models/StatusMessages";
 
 export class Webhook {
     public async send(client: ClientWhatsApp, event: any, dataEv: any) {
@@ -28,6 +29,12 @@ export class Webhook {
                 this.sendPresence(webhook, dataEv, data, client)
             } else if(event === "participantsChangeGroup" && config.webhook.presence) {
                 this.sendParticipantsChange(webhook, dataEv, data, client)
+            } else if(event === "ack" && config.webhook.presence) {
+                this.sendAckStatus(webhook, dataEv, data, client)
+            } else if(event === "status-find" && config.webhook.presence) {
+                this.sendStatusSession(webhook, dataEv, data, client)
+            } else if(event === "reaction" && config.webhook.presence) {
+                this.sendReaction(webhook, dataEv, data, client)
             }
           } catch (e) {
             logger.error(e);
@@ -106,6 +113,96 @@ export class Webhook {
                         phone_number_id: participants.groupId,
                     },
                     participants_change: participants
+                }
+            });
+            
+            await api.post(webhook, data)
+        } catch (error) {
+            logger.error("Error calling webook: "+error);
+        }
+    }
+    private async sendAckStatus(webhook: string, ack: Ack, data: ReceivedAndGetMessage, client: ClientWhatsApp) {
+        try {
+            const contact = await client.getChatById(ack.from);
+            let status = "read" as StatusMessage["status"];
+            if(ack.ack == 1) status = "sent";
+            if(ack.ack == 2) status = "delivered";
+            if(ack.ack == 3) status = "read";
+            if(ack.ack == 4) status = "played";
+            if(ack.ack == -1) status = "failed";
+            if((ack as any).deleted) status = "deleted";
+
+            data.entry[0].changes.push({
+                field: "status",
+                value: {
+                    messaging_product: "whatsapp",
+                    metadata: {
+                        display_phone_number: contact.name,
+                        phone_number_id: contact.id._serialized,
+                    },
+                    statuses: [{
+                        messaging_product: "whatsapp",
+                        message_id: ack.id._serialized,
+                        status: status,
+                    }]
+                }
+            });
+            
+            await api.post(webhook, data)
+        } catch (error) {
+            logger.error("Error calling webook: "+error);
+        }
+    }
+    private async sendStatusSession(webhook: string, status: string, data: ReceivedAndGetMessage, client: ClientWhatsApp) {
+        try {
+            const contact = await client.getChatById((await client.getHostDevice()).id);
+
+            data.entry[0].changes.push({
+                field: "session",
+                value: {
+                    messaging_product: "whatsapp",
+                    metadata: {
+                        display_phone_number: contact.name,
+                        phone_number_id: contact.id._serialized,
+                    },
+                    session: [{
+                        status: status,
+                        qrCode: client.qrcode,
+                        urlCode: client.urlcode,
+                    }]
+                }
+            });
+            
+            await api.post(webhook, data)
+        } catch (error) {
+            logger.error("Error calling webook: "+error);
+        }
+    }
+    private async sendReaction(webhook: string, reaction: any, data: ReceivedAndGetMessage, client: ClientWhatsApp) {
+        try {
+            const contact = await client.getChatById((await client.getHostDevice()).id);
+            const message = await client.getMessageById(reaction.msgId._serialized);
+
+            data.entry[0].changes.push({
+                field: "session",
+                value: {
+                    messaging_product: "whatsapp",
+                    metadata: {
+                        display_phone_number: contact.name,
+                        phone_number_id: contact.id._serialized,
+                    },
+                    messages: [{
+                        messaging_product: "whatsapp",
+                        from: message.sender.id._serialized,
+                        to: message.to,
+                        id: reaction.msgId._serialized,
+                        timestamp: message.timestamp,
+                        type: "reaction",
+                        reaction: {
+                            emoji: reaction.emoji,
+                            message_id: reaction.msgId._serialized,
+                        }
+                    }]
                 }
             });
             

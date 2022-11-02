@@ -25,5 +25,6 @@ interface ChangesObject {
         call?: any;
         presence?: any;
         participants_change?: any;
+        session?: any;
     }
 }

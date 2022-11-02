@@ -1,7 +1,7 @@
 import { Message as MessageWPP } from "@wppconnect-team/wppconnect";
 
 export type MessageType = 'text' | 'image' | 'audio' | 'document' | 'template' | 'hsm' | "sticker" |
-"order" | "video" | "contacts" | "location" | "unknown" | "system" | "interactive" | "poll";
+"order" | "video" | "contacts" | "location" | "unknown" | "system" | "interactive" | "poll" | "reaction";
 
 export interface Message {
     /**
