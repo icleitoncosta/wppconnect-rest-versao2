@@ -8,6 +8,8 @@ import { ReceivedAndGetMessage } from '../models/Webhook';
 import config from '../config';
 import vCard from "vcf";
 import { StatusMessage } from '../models/StatusMessages';
+import { MediaService } from './media';
+import { ReturnMedia } from 'src/models/Media';
 
 export class MessagesService {
     public async get(req: RequestEx, id: string): Promise<ServerError | ReceivedAndGetMessage> {
@@ -229,8 +231,7 @@ export class MessagesService {
     public async create(req: RequestEx, payload: SendText | SendImage | SendAudio | SendDocument | SendSticker | SendVideo | SendContact | SendLocation | SendReaction | SendInteractive | SendPoll): Promise<ReturnSendedMessage | Error> {
         try {
             const client = req.client as ClientWhatsApp;
-            let message;
-            let options;
+            let message, options;
             if(payload.type !== "reaction" && payload.type !== "interactive" && payload.type !== "poll" && payload.context?.message_id) {
                 options = {
                     quotedMsg: payload.context.message_id
@@ -244,7 +245,9 @@ export class MessagesService {
                     message = await client.sendImageFromBase64(payload.to, payload.image?.link as string, "image.jpg", payload.image?.caption, (payload.context?.message_id ? payload.context?.message_id : undefined));
                     return Promise.resolve(this.returnMessageSucess(payload.to, message?.id as string));
                 } else {
-                    message = await client.sendImage(payload.to, payload.image?.link as string, undefined, payload.image?.caption, (payload.context?.message_id ? payload.context?.message_id : undefined));
+                    let file = payload.image.link;
+                    if (payload.image.id) file = (await new MediaService().get(req, payload.image.id as string) as ReturnMedia).url;
+                    message = await client.sendImage(payload.to, file as string, undefined, payload.image?.caption, (payload.context?.message_id ? payload.context?.message_id : undefined));
                     return Promise.resolve(this.returnMessageSucess(payload.to, message?.id as string));
                 }
             }else if(payload.type === "audio") {
@@ -252,17 +255,25 @@ export class MessagesService {
                     message = await client.sendPttFromBase64(payload.to, payload.audio.link as string, "audio.mp3", undefined, (payload.context?.message_id ? payload.context?.message_id : undefined));
                     return Promise.resolve(this.returnMessageSucess(payload.to, message?.id as string));
                 } else {
-                    message = await client.sendPtt(payload.to, payload.audio.link as string, undefined, undefined, (payload.context?.message_id ? payload.context?.message_id : undefined)) as MessageWPP;
+                    let file = payload.audio.link;
+                    if (payload.audio.id) file = (await new MediaService().get(req, payload.audio.id as string) as ReturnMedia).url;
+                    message = await client.sendPtt(payload.to, file as string, undefined, undefined, (payload.context?.message_id ? payload.context?.message_id : undefined)) as MessageWPP;
                     return Promise.resolve(this.returnMessageSucess(payload.to, message?.id));
                 }
             }else if(payload.type === "document") {
-                message = await client.sendFile(payload.to, payload.document.link as string, options) as MessageWPP;
+                let file = payload.document.link;
+                if (payload.document.id) file = (await new MediaService().get(req, payload.document.id as string) as ReturnMedia).url;
+                message = await client.sendFile(payload.to, file as string, options) as MessageWPP;
                 return Promise.resolve(this.returnMessageSucess(payload.to, message?.id));
             }else if(payload.type === "video") {
-                message = await client.sendFile(payload.to, payload.video.link as string, options) as MessageWPP;
+                let file = payload.video.link;
+                if (payload.video.id) file = (await new MediaService().get(req, payload.video.id as string) as ReturnMedia).url;
+                message = await client.sendFile(payload.to, file as string, options) as MessageWPP;
                 return Promise.resolve(this.returnMessageSucess(payload.to, message?.id));
             }else if(payload.type === "sticker") {
-                message = await client.sendImageAsSticker(payload.to, payload.sticker?.link as string) as unknown as MessageWPP;
+                let file = payload.sticker.link;
+                if (payload.sticker.id) file = (await new MediaService().get(req, payload.sticker.id as string) as ReturnMedia).url;
+                message = await client.sendImageAsSticker(payload.to, file as string) as unknown as MessageWPP;
                 return Promise.resolve(this.returnMessageSucess(payload.to, message?.id));
             }else if(payload.type === "location") {
                 message = await client.sendLocation(payload.to, { lat: payload.location.latitude, lng: payload.location.longitude, address: payload.location.address, name: payload.location.name}) as unknown as MessageWPP;
