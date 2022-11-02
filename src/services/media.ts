@@ -1,5 +1,5 @@
 import { ClientWhatsApp, RequestEx } from '../models/Request';
-import { Media, ReturnMedia } from '../models/Media';
+import { ReturnMedia } from '../models/Media';
 import { Validation } from './validations';
 import config from '../config';
 import { ServerError } from './server-error';
@@ -9,6 +9,7 @@ import fs from 'fs';
 import { Message } from '@wppconnect-team/wppconnect';
 import mime from 'mime-types';
 import { logger } from '../app';
+import { v4 as uuidv4 } from "uuid";
 
 export class MediaService {
     public async get(req: RequestEx, id: string): Promise<ReturnMedia | ServerError> {
@@ -117,12 +118,24 @@ export class MediaService {
             }
         }
     }
-    public create(req: RequestEx, payload: Media, file: Express.Multer.File): { id: string } {
-        console.log(file);
-        console.log(req);
-        return {
-            id: payload.type,
-        }
+    public async create(file: Express.Multer.File): Promise<{ id: string } | ServerError> {
+        try {
+            const id = uuidv4();
+            const filetp = await fileType.fromBuffer(file.buffer);
+            const path = `uploads/${id}.${filetp?.ext}`;
+            await fs.promises.writeFile(path, file.buffer);
+
+            return { id: id };
+          } catch (error) {
+            console.log(error);
+            return new ServerError(
+              "Internal error", 
+              "invalid_request", 
+              3, 
+              error,
+              139000
+            );
+          }
     }
     public async delete(req: RequestEx, id: string): Promise<{ sucess: boolean } | ServerError> {
         try {

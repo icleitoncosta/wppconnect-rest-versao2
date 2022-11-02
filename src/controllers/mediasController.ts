@@ -1,7 +1,6 @@
 import {
     Controller,
     Delete,
-    FormField,
     Get,
     Path,
     Post,
@@ -14,7 +13,7 @@ import {
     Response
   } from "tsoa";
 import { MediaService } from "../services/media";
-import { Media, ReturnMedia } from "../models/Media";
+import { ReturnMedia } from "../models/Media";
 import { RequestEx } from "../models/Request";
 import { Error } from "../models/Error";
 import { ServerError } from "../services/server-error";
@@ -71,12 +70,10 @@ export class MediasController extends Controller {
   }
 )
   public async createMedia(
-    @FormField() payload: Media,
-    @UploadedFile() file: Express.Multer.File,
-    @Request() req: RequestEx
-  ): Promise<{id: string}> {
+    @UploadedFile() file: Express.Multer.File
+  ): Promise<{ id: string } | ServerError> {
     this.setStatus(200);
-    return new MediaService().create(req, payload, file);
+    return new MediaService().create(file);
   }
   /**
    * To delete media, make a DELETE call to the ID of the media you want to delete.

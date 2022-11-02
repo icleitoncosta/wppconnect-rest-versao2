@@ -2708,15 +2708,22 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"properties": {
-										"id": {
-											"type": "string"
+									"anyOf": [
+										{
+											"properties": {
+												"id": {
+													"type": "string"
+												}
+											},
+											"required": [
+												"id"
+											],
+											"type": "object"
+										},
+										{
+											"$ref": "#/components/schemas/ServerError"
 										}
-									},
-									"required": [
-										"id"
-									],
-									"type": "object"
+									]
 								}
 							}
 						}
@@ -2765,16 +2772,12 @@
 							"schema": {
 								"type": "object",
 								"properties": {
-									"payload": {
-										"type": "string"
-									},
 									"file": {
 										"type": "string",
 										"format": "binary"
 									}
 								},
 								"required": [
-									"payload",
 									"file"
 								]
 							}
