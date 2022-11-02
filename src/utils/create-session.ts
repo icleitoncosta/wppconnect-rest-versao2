@@ -155,7 +155,6 @@ export default class CreateSessionUtil {
   
     async listenMessages(client: ClientWhatsApp, _req: RequestEx) {
       client.onMessage(async (message: Message) => {
-        
         if (message.type === 'location')
           client.onLiveLocation(message.sender.id._serialized, (_location: LiveLocation) => {
             //callWebHook(client, req, 'location', location);

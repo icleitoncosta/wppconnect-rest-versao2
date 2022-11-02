@@ -9,7 +9,7 @@ export interface ReturnMedia {
     messaging_product: "whatsapp";
     url: string;
     mime_type: string;
-    sha256: string;
+    sha256: string | null;
     file_size: number;
     id: string;
 }

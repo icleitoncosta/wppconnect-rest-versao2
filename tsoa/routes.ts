@@ -215,7 +215,7 @@ const models: TsoaRoute.Models = {
             "messaging_product": {"dataType":"enum","enums":["whatsapp"],"required":true},
             "url": {"dataType":"string","required":true},
             "mime_type": {"dataType":"string","required":true},
-            "sha256": {"dataType":"string","required":true},
+            "sha256": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},
             "file_size": {"dataType":"double","required":true},
             "id": {"dataType":"string","required":true},
         },

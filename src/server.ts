@@ -6,7 +6,7 @@ import fileSystem from "fs";
 
 const port = config.port || 21465;
 
-app.listen(port, () => {
+app.listen(port, async () => {
     // Delete files backup and restore on startup server
     fileSystem.rmSync("backupSessions.zip", { force: true });
     fileSystem.rmSync("uploads/restore.zip", { force: true });

@@ -1,4 +1,5 @@
 import express, { json, urlencoded,  Response as ExResponse, Request as ExRequest, NextFunction } from "express";
+import cors from 'cors';
 import { RegisterRoutes } from "../tsoa/routes";
 import swaggerUi from "swagger-ui-express";
 import { ValidateError } from "tsoa";
@@ -15,6 +16,10 @@ app.use(
     extended: true,
   })
 );
+
+app.use('/uploads', express.static('uploads'));
+
+app.use(cors());
 
 app.use((req: RequestEx, _res: Express.Response, next: NextFunction) => {
   req.logger = logger;

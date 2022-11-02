@@ -17,6 +17,7 @@ import { MediaService } from "../services/media";
 import { Media, ReturnMedia } from "../models/Media";
 import { RequestEx } from "../models/Request";
 import { Error } from "../models/Error";
+import { ServerError } from "../services/server-error";
 
 @Route("/")
 export class MediasController extends Controller {
@@ -44,7 +45,7 @@ export class MediasController extends Controller {
   public async getMedia(
     @Path() MEDIA_ID: string,
     @Request() req: RequestEx
-  ): Promise<ReturnMedia> {
+  ): Promise<ReturnMedia | ServerError> {
     return new MediaService().get(req, MEDIA_ID);
   }
   /**
@@ -101,7 +102,7 @@ export class MediasController extends Controller {
   public async deleteMedia(
     @Path() MEDIA_ID: string,
     @Request() req: RequestEx
-  ): Promise<{sucess: boolean}> {
+  ): Promise<{ sucess: boolean } | ServerError> {
     this.setStatus(200);
     return new MediaService().delete(req, MEDIA_ID);
   }

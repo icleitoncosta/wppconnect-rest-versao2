@@ -612,7 +612,8 @@
 						"type": "string"
 					},
 					"sha256": {
-						"type": "string"
+						"type": "string",
+						"nullable": true
 					},
 					"file_size": {
 						"type": "number",
@@ -2563,7 +2564,14 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ReturnMedia"
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/ReturnMedia"
+										},
+										{
+											"$ref": "#/components/schemas/ServerError"
+										}
+									]
 								}
 							}
 						}
@@ -2623,15 +2631,22 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"properties": {
-										"sucess": {
-											"type": "boolean"
+									"anyOf": [
+										{
+											"properties": {
+												"sucess": {
+													"type": "boolean"
+												}
+											},
+											"required": [
+												"sucess"
+											],
+											"type": "object"
+										},
+										{
+											"$ref": "#/components/schemas/ServerError"
 										}
-									},
-									"required": [
-										"sucess"
-									],
-									"type": "object"
+									]
 								}
 							}
 						}
