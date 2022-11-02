@@ -10,7 +10,7 @@ const config = {
 
   // Webhook
   "webhook": {
-      "url": "https://webhook.site/94903b4a-4442-4a35-b918-dfcdf71d8439", // URL for send all webhooks
+      "url": "", // URL for send all webhooks
       "acks": true, // Read confirmation, audio listening, contacts and groups
       "presence": true, // Contacts online and offile
       "participants_changed_group": true, // Group member changes

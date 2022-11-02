@@ -34,11 +34,12 @@ const models: TsoaRoute.Models = {
     "ContactWPP": {
         "dataType": "refObject",
         "properties": {
-            "profile_picture_url": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"undefined"}],"required":true},
+            "profile_picture_url": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"undefined"}]},
             "formattedName": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"undefined"}],"required":true},
-            "isBusiness": {"dataType":"union","subSchemas":[{"dataType":"boolean"},{"dataType":"undefined"}],"required":true},
+            "isBusiness": {"dataType":"union","subSchemas":[{"dataType":"boolean"},{"dataType":"undefined"}]},
             "isEnterprise": {"dataType":"union","subSchemas":[{"dataType":"boolean"},{"dataType":"undefined"}],"required":true},
             "chatId": {"dataType":"string","required":true},
+            "coverPhoto": {"dataType":"any"},
         },
         "additionalProperties": false,
     },

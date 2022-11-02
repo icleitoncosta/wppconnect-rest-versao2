@@ -34,7 +34,8 @@
 					},
 					"chatId": {
 						"type": "string"
-					}
+					},
+					"coverPhoto": {}
 				},
 				"required": [
 					"chatId"
@@ -1996,7 +1997,7 @@
 						}
 					}
 				},
-				"description": "Retrieves the details of an existing contact.",
+				"description": "Retrieves the details of an existing contact.\nThe \"wpp_data\" is NOT SIMILAR TO WhatsApp Cloud API",
 				"tags": [
 					"Contacts"
 				],
@@ -2088,7 +2089,7 @@
 						}
 					}
 				},
-				"description": "Within the business profile request, you can specify what you want to know from your business.",
+				"description": "Within the business profile request, you can specify what you want to know from your business.\nThe \"wpp_data\" is NOT SIMILAR TO WhatsApp Cloud API",
 				"tags": [
 					"Contacts"
 				],
@@ -2124,7 +2125,32 @@
 				"operationId": "UpdateBusinessProfile",
 				"responses": {
 					"200": {
-						"description": "Created"
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"properties": {
+												"data": {
+													"items": {
+														"$ref": "#/components/schemas/MiniBusinessProfile"
+													},
+													"type": "array"
+												}
+											},
+											"required": [
+												"data"
+											],
+											"type": "object"
+										},
+										{
+											"$ref": "#/components/schemas/ServerError"
+										}
+									]
+								}
+							}
+						}
 					},
 					"401": {
 						"description": "Unauthorized",
@@ -4179,7 +4205,7 @@
 		},
 		{
 			"name": "Profile",
-			"description": "Methods for update your profile"
+			"description": "Methods for update your profile - NOT IMPLEMENTED - Await wa-js functions"
 		},
 		{
 			"name": "Messages",

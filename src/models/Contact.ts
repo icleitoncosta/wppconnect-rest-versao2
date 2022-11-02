@@ -11,11 +11,12 @@ interface ProfileInterface {
     name: string;
 }
 interface ContactWPP {
-    profile_picture_url: string | undefined;
+    profile_picture_url?: string | undefined;
     formattedName: string | undefined;
-    isBusiness: boolean | undefined;
+    isBusiness?: boolean | undefined;
     isEnterprise: boolean | undefined;
     chatId: string;
+    coverPhoto?: any;
 }
 export interface MiniBusinessProfile {
     business_profile: BusinessProfileInterface;

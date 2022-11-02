@@ -22,6 +22,7 @@ import { ServerError } from "../services/server-error";
 export class ContactsController extends Controller {
   /**
    * Retrieves the details of an existing contact.
+   * The "wpp_data" is NOT SIMILAR TO WhatsApp Cloud API
    * @param PHONE_NUMBER_ID ID of user or group "xxxxxxxxxx@c.us" for contacts, "xxxxxxxxxx@g.us" for groups
    * @fields You can specify what you want to know from your business. You have the following options: name
   */
@@ -52,6 +53,7 @@ export class ContactsController extends Controller {
 
   /**
    * Within the business profile request, you can specify what you want to know from your business.
+   * The "wpp_data" is NOT SIMILAR TO WhatsApp Cloud API
    * @param PHONE_NUMBER_ID ID of user "xxxxxxxxxx@c.us"
   */
   @Get("{PHONE_NUMBER_ID}/whatsapp_business_profile")
@@ -103,9 +105,8 @@ export class ContactsController extends Controller {
   public async updateBusinessProfile(
     @Body() payload: Partial<BusinessProfileInterface>,
     @Request() req: RequestEx
-  ): Promise<void> {
+  ): Promise<{ data: MiniBusinessProfile[]} | ServerError> {
     this.setStatus(200);
-    new ContactService().updateBusinessProfile(req, payload);
-    return;
+    return new ContactService().updateBusinessProfile(req, payload);
   }
 }
