@@ -453,12 +453,12 @@
     "eslint-visitor-keys" "^3.3.0"
 
 "@wppconnect-team/wppconnect@^1.18.1":
-  "integrity" "sha512-AIunXocyTe1nUj6dTPnHjKKlQ/I8lZlUJWQuIDeMf0UYf8ivb+jQaON8tVfeK3vMo/Qk669nFC9VdMexfjHcyQ=="
-  "resolved" "https://registry.npmjs.org/@wppconnect-team/wppconnect/-/wppconnect-1.18.1.tgz"
-  "version" "1.18.1"
+  "integrity" "sha512-952+B35ZeFjUDC/CcWzkzi90SL5JJDPxP28DHYOLJ6cTG8p+g3RizqW1f6JyvFgrj/pGJwpmxrAOI0/hVOet3w=="
+  "resolved" "https://registry.npmjs.org/@wppconnect-team/wppconnect/-/wppconnect-1.19.0.tgz"
+  "version" "1.19.0"
   dependencies:
-    "@wppconnect/wa-js" "^2.13.3"
-    "@wppconnect/wa-version" "^1.1.175"
+    "@wppconnect/wa-js" "^2.14.1"
+    "@wppconnect/wa-version" "^1.1.183"
     "atob" "^2.1.2"
     "axios" "^0.27.2"
     "boxen" "^5.1.2"
@@ -485,19 +485,19 @@
     "tmp" "^0.2.1"
     "tree-kill" "^1.2.2"
     "winston" "^3.8.2"
-    "ws" "^8.9.0"
+    "ws" "^8.10.0"
   optionalDependencies:
     "fsevents" "^2.3.2"
 
-"@wppconnect/wa-js@^2.13.3":
-  "integrity" "sha512-lDJR8X2LBp6d/cB1SyQ+V3dTrM49Fwd0B7JeFvsxTRc4OwvxeDmqU2tOt7l6BwoE91HIzCpV0F0PbRk+f2cIPQ=="
-  "resolved" "https://registry.npmjs.org/@wppconnect/wa-js/-/wa-js-2.13.4.tgz"
-  "version" "2.13.4"
+"@wppconnect/wa-js@^2.14.1":
+  "integrity" "sha512-diyv2g6osU7xHsZBZgle+sqNFQk8kcEg+cbMDOqqQ1SifR3JMthhaYLGgh4YUprEOqWCPAqIHkx9+M70L/xBQQ=="
+  "resolved" "https://registry.npmjs.org/@wppconnect/wa-js/-/wa-js-2.14.1.tgz"
+  "version" "2.14.1"
 
-"@wppconnect/wa-version@^1.1.175":
-  "integrity" "sha512-kyQ2M2t4Wiq60XoXzz3IV4wgWuIPxFtZDEu5ZtWtQs7d1wA4c7CfW3twaFm99R4aJ/ivL/qGkpFAcLW/oek4KA=="
-  "resolved" "https://registry.npmjs.org/@wppconnect/wa-version/-/wa-version-1.1.179.tgz"
-  "version" "1.1.179"
+"@wppconnect/wa-version@^1.1.183":
+  "integrity" "sha512-3VtZlk1iC2BCANTEP5p/VTE/CzbFcEg/3GJxJLITHv9FIFiyfhdGCL956Co4y3EfCfa+GOdUTU40etonUXUQDw=="
+  "resolved" "https://registry.npmjs.org/@wppconnect/wa-version/-/wa-version-1.1.185.tgz"
+  "version" "1.1.185"
   dependencies:
     "node-fetch" "^2.6.7"
     "semver" "^7.3.8"
@@ -4230,7 +4230,7 @@
   "resolved" "https://registry.npmjs.org/wrappy/-/wrappy-1.0.2.tgz"
   "version" "1.0.2"
 
-"ws@^8.9.0":
+"ws@^8.10.0":
   "integrity" "sha512-+s49uSmZpvtAsd2h37vIPy1RBusaLawVe8of+GyEPsaJTCMpj/2v8NpeK1SHXjBlQ95lQTmQofOJnFiLoaN3yw=="
   "resolved" "https://registry.npmjs.org/ws/-/ws-8.10.0.tgz"
   "version" "8.10.0"

@@ -6,9 +6,15 @@ import { ValidateError } from "tsoa";
 import { createLogger } from "./utils/logger";
 import config from "./config";
 import { RequestEx } from "./models/Request";
+import { PluginManager } from "./services/plugin";
+import { registerPlugins } from "./plugins";
+
+export const manager = new PluginManager(__dirname);
+registerPlugins(manager);
 
 export const app = express();
 export const logger = createLogger(config.log);
+
 
 // Use body parser to read sent json payloads
 app.use(

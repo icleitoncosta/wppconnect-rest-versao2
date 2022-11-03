@@ -658,7 +658,8 @@
 					"unknown",
 					"system",
 					"interactive",
-					"poll"
+					"poll",
+					"reaction"
 				]
 			},
 			"TextMessageObject": {
@@ -1265,6 +1266,7 @@
 					},
 					"value": {
 						"properties": {
+							"session": {},
 							"participants_change": {},
 							"presence": {},
 							"call": {},

@@ -1,5 +1,5 @@
 import { ProfilePicThumbObj } from '@wppconnect-team/wppconnect';
-import { ClientWhatsApp, RequestEx } from 'src/models/Request';
+import { ClientWhatsApp, RequestEx } from '../models/Request';
 import { BusinessProfileInterface, Contact, FieldsBusinessContact, FieldsContact, MiniBusinessProfile } from '../models/Contact';
 import { ServerError } from './server-error';
 
@@ -38,7 +38,7 @@ export class ContactService {
                 "Invalid phone, please send with @c.us format",
                 131009);
             }
-            const profile = await (req?.client as ClientWhatsApp).getBusinessProfile(id);
+            const profile = await (req?.client as any).getBusinessProfile(id);
             console.log(profile);
             const contact = await (req?.client as ClientWhatsApp).getContact(id);
             return {
@@ -76,7 +76,7 @@ export class ContactService {
     }
     public async updateBusinessProfile(req: RequestEx, payload: Partial<BusinessProfileInterface>): Promise<{ data: MiniBusinessProfile[]} | ServerError> {
         try {
-            const edit = await (req.client as ClientWhatsApp).editBusinessProfile({
+            const edit = await (req.client as any).editBusinessProfile({
                 description: payload.description,
                 address: payload.address,
                 email: payload.email,
