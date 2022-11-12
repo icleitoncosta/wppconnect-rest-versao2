@@ -6,15 +6,16 @@ import { ServerError } from './server-error';
 export class ContactService {
     public async get(req: RequestEx, id: string, _fields: FieldsContact[]): Promise<Contact | ServerError> {
         try {
-            const contact = await (req?.client as ClientWhatsApp).getContact(id);
-            console.log(contact);
+            let formatId = id;
+            if (!id.includes("@c.us")) formatId = id+"@c.us";
+            const contact = await (req?.client as ClientWhatsApp).getContact(formatId);
             return {
                 wa_id: contact?.id._serialized as string,
                 profile: {
                     name: contact?.name as string,
                 },
                 wpp_data: _fields.includes("wpp_data") ? {
-                    profile_picture_url: (await (req?.client as ClientWhatsApp).getProfilePicFromServer(id) as ProfilePicThumbObj).eurl as string,
+                    profile_picture_url: (await (req?.client as ClientWhatsApp).getProfilePicFromServer(formatId) as ProfilePicThumbObj).eurl as string,
                     formattedName: contact?.formattedName,
                     isBusiness: contact?.isBusiness,
                     isEnterprise: contact?.isEnterprise,
@@ -22,7 +23,7 @@ export class ContactService {
                 } : undefined,
             }
         } catch (error) {
-            return Promise.reject(new ServerError("Error on get markstatus message",
+            return Promise.reject(new ServerError("Error on get contact profile",
                 "error_set_status",
                 3,
                 error,
@@ -31,16 +32,10 @@ export class ContactService {
     }
     public async getBusiness(req: RequestEx, id: string, fields: FieldsBusinessContact[]): Promise<{ data: MiniBusinessProfile[]} | ServerError> {
         try {
-            if(!id.includes("@c.us")) {
-                return new ServerError("Error on get profile",
-                "error_get_profile",
-                3,
-                "Invalid phone, please send with @c.us format",
-                131009);
-            }
-            const profile = await (req?.client as any).getBusinessProfile(id);
-            console.log(profile);
-            const contact = await (req?.client as ClientWhatsApp).getContact(id);
+            let formatId = id;
+            if (!id.includes("@c.us")) formatId = id+"@c.us";
+            const profile = await (req?.client as any).getBusinessProfile(formatId);
+            const contact = await (req?.client as ClientWhatsApp).getContact(formatId);
             return {
                 data: [
                     {
@@ -48,7 +43,7 @@ export class ContactService {
                             messaging_product: "whatsapp",
                             profile_picture_url: fields.includes("profile_picture_url") ? (await (req?.client as ClientWhatsApp).getProfilePicFromServer(id) as ProfilePicThumbObj).eurl as string : undefined,
                             name: fields.includes("name") ? contact?.name : undefined,
-                            about: fields.includes("about") ? (await (req.client as ClientWhatsApp).getStatus(id)).status : undefined,
+                            about: fields.includes("about") ? (await (req.client as ClientWhatsApp).getStatus(formatId)).status : undefined,
                             address: fields.includes("address") ? profile.address : undefined,
                             description: fields.includes("description") ? profile.description : undefined,
                             email: fields.includes("email") ? profile.email : undefined,

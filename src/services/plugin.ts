@@ -67,8 +67,9 @@ export class PluginManager {
     const plugin = this.pluginList.get(pluginName);
     plugin?.hooks?.push(hook);
   }
-
+/** 
   callPlugins(hook: hooks, data: any): any {
 
   }
+  */
 }
