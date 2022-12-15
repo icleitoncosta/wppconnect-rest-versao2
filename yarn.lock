@@ -300,11 +300,6 @@
   resolved "https://registry.npmjs.org/@types/node/-/node-18.11.9.tgz"
   integrity sha512-CRpX21/kGdzjOpFsZSkcrXMGIBWMGNIHXXBVFSH+ggkftxg+XYP20TESbh+zFvFj3EQOl5byk0HTRn1IL6hbqg==
 
-"@types/parse-json@^4.0.0":
-  version "4.0.0"
-  resolved "https://registry.npmjs.org/@types/parse-json/-/parse-json-4.0.0.tgz"
-  integrity sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==
-
 "@types/qrcode@^1.5.0":
   version "1.5.0"
   resolved "https://registry.npmjs.org/@types/qrcode/-/qrcode-1.5.0.tgz"
@@ -452,15 +447,15 @@
     "@typescript-eslint/types" "5.45.1"
     eslint-visitor-keys "^3.3.0"
 
-"@wppconnect-team/wppconnect@^1.19.0":
-  version "1.19.0"
-  resolved "https://registry.npmjs.org/@wppconnect-team/wppconnect/-/wppconnect-1.19.0.tgz"
-  integrity sha512-952+B35ZeFjUDC/CcWzkzi90SL5JJDPxP28DHYOLJ6cTG8p+g3RizqW1f6JyvFgrj/pGJwpmxrAOI0/hVOet3w==
+"@wppconnect-team/wppconnect@^1.20.0":
+  version "1.20.0"
+  resolved "https://registry.npmjs.org/@wppconnect-team/wppconnect/-/wppconnect-1.20.0.tgz"
+  integrity sha512-sLkzS4zVtdMoRXAOyjluhhC6feBH3Oz0n9wQDd66wU24UNAA1sV3KOSgnWI5PdmEnWNmcj24B7BzKWkV9BKXBw==
   dependencies:
-    "@wppconnect/wa-js" "^2.14.1"
-    "@wppconnect/wa-version" "^1.1.183"
+    "@wppconnect/wa-js" "^2.18.0"
+    "@wppconnect/wa-version" "^1.1.213"
     atob "^2.1.2"
-    axios "^0.27.2"
+    axios "^1.2.1"
     boxen "^5.1.2"
     catch-exit "^1.2.2"
     chalk "~4.1.2"
@@ -472,7 +467,7 @@
     logform "^2.4.2"
     lookpath "^1.2.2"
     mime-types "^2.1.35"
-    puppeteer "*"
+    puppeteer "^19.4.0"
     puppeteer-extra "^3.3.4"
     puppeteer-extra-plugin-stealth "^2.11.1"
     puppeteer-extra-plugin-user-data-dir "^2.4.0"
@@ -481,23 +476,23 @@
     reflect-metadata "^0.1.13"
     rimraf "^3.0.2"
     sanitize-filename "^1.6.3"
-    sharp "^0.31.1"
+    sharp "^0.31.2"
     tmp "^0.2.1"
     tree-kill "^1.2.2"
     winston "^3.8.2"
-    ws "^8.10.0"
+    ws "^8.11.0"
   optionalDependencies:
     fsevents "^2.3.2"
 
-"@wppconnect/wa-js@^2.14.1":
-  version "2.14.1"
-  resolved "https://registry.npmjs.org/@wppconnect/wa-js/-/wa-js-2.14.1.tgz"
-  integrity sha512-diyv2g6osU7xHsZBZgle+sqNFQk8kcEg+cbMDOqqQ1SifR3JMthhaYLGgh4YUprEOqWCPAqIHkx9+M70L/xBQQ==
+"@wppconnect/wa-js@^2.18.0":
+  version "2.18.0"
+  resolved "https://registry.npmjs.org/@wppconnect/wa-js/-/wa-js-2.18.0.tgz"
+  integrity sha512-ssb+8sBd3xeZQVtlRyDrlVBGoFPLRkqfuYu0a/Mgy8pE4Z4AhEPmMZqVukZzxZdYrRWDZnfcyVg098c0m8Ot4A==
 
-"@wppconnect/wa-version@^1.1.183":
-  version "1.1.183"
-  resolved "https://registry.npmjs.org/@wppconnect/wa-version/-/wa-version-1.1.183.tgz"
-  integrity sha512-PMYwmoaXJW6F2/PT2bzVfeMQiRm9DvTM2BXde12swX5JnB1o/huK6cnjVbj2hVGrxIxOj1Xk6oWJx8pA1yl8NQ==
+"@wppconnect/wa-version@^1.1.213":
+  version "1.1.213"
+  resolved "https://registry.npmjs.org/@wppconnect/wa-version/-/wa-version-1.1.213.tgz"
+  integrity sha512-Cxj+YjX6vuTCGWjRCcYYLvcmg5RLOA5aPH5Vi3JSdEDupFVYNwlGcXvotRadG3PQxGYrM3Zz1JnDTytiOX+4Cg==
   dependencies:
     node-fetch "^2.6.7"
     semver "^7.3.8"
@@ -686,18 +681,10 @@ atob@^2.1.2:
   resolved "https://registry.npmjs.org/atob/-/atob-2.1.2.tgz"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
 
-axios@^0.27.2:
-  version "0.27.2"
-  resolved "https://registry.npmjs.org/axios/-/axios-0.27.2.tgz"
-  integrity sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==
-  dependencies:
-    follow-redirects "^1.14.9"
-    form-data "^4.0.0"
-
-axios@^1.1.3:
-  version "1.1.3"
-  resolved "https://registry.npmjs.org/axios/-/axios-1.1.3.tgz"
-  integrity sha512-00tXVRwKx/FZr/IDVFt4C+f9FYairX517WoGCL6dpOntqLkZofjhu43F/Xl44UOpqa+9sLFDrG/XAnFsUYgkDA==
+axios@^1.1.3, axios@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.npmjs.org/axios/-/axios-1.2.1.tgz"
+  integrity sha512-I88cFiGu9ryt/tfVEi4kX2SITsvDddTajXTOFmt2uK1ZVA8LytjtdeyefdQWEf5PU8w+4SSJDoYnggflB5tW4A==
   dependencies:
     follow-redirects "^1.15.0"
     form-data "^4.0.0"
@@ -1138,16 +1125,15 @@ cors@^2.8.5:
     object-assign "^4"
     vary "^1"
 
-cosmiconfig@7.0.1:
-  version "7.0.1"
-  resolved "https://registry.npmjs.org/cosmiconfig/-/cosmiconfig-7.0.1.tgz"
-  integrity sha512-a1YWNUV2HwGimB7dU2s1wUMurNKjpx60HxBB6xUM8Re+2s1g1IIfJvFR0/iCF+XHdE0GMTKTuLR32UQff4TEyQ==
+cosmiconfig@8.0.0:
+  version "8.0.0"
+  resolved "https://registry.npmjs.org/cosmiconfig/-/cosmiconfig-8.0.0.tgz"
+  integrity sha512-da1EafcpH6b/TD8vDRaWV7xFINlHlF6zKsGwS1TsuVJTZRkquaS5HTMq7uq6h31619QjbsYl21gVDOm32KM1vQ==
   dependencies:
-    "@types/parse-json" "^4.0.0"
     import-fresh "^3.2.1"
+    js-yaml "^4.1.0"
     parse-json "^5.0.0"
     path-type "^4.0.0"
-    yaml "^1.10.0"
 
 crc-32@^1.2.0:
   version "1.2.2"
@@ -1281,15 +1267,10 @@ detect-libc@^2.0.0, detect-libc@^2.0.1:
   resolved "https://registry.npmjs.org/detect-libc/-/detect-libc-2.0.1.tgz"
   integrity sha512-463v3ZeIrcWtdgIg6vI6XUncguvr2TnGl4SzDXinkt9mSLpBJKXT3mW6xT3VQdDN11+WVs29pgvivTc4Lp8v+w==
 
-devtools-protocol@0.0.1045489:
-  version "0.0.1045489"
-  resolved "https://registry.npmjs.org/devtools-protocol/-/devtools-protocol-0.0.1045489.tgz"
-  integrity sha512-D+PTmWulkuQW4D1NTiCRCFxF7pQPn0hgp4YyX4wAQ6xYXKOadSWPR3ENGDQ47MW/Ewc9v2rpC/UEEGahgBYpSQ==
-
-devtools-protocol@0.0.1056733:
-  version "0.0.1056733"
-  resolved "https://registry.npmjs.org/devtools-protocol/-/devtools-protocol-0.0.1056733.tgz"
-  integrity sha512-CmTu6SQx2g3TbZzDCAV58+LTxVdKplS7xip0g5oDXpZ+isr0rv5dDP8ToyVRywzPHkCCPKgKgScEcwz4uPWDIA==
+devtools-protocol@0.0.1068969:
+  version "0.0.1068969"
+  resolved "https://registry.npmjs.org/devtools-protocol/-/devtools-protocol-0.0.1068969.tgz"
+  integrity sha512-ATFTrPbY1dKYhPPvpjtwWKSK2mIwGmRwX54UASn9THEuIZCe2n9k3vVuMmt6jWeL+e5QaaguEv/pMyR+JQB7VQ==
 
 diff@^4.0.1:
   version "4.0.2"
@@ -1766,7 +1747,7 @@ foldline@^1.1.0:
   resolved "https://registry.npmjs.org/foldline/-/foldline-1.1.0.tgz"
   integrity sha512-9SheyADS50hjvFYjFJ3OB/GlDz2mD1T2CHd7auIk4Uto5YYWPBcw8iYo3F+gENJ+/SOeH9tT0loHZSqlUlumTA==
 
-follow-redirects@^1.14.9, follow-redirects@^1.15.0:
+follow-redirects@^1.15.0:
   version "1.15.2"
   resolved "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.15.2.tgz"
   integrity sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA==
@@ -2812,9 +2793,9 @@ neo-async@^2.6.0:
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
 
 node-abi@^3.3.0:
-  version "3.28.0"
-  resolved "https://registry.npmjs.org/node-abi/-/node-abi-3.28.0.tgz"
-  integrity sha512-fRlDb4I0eLcQeUvGq7IY3xHrSb0c9ummdvDSYWfT9+LKP+3jCKw/tKoqaM7r1BAoiAC6GtwyjaGnOz6B3OtF+A==
+  version "3.30.0"
+  resolved "https://registry.npmjs.org/node-abi/-/node-abi-3.30.0.tgz"
+  integrity sha512-qWO5l3SCqbwQavymOmtTVuCWZE23++S+rxyoHjXqUmPyzRcaoI4lA2gO55/drddGnedAyjA7sk76SfQ5lfUMnw==
   dependencies:
     semver "^7.3.5"
 
@@ -3154,21 +3135,21 @@ punycode@^2.1.0:
   resolved "https://registry.npmjs.org/punycode/-/punycode-2.1.1.tgz"
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
 
-puppeteer-core@19.1.1:
-  version "19.1.1"
-  resolved "https://registry.npmjs.org/puppeteer-core/-/puppeteer-core-19.1.1.tgz"
-  integrity sha512-jV26Ke0VFel4MoXLjqm50uAW2uwksTP6Md1tvtXqWqXM5FyboKI6E9YYJ1qEQilUAqlhgGq8xLN5+SL8bPz/kw==
+puppeteer-core@19.4.0:
+  version "19.4.0"
+  resolved "https://registry.npmjs.org/puppeteer-core/-/puppeteer-core-19.4.0.tgz"
+  integrity sha512-gG/jxseleZStinBn86x8r7trjcE4jcjx1hIQWOpACQhquHYMuKnrWxkzg+EDn8sN3wUtF/Ry9mtJgjM49oUOFQ==
   dependencies:
     cross-fetch "3.1.5"
     debug "4.3.4"
-    devtools-protocol "0.0.1045489"
+    devtools-protocol "0.0.1068969"
     extract-zip "2.0.1"
     https-proxy-agent "5.0.1"
     proxy-from-env "1.1.0"
     rimraf "3.0.2"
     tar-fs "2.1.1"
     unbzip2-stream "1.4.3"
-    ws "8.9.0"
+    ws "8.10.0"
 
 puppeteer-extra-plugin-stealth@^2.11.1:
   version "2.11.1"
@@ -3217,17 +3198,17 @@ puppeteer-extra@^3.3.4:
     debug "^4.1.1"
     deepmerge "^4.2.2"
 
-puppeteer@*:
-  version "19.1.2"
-  resolved "https://registry.npmjs.org/puppeteer/-/puppeteer-19.1.2.tgz"
-  integrity sha512-paX23NEpQRoJzz6g/q6A8PwSeAoa+WM263IFQL/ArJcyfotF1WvCBiZkzEcGD864Xm2rFvFuopBWYQjSBfeaQw==
+puppeteer@^19.4.0:
+  version "19.4.0"
+  resolved "https://registry.npmjs.org/puppeteer/-/puppeteer-19.4.0.tgz"
+  integrity sha512-sRzWEfFSZCCcFUJflGtYI2V7A6qK4Jht+2JiI2LZgn+Nv/LOZZsBDEaGl98ZrS8oEcUA5on4p2yJbE0nzHNzIg==
   dependencies:
-    cosmiconfig "7.0.1"
-    devtools-protocol "0.0.1056733"
+    cosmiconfig "8.0.0"
+    devtools-protocol "0.0.1068969"
     https-proxy-agent "5.0.1"
     progress "2.0.3"
     proxy-from-env "1.1.0"
-    puppeteer-core "19.1.1"
+    puppeteer-core "19.4.0"
 
 qrcode-terminal@^0.12.0:
   version "0.12.0"
@@ -3524,16 +3505,16 @@ shallow-clone@^0.1.2:
     lazy-cache "^0.2.3"
     mixin-object "^2.0.1"
 
-sharp@^0.31.1:
-  version "0.31.1"
-  resolved "https://registry.npmjs.org/sharp/-/sharp-0.31.1.tgz"
-  integrity sha512-GR8M1wBwOiFKLkm9JPun27OQnNRZdHfSf9VwcdZX6UrRmM1/XnOrLFTF0GAil+y/YK4E6qcM/ugxs80QirsHxg==
+sharp@^0.31.2:
+  version "0.31.2"
+  resolved "https://registry.npmjs.org/sharp/-/sharp-0.31.2.tgz"
+  integrity sha512-DUdNVEXgS5A97cTagSLIIp8dUZ/lZtk78iNVZgHdHbx1qnQR7JAHY0BnXnwwH39Iw+VKhO08CTYhIg0p98vQ5Q==
   dependencies:
     color "^4.2.3"
     detect-libc "^2.0.1"
     node-addon-api "^5.0.0"
     prebuild-install "^7.1.1"
-    semver "^7.3.7"
+    semver "^7.3.8"
     simple-get "^4.0.1"
     tar-fs "^2.1.1"
     tunnel-agent "^0.6.0"
@@ -4161,15 +4142,15 @@ wrappy@1:
   resolved "https://registry.npmjs.org/wrappy/-/wrappy-1.0.2.tgz"
   integrity sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==
 
-ws@8.9.0:
-  version "8.9.0"
-  resolved "https://registry.npmjs.org/ws/-/ws-8.9.0.tgz"
-  integrity sha512-Ja7nszREasGaYUYCI2k4lCKIRTt+y7XuqVoHR44YpI49TtryyqbqvDMn5eqfW7e6HzTukDRIsXqzVHScqRcafg==
-
-ws@^8.10.0:
+ws@8.10.0:
   version "8.10.0"
   resolved "https://registry.npmjs.org/ws/-/ws-8.10.0.tgz"
   integrity sha512-+s49uSmZpvtAsd2h37vIPy1RBusaLawVe8of+GyEPsaJTCMpj/2v8NpeK1SHXjBlQ95lQTmQofOJnFiLoaN3yw==
+
+ws@^8.11.0:
+  version "8.11.0"
+  resolved "https://registry.npmjs.org/ws/-/ws-8.11.0.tgz"
+  integrity sha512-HPG3wQd9sNQoT9xHyNCXoDUa+Xw/VevmY9FoHyQ+g+rrMn4j6FB4np7Z0OhdTgjx6MgQLK7jwSy1YecU1+4Asg==
 
 xtend@^4.0.0:
   version "4.0.2"
@@ -4190,11 +4171,6 @@ yallist@^4.0.0:
   version "4.0.0"
   resolved "https://registry.npmjs.org/yallist/-/yallist-4.0.0.tgz"
   integrity sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==
-
-yaml@^1.10.0:
-  version "1.10.2"
-  resolved "https://registry.npmjs.org/yaml/-/yaml-1.10.2.tgz"
-  integrity sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg==
 
 yamljs@^0.3.0:
   version "0.3.0"
