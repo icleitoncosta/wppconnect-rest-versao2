@@ -3,6 +3,7 @@ import config from "./config";
 import { ClientWhatsApp, RequestEx } from "./models/Request";
 import { ServerError } from "./services/server-error";
 import { clientsArray } from "./utils/session";
+import { logger } from "./utils/defaultLogger";
 
 export function expressAuthentication(
   request: RequestEx,
@@ -40,9 +41,11 @@ export function expressAuthentication(
                     }
                     if(same) {
                         resolve();
+                        const sess = session.session;
                         request.session = session.session;
                         request.token = session.token;
                         request.client = session.client as Partial<ClientWhatsApp>;
+                        request.logger = logger.child({ sess });
                         resolve();
                     }
                 });

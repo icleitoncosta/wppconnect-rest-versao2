@@ -3,7 +3,6 @@ import QRCode from "qrcode";
 import { version } from '../../package.json';
 import { ServerError } from "./server-error";
 import CreateSessionUtil from "../utils/create-session";
-import { Logger } from "winston";
 import api from "axios";
 import FileTokenStore from "../stores/FileTokenStore";
 import config from "../config";
@@ -62,7 +61,7 @@ export class SessionService {
         }
     }
 
-    public async startAllSessions(config: any, logger: Logger) {
+    public async startAllSessions(config: any, logger: any) {
       try {
         await api.post(`${config.host}:${config.port}/${config.secretKey}/start-all`);
       } catch (error) {

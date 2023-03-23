@@ -4,10 +4,12 @@ import config from "../config";
 import { ClientWhatsApp, RequestEx } from "../models/Request";
 import { clientsArray } from "./session";
 import { Webhook } from "../services/webhook";
+import { logger } from "./defaultLogger";
 
 export default class CreateSessionUtil {
     async create(req: RequestEx, clientsArray: Array<any>, session: any) {
       try {
+        req.logger = logger.child({session});
         let client = this.getClient(session, req);
         if (client.status != null && client.status !== 'CLOSED') return;
         client.status = 'INITIALIZING';
@@ -57,7 +59,7 @@ export default class CreateSessionUtil {
                       //clientsArray[session] = undefined;
                     }
                     new Webhook().send(client, "status-find", statusFind);
-                    req.logger.info(statusFind + '\n\n');
+                    req.logger.info(statusFind);
                   } catch (error) {}
                 },
               }) as unknown as CreateOptions

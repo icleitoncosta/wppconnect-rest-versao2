@@ -3,12 +3,13 @@ import cors from 'cors';
 import { RegisterRoutes } from "../tsoa/routes";
 import swaggerUi from "swagger-ui-express";
 import { ValidateError } from "tsoa";
-import { createLogger } from "./utils/logger";
-import config from "./config";
 import { RequestEx } from "./models/Request";
+import { logger as log } from "./utils/defaultLogger";
+import pino from "pino";
+import pinoHttp from "pino-http";
 
 export const app = express();
-export const logger = createLogger(config.log);
+export const logger = log;
 
 // Use body parser to read sent json payloads
 app.use(
@@ -17,12 +18,56 @@ app.use(
   })
 );
 
+const loggerRequest = pinoHttp({
+  logger: log,
+  serializers: {
+    err: pino.stdSerializers.err,
+    req: pino.stdSerializers.req,
+    res: pino.stdSerializers.res
+  },
+  wrapSerializers: true,
+  customLogLevel: function (_req: any, res: any, err: any) {
+    if (res.statusCode >= 400 && res.statusCode < 500) {
+      return 'warn'
+    } else if (res.statusCode >= 500 || err) {
+      return 'error'
+    }
+    return 'silent'
+  },
+  customSuccessMessage: function (req: any, res: any) {
+    if (res.statusCode === 404) {
+      return 'resource not found'
+    }
+    return `${req.method} completed`
+  },
+  customReceivedMessage: function (req: any, _res: any) {
+    return 'request received: ' + req.method
+  },
+  customErrorMessage: function (_req: any, res: any, _next: any) {
+    return 'request errored with status code: ' + res.statusCode
+  },
+  customAttributeKeys: {
+    req: 'request',
+    res: 'response',
+    err: 'error',
+    responseTime: 'timeTaken'
+  },
+
+  // Define additional custom request properties
+  customProps: function (req: any, _res: any) {
+    return {
+      session: req.session,
+    }
+  }
+})
+
 app.use('/uploads', express.static('uploads'));
 
 app.use(cors());
 
-app.use((req: RequestEx, _res: Express.Response, next: NextFunction) => {
+app.use((req: RequestEx, res: any, next: NextFunction) => {
   req.logger = logger;
+  loggerRequest(req, res);
   next();
 })
 app.use(json());

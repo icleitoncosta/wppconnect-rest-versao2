@@ -226,7 +226,7 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "MessageType": {
         "dataType": "refAlias",
-        "type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["text"]},{"dataType":"enum","enums":["image"]},{"dataType":"enum","enums":["audio"]},{"dataType":"enum","enums":["document"]},{"dataType":"enum","enums":["template"]},{"dataType":"enum","enums":["hsm"]},{"dataType":"enum","enums":["sticker"]},{"dataType":"enum","enums":["order"]},{"dataType":"enum","enums":["video"]},{"dataType":"enum","enums":["contacts"]},{"dataType":"enum","enums":["location"]},{"dataType":"enum","enums":["unknown"]},{"dataType":"enum","enums":["system"]},{"dataType":"enum","enums":["interactive"]},{"dataType":"enum","enums":["poll"]}],"validators":{}},
+        "type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["text"]},{"dataType":"enum","enums":["image"]},{"dataType":"enum","enums":["audio"]},{"dataType":"enum","enums":["document"]},{"dataType":"enum","enums":["template"]},{"dataType":"enum","enums":["hsm"]},{"dataType":"enum","enums":["sticker"]},{"dataType":"enum","enums":["order"]},{"dataType":"enum","enums":["video"]},{"dataType":"enum","enums":["contacts"]},{"dataType":"enum","enums":["location"]},{"dataType":"enum","enums":["unknown"]},{"dataType":"enum","enums":["system"]},{"dataType":"enum","enums":["interactive"]},{"dataType":"enum","enums":["poll"]},{"dataType":"enum","enums":["reaction"]}],"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "TextMessageObject": {
@@ -449,7 +449,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "field": {"dataType":"string","required":true},
-            "value": {"dataType":"nestedObjectLiteral","nestedProperties":{"participants_change":{"dataType":"any"},"presence":{"dataType":"any"},"call":{"dataType":"any"},"statuses":{"dataType":"array","array":{"dataType":"refObject","ref":"StatusMessage"}},"messages":{"dataType":"array","array":{"dataType":"refObject","ref":"Message"}},"contacts":{"dataType":"array","array":{"dataType":"refObject","ref":"Contact"}},"metadata":{"dataType":"nestedObjectLiteral","nestedProperties":{"phone_number_id":{"dataType":"string","required":true},"display_phone_number":{"dataType":"string","required":true}},"required":true},"messaging_product":{"dataType":"enum","enums":["whatsapp"],"required":true}},"required":true},
+            "value": {"dataType":"nestedObjectLiteral","nestedProperties":{"session":{"dataType":"any"},"participants_change":{"dataType":"any"},"presence":{"dataType":"any"},"call":{"dataType":"any"},"statuses":{"dataType":"array","array":{"dataType":"refObject","ref":"StatusMessage"}},"messages":{"dataType":"array","array":{"dataType":"refObject","ref":"Message"}},"contacts":{"dataType":"array","array":{"dataType":"refObject","ref":"Contact"}},"metadata":{"dataType":"nestedObjectLiteral","nestedProperties":{"phone_number_id":{"dataType":"string","required":true},"display_phone_number":{"dataType":"string","required":true}},"required":true},"messaging_product":{"dataType":"enum","enums":["whatsapp"],"required":true}},"required":true},
         },
         "additionalProperties": false,
     },
