@@ -1,6 +1,7 @@
 {
   "version": "0.0.1",
   "main": "build/src/server.ts",
+  "author": "icleitoncosta",
   "scripts": {
     "dev": "nodemon",
     "build": "tsoa spec-and-routes && tsc",

@@ -27,7 +27,7 @@ export function expressAuthentication(
         let clientFound = false;
         tokenDecrypt = token?.replace(/_/g, '/').replace(/-/g, '+') as string;
         clientsArray.forEach( (session) => {
-            if (session.token === tokenDecrypt) {
+            if ((session.client as any).config.token === tokenDecrypt) {
                 clientFound = true;
                 bcrypt.compare(session.session + config.secretKey, tokenDecrypt, (err, same) => {
                     if(err) {
@@ -43,7 +43,6 @@ export function expressAuthentication(
                         resolve();
                         const sess = session.session;
                         request.session = session.session;
-                        request.token = session.token;
                         request.client = session.client as Partial<ClientWhatsApp>;
                         request.logger = logger.child({ sess });
                         resolve();

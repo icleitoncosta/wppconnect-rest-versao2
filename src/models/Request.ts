@@ -32,4 +32,5 @@ export interface Sessions {
     token?: string;
     qrcode?: string | null;
     urlcode?: string;
+    config?: any;
 }

@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import { RequestEx } from "../models/Request";
 import { Error } from "../models/Error";
 import { clientsArray } from "../utils/session";
+import FileTokenStore from "../stores/FileTokenStore";
 interface ReturnToken {
     status: string; 
     token: string | null; 
@@ -31,15 +32,21 @@ export class TokenService {
             const hashFormat =  hash.replace(/\//g, '_').replace(/\+/g, '-');
 
             let ocurr = null;
-            for(const session of clientsArray) {
+            for(let session of clientsArray) {
                 if(session.session === PHONE_NUMBER_ID) {
-                    session.token = hash;
                     session.qrcode = null;
                     session.urlcode = "";
-                    (session.client as any).token = hash;
-                    (session.client as any).refuseCall = refuseCall;
-                    (session.client as any).msgRefuseCall = msgRefuseCall;
                     ocurr = true;
+                    const myTokenStore = new FileTokenStore(session.client as any).tokenStore;
+                    const data = myTokenStore.getToken(session.session as any);
+                    const newTokenStore = {
+                        ...data,
+                        token: hash,
+                        refuseCall: refuseCall,
+                        msgRefuseCall: msgRefuseCall,
+                    }
+                    myTokenStore.setToken(session.session as any, newTokenStore as any);
+                    (session.client as any).config = newTokenStore;
                 }
             }
             if(!ocurr) {
@@ -51,9 +58,11 @@ export class TokenService {
                     client: {
                         session: PHONE_NUMBER_ID,
                         status: "CLOSED",
-                        token: hash,
-                        refuseCall: refuseCall,
-                        msgRefuseCall: msgRefuseCall
+                        config: {
+                            token: hash,
+                            refuseCall: refuseCall ? refuseCall : false,
+                            msgRefuseCall: msgRefuseCall ? msgRefuseCall : "",
+                        },
                     }
                 });
             }

@@ -1,4 +1,4 @@
-import { Ack, create, SocketState, Message, ParticipantEvent, CreateOptions, Whatsapp } from "@wppconnect-team/wppconnect";
+import { Ack, create, SocketState, Message, ParticipantEvent, CreateOptions, Whatsapp, defaultLogger } from "@wppconnect-team/wppconnect";
 import FileTokenStore from "../stores/FileTokenStore";
 import config from "../config";
 import { ClientWhatsApp, RequestEx } from "../models/Request";
@@ -9,27 +9,19 @@ import { logger } from "./defaultLogger";
 export default class CreateSessionUtil {
     async create(req: RequestEx, clientsArray: Array<any>, session: any) {
       try {
+        defaultLogger.level = config.log.level;
         req.logger = logger.child({session});
         let client = this.getClient(session, req);
         if (client.status != null && client.status !== 'CLOSED') return;
         client.status = 'INITIALIZING';
-        client.config = {
-          token: client.token,
-          refuseCall: client.refuseCall,
-          msgRefuseCall: client.msgRefuseCall
-        }
   
         const myTokenStore = new FileTokenStore(client).tokenStore;
   
         const myToken = await myTokenStore.getToken(session);
         if(myToken) {
-          if((myToken as any).config) {
-            client.config = {
-              token: (myToken as any).config.token,
-              refuseCall: (myToken as any).config.refuseCall,
-              msgRefuseCall: (myToken as any).config.msgRefuseCall
-            }
-          }
+          client.config = myToken;
+        } else {
+          myTokenStore.setToken(session, client.config);
         }
   
         if (config.customUserDataDir) {
@@ -37,9 +29,9 @@ export default class CreateSessionUtil {
             userDataDir: config.customUserDataDir + session,
           };
         }
-  
+
         const wppClient = await create(
-                Object.assign({}, { tokenStore: myTokenStore }, config.createOptions, {
+                Object.assign({}, { tokenStore: myTokenStore, config: myToken }, config.createOptions, {
                 session: session,
                 deviceName: config.deviceName,
                 poweredBy: config.poweredBy || 'WPPConnect-Server',
@@ -64,23 +56,12 @@ export default class CreateSessionUtil {
                 },
               }) as unknown as CreateOptions
         );
-        if(myToken) {
-          if((myToken as any).config) {
-            (wppClient as any).config = {
-              token: (myToken as any).config.token,
-              refuseCall: (myToken as any).config.refuseCall,
-              msgRefuseCall: (myToken as any).config.msgRefuseCall,
-            };
-            (wppClient as any).token = (myToken as any).config.token;
-            (wppClient as any).refuseCall = (myToken as any).config.refuseCall;
-            (wppClient as any).msgRefuseCall = (myToken as any).config.msgRefuseCall;
-          }
-        }
         for(const ses of clientsArray) {
           if(ses.session == session) {
             ses.client = wppClient;
             client = wppClient;
             ses.token = client.token;
+            ses.client.config = myToken;
           }
         }
         await this.start(req, client);

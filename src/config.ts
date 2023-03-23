@@ -21,7 +21,7 @@ const config = {
 
   // Logs
   "log": {
-    "level": "error",
+    "level": "silly", // To not show too many logs, change 'silly' to 'error'
     "logger": ["console", "file"]
   },
 
