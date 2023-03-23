@@ -2,9 +2,10 @@
   "version": "0.0.1",
   "main": "build/src/server.ts",
   "scripts": {
-    "dev": "concurrently \"nodemon\" \"nodemon -x tsoa spec-and-routes\"",
+    "dev": "nodemon",
     "build": "tsoa spec-and-routes && tsc",
-    "start": "node build/src/server.js"
+    "start": "node build/src/server.js",
+    "build:swagger": "tsoa spec-and-routes"
   },
   "dependencies": {
     "@wppconnect-team/wppconnect": "1.23.0",
