@@ -360,6 +360,8 @@ export class MessagesService {
                 }
             }
         } catch (error: any) {
+            const session = req.client?.session as string;
+            req.logger.child({ session }).error(error?.text || error);
             return {
                 error: {
                     message: "Error on send message",
