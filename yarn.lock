@@ -346,10 +346,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/uuid@^9.0.0":
-  version "9.0.0"
-  resolved "https://registry.npmjs.org/@types/uuid/-/uuid-9.0.0.tgz"
-  integrity sha512-kr90f+ERiQtKWMz5rP32ltJ/BtULDI5RVO0uavn1HQUOwjx0R1h0rnDYNL0CepF1zL5bSY6FISAfd9tOdDhU5Q==
+"@types/uuid@^9.0.1":
+  version "9.0.1"
+  resolved "https://registry.npmjs.org/@types/uuid/-/uuid-9.0.1.tgz"
+  integrity sha512-rFT3ak0/2trgvp4yYZo5iKFEPsET7vKydKF+VRCxlQ9bpheehyAJH89dAkaLEq/j/RZXJIqcgsmPJKUP1Z28HA==
 
 "@types/vcf@^2.0.3":
   version "2.0.3"
