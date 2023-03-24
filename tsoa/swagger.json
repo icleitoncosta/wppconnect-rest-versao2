@@ -1947,7 +1947,9 @@
 		"title": "WPP Connect Server",
 		"version": "0.0.1",
 		"description": "REST API similar to WhatsApp Cloud API to connect with WhatsApp and send messages",
-		"contact": {}
+		"contact": {
+			"name": "icleitoncosta"
+		}
 	},
 	"openapi": "3.0.0",
 	"paths": {
@@ -3483,7 +3485,7 @@
 											}
 										}
 									},
-									"Send Buttons": {
+									"Send Buttons - WhatsApp error": {
 										"value": {
 											"messaging_product": "whatsapp",
 											"recipient_type": "individual",
@@ -3515,7 +3517,7 @@
 											}
 										}
 									},
-									"Send List Buttons": {
+									"Send List Buttons - WhatsApp error": {
 										"value": {
 											"messaging_product": "whatsapp",
 											"recipient_type": "individual",
