@@ -606,7 +606,7 @@ export class MessagesController extends Controller {
         ]
       }
     }
-  }, "Send Buttons")
+  }, "Send Buttons - WhatsApp error")
   @Example<SendInteractive>({
     messaging_product: "whatsapp",
     recipient_type: "individual",
@@ -660,7 +660,7 @@ export class MessagesController extends Controller {
         ]
       }
     }
-  }, "Send List Buttons")
+  }, "Send List Buttons - WhatsApp error")
   @Tags("Messages")
   @Security("apiKey")
   @Response<Error>(400, "Incorrect request")

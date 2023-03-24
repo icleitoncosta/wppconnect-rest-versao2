@@ -278,7 +278,10 @@ export class MessagesService {
             }else if(payload.type === "location") {
                 message = await client.sendLocation(payload.to, { lat: payload.location.latitude, lng: payload.location.longitude, address: payload.location.address, name: payload.location.name}) as unknown as MessageWPP;
                 return Promise.resolve(this.returnMessageSucess(payload.to, message?.id));
-            }else if(payload.type === "poll") {
+            }else if(payload.type === "contacts") {
+                message = await client.sendContactVcard(payload.to, payload.contacts[0].phones[0].phone as any, payload.contacts[0].name.formatted_name);
+                return Promise.resolve(this.returnMessageSucess(payload.to, message?.id));
+            } else if(payload.type === "poll") {
                 if(!payload.to.includes("@g.us") || payload.recipient_type === 'individual') {
                     return {
                         error: {
