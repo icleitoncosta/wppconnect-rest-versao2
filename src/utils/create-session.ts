@@ -150,10 +150,10 @@ export default class CreateSessionUtil {
   
       client.onIncomingCall(async (call: any) => {
         new Webhook().send(client, "call", call);
-        if(client.refuseCall) {
+        if(client.config.refuseCall) {
           await client.rejectCall(call.id);
-          if(client.msgRefuseCall) {
-            await client.sendText(call.peerJid, client.msgRefuseCall)
+          if(client.config.msgRefuseCall) {
+            await client.sendText(call.peerJid, client.config.msgRefuseCall)
           }
         }
       });
