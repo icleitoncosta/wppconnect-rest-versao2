@@ -466,13 +466,13 @@
     "@typescript-eslint/types" "5.56.0"
     eslint-visitor-keys "^3.3.0"
 
-"@wppconnect-team/wppconnect@1.23.0":
-  version "1.23.0"
-  resolved "https://registry.npmjs.org/@wppconnect-team/wppconnect/-/wppconnect-1.23.0.tgz"
-  integrity sha512-thqHkqxw0smYsWU4BSCbwAdWztiNbikmhg/Il+Lzz4zMTtp4s48p18J0DF77RG2i2dZvSPUqt6VVbdBMrPo6eQ==
+"@wppconnect-team/wppconnect@1.23.1":
+  version "1.23.1"
+  resolved "https://registry.npmjs.org/@wppconnect-team/wppconnect/-/wppconnect-1.23.1.tgz"
+  integrity sha512-vBIHQzqGoz97pq/nRhmKj7DFXim3euWkyo/8dWrpqk6JBHbEgmfu+hRvpb6BJzznaabRZRaY43HjB8K6/6UUVQ==
   dependencies:
-    "@wppconnect/wa-js" "^2.22.0"
-    "@wppconnect/wa-version" "^1.2.5"
+    "@wppconnect/wa-js" "^2.22.2"
+    "@wppconnect/wa-version" "^1.2.10"
     atob "^2.1.2"
     axios "^1.3.4"
     boxen "^5.1.2"
@@ -486,7 +486,7 @@
     logform "^2.5.1"
     lookpath "^1.2.2"
     mime-types "^2.1.35"
-    puppeteer "^19.7.3"
+    puppeteer "^19.7.5"
     puppeteer-extra "^3.3.6"
     puppeteer-extra-plugin-stealth "^2.11.2"
     puppeteer-extra-plugin-user-data-dir "^2.4.1"
@@ -499,16 +499,16 @@
     tmp "^0.2.1"
     tree-kill "^1.2.2"
     winston "^3.8.2"
-    ws "^8.12.1"
+    ws "^8.13.0"
   optionalDependencies:
     fsevents "^2.3.2"
 
-"@wppconnect/wa-js@^2.22.0":
+"@wppconnect/wa-js@^2.22.2":
   version "2.22.2"
   resolved "https://registry.npmjs.org/@wppconnect/wa-js/-/wa-js-2.22.2.tgz"
   integrity sha512-WhkQZUg/u7drmst4Kpl1juw7AD2kj+i/eyY0tbbPtBfBjqO4LJfTLpta06clgxr7Oj1Cm/I+Jv9lSZKQva5lqw==
 
-"@wppconnect/wa-version@^1.2.5":
+"@wppconnect/wa-version@^1.2.10":
   version "1.2.10"
   resolved "https://registry.npmjs.org/@wppconnect/wa-version/-/wa-version-1.2.10.tgz"
   integrity sha512-qYWM7VK3RBGt1SvVUUABJSxWlfr5UMqkpXUVfQ8YO+C/14cOs28W2KYx0gfC5Yhk83thYeIEAZkxOAy6GEAcNQ==
@@ -3479,7 +3479,7 @@ puppeteer-extra@^3.3.6:
     debug "^4.1.1"
     deepmerge "^4.2.2"
 
-puppeteer@^19.7.3:
+puppeteer@^19.7.5:
   version "19.7.5"
   resolved "https://registry.npmjs.org/puppeteer/-/puppeteer-19.7.5.tgz"
   integrity sha512-UqD8K+yaZa6/hwzP54AATCiHrEYGGxzQcse9cZzrtsVGd8wT0llCdYhsBp8n+zvnb1ofY0YFgI3TYZ/MiX5uXQ==
@@ -4501,7 +4501,7 @@ ws@8.12.1:
   resolved "https://registry.npmjs.org/ws/-/ws-8.12.1.tgz"
   integrity sha512-1qo+M9Ba+xNhPB+YTWUlK6M17brTut5EXbcBaMRN5pH5dFrXz7lzz1ChFSUq3bOUl8yEvSenhHmYUNJxFzdJew==
 
-ws@^8.12.1:
+ws@^8.13.0:
   version "8.13.0"
   resolved "https://registry.npmjs.org/ws/-/ws-8.13.0.tgz"
   integrity sha512-x9vcZYTrFPC7aSIbj7sRCYo7L/Xb8Iy+pW0ng0wt2vCJv7M9HOMy0UoN3rr+IFC7hb7vXoqS+P9ktyLLLhO+LA==
