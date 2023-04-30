@@ -149,10 +149,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@puppeteer/browsers@0.4.0":
-  version "0.4.0"
-  resolved "https://registry.npmjs.org/@puppeteer/browsers/-/browsers-0.4.0.tgz"
-  integrity sha512-3iB5pWn9Sr55PKKwqFWSWjLsTKCOEhKNI+uV3BZesgXuA3IhsX8I3hW0HI+3ksMIPkh2mVYzKSpvgq3oicjG2Q==
+"@puppeteer/browsers@0.5.0":
+  version "0.5.0"
+  resolved "https://registry.npmjs.org/@puppeteer/browsers/-/browsers-0.5.0.tgz"
+  integrity sha512-Uw6oB7VvmPRLE4iKsjuOh8zgDabhNX67dzo8U/BB0f9527qx+4eeUs+korU98OhG5C4ubg7ufBgVi63XYwS6TQ==
   dependencies:
     debug "4.3.4"
     extract-zip "2.0.1"
@@ -480,19 +480,19 @@
     "@typescript-eslint/types" "5.59.1"
     eslint-visitor-keys "^3.3.0"
 
-"@wppconnect-team/wppconnect@1.23.2":
-  version "1.23.2"
-  resolved "https://registry.npmjs.org/@wppconnect-team/wppconnect/-/wppconnect-1.23.2.tgz"
-  integrity sha512-r9vaesG3WXIFXKJqy73qEGcqZX02bol9tqOklotG+2sixFXSJEtSqXGFoyeQc6uobfqKcUorRuBX4WyXeldGew==
+"@wppconnect-team/wppconnect@1.24.0":
+  version "1.24.0"
+  resolved "https://registry.npmjs.org/@wppconnect-team/wppconnect/-/wppconnect-1.24.0.tgz"
+  integrity sha512-VCLNBCN1QsUQi0v7d9/NwdCwekwplkIJhTR8XetnzrHdATdxXFBsLq21madmzvpijZUEj83SJy/O4eAgYy4Q0Q==
   dependencies:
-    "@wppconnect/wa-js" "^2.23.1"
-    "@wppconnect/wa-version" "^1.2.13"
+    "@wppconnect/wa-js" "^2.23.5"
+    "@wppconnect/wa-version" "^1.2.27"
     atob "^2.1.2"
-    axios "^1.3.4"
+    axios "^1.4.0"
     boxen "^5.1.2"
     catch-exit "^1.2.2"
     chalk "~4.1.2"
-    chrome-launcher "^0.15.1"
+    chrome-launcher "^0.15.2"
     execa "^5.1.1"
     file-type "~16.5.4"
     futoin-hkdf "^1.5.2"
@@ -500,7 +500,7 @@
     logform "^2.5.1"
     lookpath "^1.2.2"
     mime-types "^2.1.35"
-    puppeteer "^19.8.3"
+    puppeteer "^19.11.1"
     puppeteer-extra "^3.3.6"
     puppeteer-extra-plugin-stealth "^2.11.2"
     puppeteer-extra-plugin-user-data-dir "^2.4.1"
@@ -509,7 +509,7 @@
     reflect-metadata "^0.1.13"
     rimraf "^3.0.2"
     sanitize-filename "^1.6.3"
-    sharp "^0.32.0"
+    sharp "^0.32.1"
     tmp "^0.2.1"
     tree-kill "^1.2.2"
     winston "^3.8.2"
@@ -517,18 +517,18 @@
   optionalDependencies:
     fsevents "^2.3.2"
 
-"@wppconnect/wa-js@^2.23.1":
-  version "2.23.1"
-  resolved "https://registry.npmjs.org/@wppconnect/wa-js/-/wa-js-2.23.1.tgz"
-  integrity sha512-0uhZSupZ6L7xcI9l8dftR3Oclvn8YKQxfskFhLfTJHCLYDukpHZcVrhm8vTQWn+mq+HiRlSHNnEeJjO9SMKbmQ==
+"@wppconnect/wa-js@^2.23.5":
+  version "2.23.5"
+  resolved "https://registry.npmjs.org/@wppconnect/wa-js/-/wa-js-2.23.5.tgz"
+  integrity sha512-97kqpaVLU8bk59N9U3PCp+AvUjq8foNrtrKkMFtwVMmv6hTle17Mum6hB1jDv8wtwIGslG/C+b3qqfyCQ+OPrg==
 
-"@wppconnect/wa-version@^1.2.13":
-  version "1.2.13"
-  resolved "https://registry.npmjs.org/@wppconnect/wa-version/-/wa-version-1.2.13.tgz"
-  integrity sha512-Zvqb2wjU7Ne4/JelRH87VahZu0X4xs6XFQxCF1xDbJht/jX6ll1Qlh9K+fwGsKek3t0RF/ubgCpY/KZ7KFdKiQ==
+"@wppconnect/wa-version@^1.2.27":
+  version "1.2.27"
+  resolved "https://registry.npmjs.org/@wppconnect/wa-version/-/wa-version-1.2.27.tgz"
+  integrity sha512-XmZiN+iAgqsHTs7GRL0QBEPUDP7fiPts37aOTosrfXPHtv1doUUL4cfXiCXot4ZRLluvGfR0T7yDjvj5TZRN5g==
   dependencies:
     node-fetch "^2.6.9"
-    semver "^7.3.8"
+    semver "^7.5.0"
 
 abbrev@1:
   version "1.1.1"
@@ -739,7 +739,7 @@ available-typed-arrays@^1.0.5:
   resolved "https://registry.npmjs.org/available-typed-arrays/-/available-typed-arrays-1.0.5.tgz"
   integrity sha512-DMD0KiN46eipeziST1LPP/STfDU0sufISXmjSgvVsoU2tqxctQeASejWcfNtxYKqETM1UxQ8sp2OrSBWpHY6sw==
 
-axios@^1.3.4, axios@^1.4.0:
+axios@^1.4.0:
   version "1.4.0"
   resolved "https://registry.npmjs.org/axios/-/axios-1.4.0.tgz"
   integrity sha512-S4XCWMEmzvo64T9GfvQDOXgYRDJ/wsSZc7Jvdgx5u1sd0JwsuPLqb3SYmusag+edF6ziyMensPVqLTSc1PiSEA==
@@ -992,20 +992,20 @@ chownr@^2.0.0:
   resolved "https://registry.npmjs.org/chownr/-/chownr-2.0.0.tgz"
   integrity sha512-bIomtDF5KGpdogkLd9VspvFzk9KfpyyGlS8YFVZl7TGPBHL5snIOnxeshwVgPteQ9b4Eydl+pVbIyE1DcvCWgQ==
 
-chrome-launcher@^0.15.1:
-  version "0.15.1"
-  resolved "https://registry.npmjs.org/chrome-launcher/-/chrome-launcher-0.15.1.tgz"
-  integrity sha512-UugC8u59/w2AyX5sHLZUHoxBAiSiunUhZa3zZwMH6zPVis0C3dDKiRWyUGIo14tTbZHGVviWxv3PQWZ7taZ4fg==
+chrome-launcher@^0.15.2:
+  version "0.15.2"
+  resolved "https://registry.npmjs.org/chrome-launcher/-/chrome-launcher-0.15.2.tgz"
+  integrity sha512-zdLEwNo3aUVzIhKhTtXfxhdvZhUghrnmkvcAq2NoDd+LeOHKf03H5jwZ8T/STsAlzyALkBVK552iaG1fGf1xVQ==
   dependencies:
     "@types/node" "*"
     escape-string-regexp "^4.0.0"
     is-wsl "^2.2.0"
     lighthouse-logger "^1.0.0"
 
-chromium-bidi@0.4.6:
-  version "0.4.6"
-  resolved "https://registry.npmjs.org/chromium-bidi/-/chromium-bidi-0.4.6.tgz"
-  integrity sha512-TQOkWRaLI/IWvoP8XC+7jO4uHTIiAUiklXU1T0qszlUFEai9LgKXIBXy3pOS3EnQZ3bQtMbKUPkug0fTAEHCSw==
+chromium-bidi@0.4.7:
+  version "0.4.7"
+  resolved "https://registry.npmjs.org/chromium-bidi/-/chromium-bidi-0.4.7.tgz"
+  integrity sha512-6+mJuFXwTMU6I3vYLs6IL8A1DyQTPjCfIL971X0aMPVGRbGnNfl6i6Cl0NMbxi2bRYLGESt9T2ZIMRM5PAEcIQ==
   dependencies:
     mitt "3.0.0"
 
@@ -2984,9 +2984,9 @@ neo-async@^2.6.0:
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
 
 node-abi@^3.3.0:
-  version "3.35.0"
-  resolved "https://registry.npmjs.org/node-abi/-/node-abi-3.35.0.tgz"
-  integrity sha512-jAlSOFR1Bls963NmFwxeQkNTzqjUF0NThm8Le7eRIRGzFUVJuMOFZDLv5Y30W/Oaw+KEebEJLAigwO9gQHoEmw==
+  version "3.40.0"
+  resolved "https://registry.npmjs.org/node-abi/-/node-abi-3.40.0.tgz"
+  integrity sha512-zNy02qivjjRosswoYmPi8hIKJRr8MpQyeKT6qlcq/OnOgA3Rhoae+IYOqsM9V5+JnHWmxKnWOT2GxvtqdtOCXA==
   dependencies:
     semver "^7.3.5"
 
@@ -2995,10 +2995,10 @@ node-addon-api@^5.0.0:
   resolved "https://registry.npmjs.org/node-addon-api/-/node-addon-api-5.1.0.tgz"
   integrity sha512-eh0GgfEkpnoWDq+VY8OyvYhFEzBk6jIYbRKdIlyTiAXIVJ8PyBaKb0rp7oDtoddbdoHWhq8wwr+XZ81F1rpNdA==
 
-node-addon-api@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.npmjs.org/node-addon-api/-/node-addon-api-6.0.0.tgz"
-  integrity sha512-GyHvgPvUXBvAkXa0YvYnhilSB1A+FRYMpIVggKzPZqdaZfevZOuzfWzyvgzOwRLHBeo/MMswmJFsrNF4Nw1pmA==
+node-addon-api@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.npmjs.org/node-addon-api/-/node-addon-api-6.1.0.tgz"
+  integrity sha512-+eawOlIgy680F0kBzPUNFhMZGtJ1YmqM6l4+Crf4IkImjYrO/mqPwRMh352g23uIaQKFItcQ64I7KMaJxHgAVA==
 
 node-fetch@2.6.7:
   version "2.6.7"
@@ -3413,13 +3413,13 @@ punycode@^2.1.0:
   resolved "https://registry.npmjs.org/punycode/-/punycode-2.3.0.tgz"
   integrity sha512-rRV+zQD8tVFys26lAGR9WUuS4iUAngJScM+ZRSKtvl5tKeZ2t5bvdNFdNHBW9FWR4guGHlgmsZ1G7BSm2wTbuA==
 
-puppeteer-core@19.8.5:
-  version "19.8.5"
-  resolved "https://registry.npmjs.org/puppeteer-core/-/puppeteer-core-19.8.5.tgz"
-  integrity sha512-zoGhim/oBQbkND6h4Xz4X7l5DkWVH9wH7z0mVty5qa/c0P1Yad47t/npVtt2xS10BiQwzztWKx7Pa2nJ5yykdw==
+puppeteer-core@19.11.1:
+  version "19.11.1"
+  resolved "https://registry.npmjs.org/puppeteer-core/-/puppeteer-core-19.11.1.tgz"
+  integrity sha512-qcuC2Uf0Fwdj9wNtaTZ2OvYRraXpAK+puwwVW8ofOhOgLPZyz1c68tsorfIZyCUOpyBisjr+xByu7BMbEYMepA==
   dependencies:
-    "@puppeteer/browsers" "0.4.0"
-    chromium-bidi "0.4.6"
+    "@puppeteer/browsers" "0.5.0"
+    chromium-bidi "0.4.7"
     cross-fetch "3.1.5"
     debug "4.3.4"
     devtools-protocol "0.0.1107588"
@@ -3477,17 +3477,17 @@ puppeteer-extra@^3.3.6:
     debug "^4.1.1"
     deepmerge "^4.2.2"
 
-puppeteer@^19.8.3:
-  version "19.8.5"
-  resolved "https://registry.npmjs.org/puppeteer/-/puppeteer-19.8.5.tgz"
-  integrity sha512-WSjouU7eux6cwBMEz4A7mDRVZWTQQTDXrb1R6AhKDdeEgpiBBkAzcAusPhILxiJOKj60rULZpWuCZ7HZIO6GTA==
+puppeteer@^19.11.1:
+  version "19.11.1"
+  resolved "https://registry.npmjs.org/puppeteer/-/puppeteer-19.11.1.tgz"
+  integrity sha512-39olGaX2djYUdhaQQHDZ0T0GwEp+5f9UB9HmEP0qHfdQHIq0xGQZuAZ5TLnJIc/88SrPLpEflPC+xUqOTv3c5g==
   dependencies:
-    "@puppeteer/browsers" "0.4.0"
+    "@puppeteer/browsers" "0.5.0"
     cosmiconfig "8.1.3"
     https-proxy-agent "5.0.1"
     progress "2.0.3"
     proxy-from-env "1.1.0"
-    puppeteer-core "19.8.5"
+    puppeteer-core "19.11.1"
 
 qrcode-terminal@^0.12.0:
   version "0.12.0"
@@ -3738,10 +3738,10 @@ semver@^6.0.0, semver@^6.2.0:
   resolved "https://registry.npmjs.org/semver/-/semver-6.3.0.tgz"
   integrity sha512-b39TBaTSfV6yBrapU89p5fKekE2m/NwnDocOVruQFS1/veMgdzuPcnOM34M6CwxW8jH/lxEa5rBoDeUwu5HHTw==
 
-semver@^7.3.5, semver@^7.3.7, semver@^7.3.8:
-  version "7.3.8"
-  resolved "https://registry.npmjs.org/semver/-/semver-7.3.8.tgz"
-  integrity sha512-NB1ctGL5rlHrPJtFDVIVzTyQylMLu9N9VICA6HSFJo8MCGVTMW6gfpicwKmmK/dAjTOrqu5l63JJOpDSrAis3A==
+semver@^7.3.5, semver@^7.3.7, semver@^7.5.0:
+  version "7.5.0"
+  resolved "https://registry.npmjs.org/semver/-/semver-7.5.0.tgz"
+  integrity sha512-+XC0AD/R7Q2mPSRuy2Id0+CGTZ98+8f+KvwirxOKIEyid+XSx6HbC63p+O4IndTHuX5Z+JxQ0TghCkO5Cg/2HA==
   dependencies:
     lru-cache "^6.0.0"
 
@@ -3804,16 +3804,16 @@ shallow-clone@^0.1.2:
     lazy-cache "^0.2.3"
     mixin-object "^2.0.1"
 
-sharp@^0.32.0:
-  version "0.32.0"
-  resolved "https://registry.npmjs.org/sharp/-/sharp-0.32.0.tgz"
-  integrity sha512-yLAypVcqj1toSAqRSwbs86nEzfyZVDYqjuUX8grhFpeij0DDNagKJXELS/auegDBRDg1XBtELdOGfo2X1cCpeA==
+sharp@^0.32.1:
+  version "0.32.1"
+  resolved "https://registry.npmjs.org/sharp/-/sharp-0.32.1.tgz"
+  integrity sha512-kQTFtj7ldpUqSe8kDxoGLZc1rnMFU0AO2pqbX6pLy3b7Oj8ivJIdoKNwxHVQG2HN6XpHPJqCSM2nsma2gOXvOg==
   dependencies:
     color "^4.2.3"
     detect-libc "^2.0.1"
-    node-addon-api "^6.0.0"
+    node-addon-api "^6.1.0"
     prebuild-install "^7.1.1"
-    semver "^7.3.8"
+    semver "^7.5.0"
     simple-get "^4.0.1"
     tar-fs "^2.1.1"
     tunnel-agent "^0.6.0"
