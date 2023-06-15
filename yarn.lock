@@ -495,13 +495,13 @@
     "@typescript-eslint/types" "5.59.11"
     eslint-visitor-keys "^3.3.0"
 
-"@wppconnect-team/wppconnect@1.27.2":
-  version "1.27.2"
-  resolved "https://registry.npmjs.org/@wppconnect-team/wppconnect/-/wppconnect-1.27.2.tgz"
-  integrity sha512-+kPUOpuacA7niBEKDyVtSRbtm9cnOdRylpU6hCIVmjp7D3HoES6i6t8xBdGJ87oKLm7KrFcj5Smv4DjYGJBpUQ==
+"@wppconnect-team/wppconnect@1.27.3":
+  version "1.27.3"
+  resolved "https://registry.npmjs.org/@wppconnect-team/wppconnect/-/wppconnect-1.27.3.tgz"
+  integrity sha512-0F448FEbkpsPZo3YRbWqnUZpYSgZCc1HMLGo4M9nN5EvEKOjztXWnKFsAnQz8N5+Ob/OPnbUsepsbkwiRW3wXw==
   dependencies:
-    "@wppconnect/wa-js" "^2.24.2"
-    "@wppconnect/wa-version" "^1.2.44"
+    "@wppconnect/wa-js" "^2.24.3"
+    "@wppconnect/wa-version" "^1.2.49"
     atob "^2.1.2"
     axios "^1.4.0"
     boxen "^5.1.2"
@@ -532,15 +532,15 @@
   optionalDependencies:
     fsevents "^2.3.2"
 
-"@wppconnect/wa-js@^2.24.2":
-  version "2.24.2"
-  resolved "https://registry.npmjs.org/@wppconnect/wa-js/-/wa-js-2.24.2.tgz"
-  integrity sha512-dlnaNq6VRNSwg90ww0+0QRovQR9NsGCcMyhkfX2iCxH1BPZSsVCmnNTMBsI5y108mXW2iCjCEKU5O475aP5Vdw==
+"@wppconnect/wa-js@^2.24.3":
+  version "2.24.3"
+  resolved "https://registry.npmjs.org/@wppconnect/wa-js/-/wa-js-2.24.3.tgz"
+  integrity sha512-x4KO/morEmPQS1ljGWdOh/SG8jWxhfnZW1o5IxAcKBf0NMG4ulL3hKZQ73a08wByPn+2k3ESoFf9HYZLTRaZJA==
 
-"@wppconnect/wa-version@^1.2.44":
-  version "1.2.45"
-  resolved "https://registry.npmjs.org/@wppconnect/wa-version/-/wa-version-1.2.45.tgz"
-  integrity sha512-iEHRmnqKAeDE71HcdSzMhOnirrooLvC6fod61Pw+VmaqmPkYK+R/hwcEzEMwNclDBnBGJrRNRTMcpK9LwbYmjw==
+"@wppconnect/wa-version@^1.2.49":
+  version "1.2.49"
+  resolved "https://registry.npmjs.org/@wppconnect/wa-version/-/wa-version-1.2.49.tgz"
+  integrity sha512-XULbuCJDk7/GBQVHzPte2x7SuIq+kk9TFx9dQTKaEMku2NG6HtcuSl6c7dscvPuImvuJa/aVjJM4ytsKvMID2A==
   dependencies:
     node-fetch "^2.6.11"
     semver "^7.5.1"
