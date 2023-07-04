@@ -332,10 +332,10 @@
   resolved "https://registry.npmjs.org/@types/node/-/node-18.16.19.tgz"
   integrity sha512-IXl7o+R9iti9eBW4Wg2hx1xQDig183jj7YLn8F7udNceyfkbn1ZxmzZXuak20gR40D7pIkIY1kYGx5VIGbaHKA==
 
-"@types/qrcode@^1.5.0":
-  version "1.5.0"
-  resolved "https://registry.npmjs.org/@types/qrcode/-/qrcode-1.5.0.tgz"
-  integrity sha512-x5ilHXRxUPIMfjtM+1vf/GPTRWZ81nqscursm5gMznJeK9M0YnZ1c3bEvRLQ0zSSgedLx1J6MGL231ObQGGhaA==
+"@types/qrcode@^1.5.1":
+  version "1.5.1"
+  resolved "https://registry.npmjs.org/@types/qrcode/-/qrcode-1.5.1.tgz"
+  integrity sha512-HpSN675K0PmxIDRpjMI3Mc2GiKo3dNu+X/F5SoItiaDS1lVfgC6Wac1c5lQDfKWbTJUSHWiHKzpJpBZG7k9gaA==
   dependencies:
     "@types/node" "*"
 
