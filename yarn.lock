@@ -337,10 +337,10 @@
   resolved "https://registry.npmjs.org/@types/node/-/node-18.16.19.tgz"
   integrity sha512-IXl7o+R9iti9eBW4Wg2hx1xQDig183jj7YLn8F7udNceyfkbn1ZxmzZXuak20gR40D7pIkIY1kYGx5VIGbaHKA==
 
-"@types/qrcode@^1.5.1":
-  version "1.5.1"
-  resolved "https://registry.npmjs.org/@types/qrcode/-/qrcode-1.5.1.tgz"
-  integrity sha512-HpSN675K0PmxIDRpjMI3Mc2GiKo3dNu+X/F5SoItiaDS1lVfgC6Wac1c5lQDfKWbTJUSHWiHKzpJpBZG7k9gaA==
+"@types/qrcode@^1.5.5":
+  version "1.5.5"
+  resolved "https://registry.npmjs.org/@types/qrcode/-/qrcode-1.5.5.tgz"
+  integrity sha512-CdfBi/e3Qk+3Z/fXYShipBT13OJ2fDO2Q2w5CIP5anLTLIndQG9z6P1cnm+8zCWSpm5dnxMFd/uREtb0EXuQzg==
   dependencies:
     "@types/node" "*"
 
@@ -1479,11 +1479,6 @@ enabled@2.0.x:
   version "2.0.0"
   resolved "https://registry.npmjs.org/enabled/-/enabled-2.0.0.tgz"
   integrity sha512-AKrN98kuwOzMIdAizXGI86UFBoo26CL21UM763y1h/GMSJ4/OHU9k2YlsmBpyScFo/wbLzWQJBMCW4+IO3/+OQ==
-
-encode-utf8@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.npmjs.org/encode-utf8/-/encode-utf8-1.0.3.tgz"
-  integrity sha512-ucAnuBEhUK4boH2HjVYG5Q2mQyPorvv0u/ocS+zhdw0S8AlHYY+GOFhP1Gio5z4icpP2ivFSvhtFjQi8+T9ppw==
 
 encodeurl@~1.0.2:
   version "1.0.2"
@@ -3677,13 +3672,12 @@ qrcode-terminal@^0.12.0:
   resolved "https://registry.npmjs.org/qrcode-terminal/-/qrcode-terminal-0.12.0.tgz"
   integrity sha512-EXtzRZmC+YGmGlDFbXKxQiMZNwCLEO6BANKXG4iCtSIM0yqc/pappSx3RIKr4r0uh5JsBckOXeKrB3Iz7mdQpQ==
 
-qrcode@^1.5.3:
-  version "1.5.3"
-  resolved "https://registry.npmjs.org/qrcode/-/qrcode-1.5.3.tgz"
-  integrity sha512-puyri6ApkEHYiVl4CFzo1tDkAZ+ATcnbJrJ6RiBM1Fhctdn/ix9MTE3hRph33omisEbC/2fcfemsseiKgBPKZg==
+qrcode@^1.5.4:
+  version "1.5.4"
+  resolved "https://registry.npmjs.org/qrcode/-/qrcode-1.5.4.tgz"
+  integrity sha512-1ca71Zgiu6ORjHqFBDpnSMTR2ReToX4l1Au1VFLyVeBTFavzQnv5JxMFr3ukHVKpSrSA2MCk0lNJSykjUfz7Zg==
   dependencies:
     dijkstrajs "^1.0.1"
-    encode-utf8 "^1.0.3"
     pngjs "^5.0.0"
     yargs "^15.3.1"
 
