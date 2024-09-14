@@ -408,10 +408,10 @@
   resolved "https://registry.npmjs.org/@types/uuid/-/uuid-9.0.8.tgz"
   integrity sha512-jg+97EGIcY9AGHJJRaaPVgetKDsrTgbRjQ5Msgjh/DQKEFl0DtyRr/VCOyD1T2R1MNeWPK/u7JoGhlDZnKBAfA==
 
-"@types/vcf@^2.0.3":
-  version "2.0.3"
-  resolved "https://registry.npmjs.org/@types/vcf/-/vcf-2.0.3.tgz"
-  integrity sha512-T7FW77SvkTPAI5qEGpFHL9EAFgVaceDwLxAp+xgBxcZrhz6fTwf44LhYEUnJJeZ+EuKSJ8owQYKwlabYyVwJ8Q==
+"@types/vcf@^2.0.7":
+  version "2.0.7"
+  resolved "https://registry.npmjs.org/@types/vcf/-/vcf-2.0.7.tgz"
+  integrity sha512-PFZg6Ix/hMvURL4JpExCU3jTVEzGrfW+3RYSca+hlGsmW+PQGScc/vH6czR7tAxF01TZTLK8i3tPKE1EYvBOkg==
   dependencies:
     "@types/node" "*"
 
@@ -4615,10 +4615,10 @@ vary@^1, vary@~1.1.2:
   resolved "https://registry.npmjs.org/vary/-/vary-1.1.2.tgz"
   integrity sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==
 
-vcf@^2.1.1:
-  version "2.1.1"
-  resolved "https://registry.npmjs.org/vcf/-/vcf-2.1.1.tgz"
-  integrity sha512-JPy/ciPwrCMIV0N5AjO/w/1+gsh6qwz5UW1CQfEcNZ9pKJXvLupBE3SbguWHyGJLltYHNAawlxeKFO4dKuxogA==
+vcf@^2.1.2:
+  version "2.1.2"
+  resolved "https://registry.npmjs.org/vcf/-/vcf-2.1.2.tgz"
+  integrity sha512-oLYtZ+GJPjpKS950fw70+HavdP7ZO2Q+xMCMeCyiUKuXkJJJG1/wUjCKTagPryS1gApYjZOWW/khmdLsch8jxg==
   dependencies:
     camelcase "^5.0.0"
     foldline "^1.1.0"
