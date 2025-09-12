@@ -237,10 +237,10 @@
     reflect-metadata "^0.1.13"
     validator "^13.6.0"
 
-"@types/archiver@^5.3.4":
-  version "5.3.4"
-  resolved "https://registry.npmjs.org/@types/archiver/-/archiver-5.3.4.tgz"
-  integrity sha512-Lj7fLBIMwYFgViVVZHEdExZC3lVYsl+QL0VmdNdIzGZH544jHveYWij6qdnBgJQDnR7pMKliN9z2cPZFEbhyPw==
+"@types/archiver@^6.0.3":
+  version "6.0.3"
+  resolved "https://registry.npmjs.org/@types/archiver/-/archiver-6.0.3.tgz"
+  integrity sha512-a6wUll6k3zX6qs5KlxIggs1P1JcYJaTCx2gnlr+f0S1yd2DoaEwoIK10HmBaLnZwWneBz+JBm0dwcZu0zECBcQ==
   dependencies:
     "@types/readdir-glob" "*"
 
