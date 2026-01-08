@@ -9,7 +9,7 @@
     "build:swagger": "tsoa spec-and-routes"
   },
   "dependencies": {
-    "@wppconnect-team/wppconnect": "1.27.3",
+    "@wppconnect-team/wppconnect": "1.37.9",
     "archiver": "^5.3.2",
     "axios": "^1.13.2",
     "bcrypt": "^5.1.1",
