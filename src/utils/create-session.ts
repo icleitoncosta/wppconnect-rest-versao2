@@ -5,6 +5,7 @@ import { ClientWhatsApp, RequestEx } from "../models/Request";
 import { clientsArray } from "./session";
 import { Webhook } from "../services/webhook";
 import { logger } from "./defaultLogger";
+import { pluginManager } from "../app";
 
 export default class CreateSessionUtil {
     async create(req: RequestEx, clientsArray: Array<any>, session: any) {
@@ -141,7 +142,7 @@ export default class CreateSessionUtil {
     async listenMessages(client: ClientWhatsApp, _req: RequestEx) {
       client.onMessage((message: any) => {
         message.session = client.session;
-        new Webhook().send(client, "message", message);
+        pluginManager.onMessage(client, message);
       });
   
       client.onAnyMessage(async (_message: Message) => {
@@ -162,6 +163,7 @@ export default class CreateSessionUtil {
     async listenAcks(client: ClientWhatsApp, _req: RequestEx) {
       client.onAck(async (ack: Ack ) => {
         new Webhook().send(client, "ack", ack);
+        pluginManager.onMessageAck(client, ack);
         //req.io.emit('onack', ack);
       });
     }

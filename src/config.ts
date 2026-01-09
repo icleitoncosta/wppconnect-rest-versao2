@@ -1,5 +1,6 @@
 const config = {
   // Devices
+  "useExamplePlugins": true,
   "secretKey": "THISISMYSECURETOKEN", // Secret key for generate acess token
   "host": "http://localhost", // HOST for connect, localhost or IP of your server
   "port": "21465",
