@@ -7,11 +7,14 @@ import { RequestEx } from "./models/Request";
 import { logger as log } from "./utils/defaultLogger";
 import pino from "pino";
 import pinoHttp from "pino-http";
+import { PluginManager } from "./utils/pluginManager";
 
 export const app = express();
 export const logger = log;
 
-// Use body parser to read sent json payloads
+export const pluginManager = new PluginManager<Express.Application>();
+export const plugin = pluginManager.loadDir(app, './src/packages')
+
 app.use(
   urlencoded({
     extended: true,
